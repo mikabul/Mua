@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("kr.co.codingzero.controller")
+@ComponentScan("kr.co.Mua.controller")
 public class ServletAppContext implements WebMvcConfigurer{
 
 	@Override
