@@ -3,25 +3,31 @@
 <%int login_state = Integer.parseInt((String)session.getAttribute("login_state"));%>
 <c:set var='root' value='${pageContext.request.contextPath}/' />
 <script src="${root}script/login.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo&display=swap');
+.navbar_font{
+	font-family: 'Gowun Dodum', sans-serif;
+	font-family: 'Nanum Myeongjo', serif;
+}
+</style>
 
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  	<a class="navbar-brand" href="#">Mua</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar_font">
+  	<a class="navbar-brand mb-0 h1" href="${root}main">&nbsp;Mua&nbsp;</a>
   	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     	<span class="navbar-toggler-icon"></span>
   	</button>
   	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     	<div class="navbar-nav">
-      		<a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+      		<a class="nav-link active" href="#"> 둘러보기 <span class="sr-only">(current)</span></a>
       		<a class="nav-link active" href="#">Features</a>
      		<a class="nav-link active" href="#">Pricing</a>
       		<a class="nav-link disabled">Disabled</a>
     	</div>
   	</div>
-  	<button class="btn btn-outline-success my-2 my-sm-0 btn_blank" onclick="location.href='#'" id="login">로그인</button>
-  	<button class="btn btn-outline-success my-2 my-sm-0 btn_blank" onclick="location.href='#'" id="register">회원가입</button>
-  	<button class="btn btn-outline-success my-2 my-sm-0 btn_blank" onclick="location.href='#'" id="user_modify">정보수정</button>
-  	<button class="btn btn-outline-success my-2 my-sm-0 btn_blank" onclick="location.href='#'" id="logout">로그아웃</button>
+  	<button class="btn btn-outline-light my-2 my-sm-0 btn_blank" onclick="location.href='#'" id="login">로그인</button>
+  	<button class="btn btn-outline-light my-2 my-sm-0 btn_blank" onclick="location.href='#'" id="register">회원가입</button>
+  	<button class="btn btn-outline-light my-2 my-sm-0 btn_blank" onclick="location.href='#'" id="user_modify">정보수정</button>
+  	<button class="btn btn-outline-light my-2 my-sm-0 btn_blank" onclick="location.href='#'" id="logout">로그아웃</button>
 </nav>
 
 <%
