@@ -30,7 +30,7 @@ int login_state = Integer.parseInt((String) session.getAttribute("login_state"))
 	left: 3%;
 }
 </style>
-<div style="position: fixed; width: 100%; height: 90px; z-index: 100; background-color: white;">
+<div style="position: fixed; top: 0; width: 100%; height: 90px; z-index: 100; background-color: white;">
 	<div>
 		<nav class="nav nav-pills nav-fill">
 			<button type="button"
