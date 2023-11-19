@@ -41,7 +41,12 @@
 	height: 800px;
 }
 
-.consert-img-top{
+#carouselExampleIndicators{
+	height: 100%;
+	width: 100%;
+}
+
+.carousel-inner{
 	height: 100%;
 	width: 100%;
 }
@@ -50,6 +55,10 @@
 	height:500px;
 	width:90%;
 	margin:5%;
+}
+
+.d-block v-100{
+	object-fit: cover;
 }
 
 .d-block w-100{
@@ -109,7 +118,43 @@
 			<div class="items-consertrec">
 				<div class="consertrec">
 					<h1 style ="text-align: center;" class="card-title">맞춤 콘서트 추천</h5>
-					<img src="./images/consert1.jpg" class="consert-img-top" alt="...">
+						<div id="carouselExampleIndicators" class="carousel slide"
+							data-bs-ride="carousel">
+							<div class="carousel-indicators">
+								<button type="button"
+									data-bs-target="#carouselExampleIndicators"
+									data-bs-slide-to="0" class="active" aria-current="true"
+									aria-label="Slide 1"></button>
+								<button type="button"
+									data-bs-target="#carouselExampleIndicators"
+									data-bs-slide-to="1" aria-label="Slide 2"></button>
+								<button type="button"
+									data-bs-target="#carouselExampleIndicators"
+									data-bs-slide-to="2" aria-label="Slide 3"></button>
+							</div>
+							<div class="carousel-inner">
+								<div class="carousel-item active">
+									<img src="./images/consert1.jpg" class="d-block v-100" alt="...">
+								</div>
+								<div class="carousel-item">
+									<img src="./images/consert2.jpg" class="d-block v-100" alt="...">
+								</div>
+								<div class="carousel-item">
+									<img src="./images/consert3.jpg" class="d-block v-100" alt="...">
+								</div>
+							</div>
+							<button class="carousel-control-prev" type="button"
+								data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							</button>
+							<button class="carousel-control-next" type="button"
+								data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							</button>
+						</div>
+
 					<div class="card">
 						<div class="card-body">
     						<a href="#" class="btn btn-primary" >추천 페이지 이동</a>
