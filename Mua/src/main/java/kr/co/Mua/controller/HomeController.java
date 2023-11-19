@@ -12,7 +12,7 @@ public class HomeController {
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String home(HttpSession session ) {
 		if(session.getAttribute("user_num") == null) {
-			session.setAttribute("login_state", "-1");
+			session.setAttribute("login_state","false");
 		}
 		return "redirect:/main";
 	}

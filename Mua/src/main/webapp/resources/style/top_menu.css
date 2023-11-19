@@ -1,3 +1,20 @@
+@import
+	url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo&display=swap')
+	;
+
+.navbar_font {
+	font-family: 'Gowun Dodum', sans-serif;
+	font-family: 'Nanum Myeongjo', serif;
+	background-color: #e3f2fd;
+}
+
+.btn_left {
+	border: none;
+	text-align: left;
+	position: absolute;
+	left: 3%;
+}
+
 .btn_blank {
 	margin-right: 5px;
 	margin-left: 5px;
@@ -28,6 +45,7 @@
 	position: absolute;
 	width: 100%;
 	z-index: 100;
+	color: white;
 }
 
 .nav_under {
