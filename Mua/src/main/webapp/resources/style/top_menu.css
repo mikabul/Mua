@@ -10,22 +10,12 @@
 
 .btn_left {
 	border: none;
-	text-align: left;
-	position: absolute;
-	left: 3%;
+	margin-right: 80%;
 }
 
 .btn_blank {
 	margin-right: 5px;
 	margin-left: 5px;
-}
-
-.hidden {
-	display: none;
-}
-
-.search_bar {
-	width: 30%;
 }
 
 .search_form {
