@@ -5,7 +5,7 @@
 <script src="${root}script/top_menu.js"></script>
 <c:set var='user_num' />
 <link rel="styleSheet" href="./style/top_menu.css">
-<div style="position: fixed; width: 100%; height: 90px; z-index: 100; background-color: white;">
+<div style="position: fixed; width: 100%; height: 90px; z-index: 100; background-color: white; top: 0px;">
 	<div>
 		<nav class="nav nav-pills nav-fill" style="align-items: center">
 			<!-- 삼선 버튼 -->
@@ -17,7 +17,7 @@
 				</button>
 			</div>
 			<!-- 로고 -->
-			<a class="nav-link" href="#">
+			<a class="nav-link" href="#" style="margin: 0; padding: 0;">
 				<img src="./images/Mua.png" alt="" style="width: auto; height: 90px;"/>
 			</a>
 			<!-- 로그인 회원가입 -->

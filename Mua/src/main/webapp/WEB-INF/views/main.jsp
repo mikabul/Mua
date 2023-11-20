@@ -189,7 +189,6 @@
 			</div>
 		</form>
 
-		<div class="flex-container"></div>
 	</section>
 
 	<!-- 하단 부분 -->
