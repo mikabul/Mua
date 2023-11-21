@@ -18,7 +18,7 @@
 			</div>
 			<!-- 로고 -->
 			<a class="nav-link" href="#" style="margin: 0; padding: 0;">
-				<img src="./images/Mua.png" alt="" style="width: auto; height: 90px;"/>
+				<img src="${root}/images/logo.png" alt="" style="width: auto; height: 90px;"/>
 			</a>
 			<!-- 로그인 회원가입 -->
 			<div class="nav-link">
