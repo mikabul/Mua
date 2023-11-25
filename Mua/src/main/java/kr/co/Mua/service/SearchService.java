@@ -21,33 +21,41 @@ public class SearchService {
 	private ArtistDTO tempArtsitDTO;
 	private AlbumDTO tempAlbumDTO;
 
-	private boolean song_has;
-	private boolean artist_has;
-	private boolean album_has;
-
 	private int artist_num;
-	private int album_num;
+	private int album_id;
+	
+	private int insert_artist_num;
+	private int insert_album_id;
 
 	public void insertDB(int song_id) {
-
-		tempArtsitDTO = new ArtistDTO();
-		tempAlbumDTO = new AlbumDTO();
 		
 		getSong(song_id);
 		getArtist();
 		getAlbum();
-
-		if(insertDBDao.getSongDTO(tempSongDTO, tempArtsitDTO) == null) {
-			System.out.println("SONG성공이다!");
-		}
 		
 		if(insertDBDao.getArtistDTO(tempArtsitDTO) == null) {
 			System.out.println("ARTIST성공이다!");
+			insertDBDao.insertArtist(tempArtsitDTO);
 		}
+		insert_artist_num = insertDBDao.getArtistDTO(tempArtsitDTO).getArtist_num();
+		System.out.println(insert_artist_num);
 		
 		if(insertDBDao.getAlbumDTO(tempAlbumDTO, tempArtsitDTO) == null) {
 			System.out.println("ALBUM성공이다!");
+			tempAlbumDTO.setArtist_num(insert_artist_num);
+			insertDBDao.insertAlbum(tempAlbumDTO);
 		}
+		
+		insert_album_id = insertDBDao.getAlbumDTO(tempAlbumDTO, tempArtsitDTO).getAlbum_id();
+		System.out.println(insert_album_id);
+		
+		if(insertDBDao.getSongDTO(tempSongDTO, tempArtsitDTO) == null) {
+			System.out.println("SONG성공이다!");
+			tempSongDTO.setArtist_num(insert_artist_num);
+			tempSongDTO.setAlbum_id(insert_album_id);
+			insertDBDao.insertSong(tempSongDTO);
+		}
+		
 	}
 
 	// 노래 정보를 가져옴
@@ -97,7 +105,7 @@ public class SearchService {
 			Elements album_num_elements = elements.select("div.meta dl.list dd a");
 
 			String hrefAlbum_num = album_num_elements.attr("href");
-			album_num = Integer.parseInt(hrefAlbum_num
+			album_id = Integer.parseInt(hrefAlbum_num
 					.substring(hrefAlbum_num.lastIndexOf("('") + 2, hrefAlbum_num.lastIndexOf("')")).trim());
 
 		} catch (Exception e) {
@@ -109,6 +117,7 @@ public class SearchService {
 	private void getArtist() {
 		
 		tempArtsitDTO = new ArtistDTO();
+		
 		if(artist_num != -1) {
 			String url = "https://www.melon.com/artist/timeline.htm?artistId=" + artist_num;
 			Document doc;
@@ -147,7 +156,7 @@ public class SearchService {
 	private void getAlbum() {
 		
 		tempAlbumDTO = new AlbumDTO();
-		String url = "https://www.melon.com/album/detail.htm?albumId=" + album_num;
+		String url = "https://www.melon.com/album/detail.htm?albumId=" + album_id;
 		Document doc;
 		
 		try {
