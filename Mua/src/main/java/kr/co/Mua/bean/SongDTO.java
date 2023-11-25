@@ -4,7 +4,7 @@ public class SongDTO {
 
 	private int song_id;
 	private String song_name;
-	private String sing_genre;
+	private String song_genre;
 	private String release_date;
 	private String lyrics;
 	private int views;
@@ -28,12 +28,12 @@ public class SongDTO {
 		this.song_name = song_name;
 	}
 
-	public String getSing_genre() {
-		return sing_genre;
+	public String getSong_genre() {
+		return song_genre;
 	}
 
-	public void setSing_genre(String sing_genre) {
-		this.sing_genre = sing_genre;
+	public void setSong_genre(String song_genre) {
+		this.song_genre = song_genre;
 	}
 
 	public String getRelease_date() {

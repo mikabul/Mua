@@ -8,20 +8,26 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.Mua.bean.AlbumDTO;
 import kr.co.Mua.bean.ArtistDTO;
 import kr.co.Mua.bean.SearchResultDTO;
 import kr.co.Mua.bean.SongDTO;
+import kr.co.Mua.service.SearchService;
 
 @Controller
 @RequestMapping(value = "/search", method = RequestMethod.GET)
 public class SearchConroller {
+	
+	@Autowired
+	SearchService searchService;
 
 	@GetMapping("/main")
 	public String main(HttpServletRequest res, Model model) {
@@ -31,9 +37,6 @@ public class SearchConroller {
 		String search_where = res.getParameter("search_where").trim();
 		String search_url_first = "https://www.melon.com/search/total/index.htm?q=";
 		String search_url_last = "&section=&mwkLogType=T";
-
-		System.out.println(search_value);
-		System.out.println(search_where);
 
 		Document doc;
 
@@ -63,14 +66,18 @@ public class SearchConroller {
 					songDTO.setSong_id(song_id);
 
 					//------------------artist-----------------
-					String hrefArtist = tempArtist.attr("href").trim();
-					System.out.println(tempArtist);
-					int artist_num = Integer.parseInt(
-							hrefArtist.substring(hrefArtist.lastIndexOf("goArtistDetail") + 16, 
-							hrefArtist.lastIndexOf("melon")-3));
 					artistDTO.setArtist_name(tempArtist.text());
-					artistDTO.setArtist_num(artist_num);
-
+					if(!artistDTO.getArtist_name().equals("")) {
+						String hrefArtist = tempArtist.attr("href").trim();
+						int artist_num = Integer.parseInt(
+								hrefArtist.substring(hrefArtist.lastIndexOf("goArtistDetail") + 16, 
+								hrefArtist.lastIndexOf("melon")-3));
+						artistDTO.setArtist_num(artist_num);
+					} else {
+						artistDTO.setArtist_num(-1);
+						artistDTO.setArtist_name("Various Artists");
+					}
+					
 					//------------------album--------------------
 					int album_num = Integer.parseInt(tempAlbum.toString().substring(
 							tempAlbum.toString().lastIndexOf("goAlbumDetail('") + 15,
@@ -91,16 +98,15 @@ public class SearchConroller {
 		}
 		model.addAttribute("arrayResultDTOs", arrayResultDTOs);
 		
-		for(int i = 0; i < arrayResultDTOs.size(); i++) {
-			System.out.println(arrayResultDTOs.get(i).getSongDTO().getSong_name());
-		}
-
 		return "search/main";
 	}
 	
-//	@GetMapping("/SongInfo")
-//	public String songInfo(HttpServletRequest res) {
-//		
-//	}
+	@GetMapping("/SongInfo")
+	public String songInfo(@RequestParam("song_id") int song_id) {
+		
+		searchService.insertDB(song_id);
+		
+		return "search/SongInfo";
+	}
 
 }

@@ -6,6 +6,7 @@ public class AlbumDTO {
 	private String album_name;
 	private String release_date;
 	private String album_genre;
+	private String album_publisher;
 	private String album_agency;
 	private int artist_num;
 	
@@ -33,6 +34,12 @@ public class AlbumDTO {
 	}
 	public void setAlbum_genre(String album_genre) {
 		this.album_genre = album_genre;
+	}
+	public String getAlbum_publisher() {
+		return album_publisher;
+	}
+	public void setAlbum_publisher(String album_publisher) {
+		this.album_publisher = album_publisher;
 	}
 	public String getAlbum_agency() {
 		return album_agency;

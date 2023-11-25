@@ -3,6 +3,7 @@ package kr.co.Mua.config;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,9 +14,13 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.Mua.Mapper.InsertDBMapper;
+
 @Configuration
 @EnableWebMvc
 @ComponentScan("kr.co.Mua.controller")
+@ComponentScan("kr.co.Mua.service")
+@ComponentScan("kr.co.Mua.dao")
 @PropertySource("/WEB-INF/properties/db.properties")
 public class ServletAppContext implements WebMvcConfigurer{
 	
@@ -59,10 +64,10 @@ public class ServletAppContext implements WebMvcConfigurer{
 		return factory;
 	}
 	
-//	@Bean
-//	public MapperFactoryBean<> getBoardMapper(SqlSessionFactory factory){
-//		MapperFactoryBean<TopMenuMapper> factoryBean = new MapperFactoryBean<TopMenuMapper>(TopMenuMapper.class);
-//		factoryBean.setSqlSessionFactory(factory);
-//		return factoryBean;
-//	}
+	@Bean
+	public MapperFactoryBean<InsertDBMapper> getInsertDBMapper(SqlSessionFactory factory){
+		MapperFactoryBean<InsertDBMapper> factoryBean = new MapperFactoryBean<InsertDBMapper>(InsertDBMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
 }
