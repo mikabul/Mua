@@ -5,11 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-
 <meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Mua</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -87,16 +84,16 @@
 	<c:import url="/WEB-INF/views/include/top_menu.jsp" />
 	<!-- 중단 부분 -->
 	<section style="position: relative; height: 2000px; width: 100%;">
-		<form action="#" method="post">
+		<form action="${root }search/main" method="get">
 			<div class="form-row align-items-center search_form">
 				<div class="col-auto my-1">
-					<select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-						<option value="song" selected>노래</option>
-						<option value="artist">가수</option>
-						<option value="album">앨범</option>
+					<select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="search_where">
+						<option value="frm_searchSong" selected>노래</option>
+						<option value="frm_searchArtist">가수</option>
+						<option value="frm_searchAlbum">앨범</option>
 					</select>
 				</div>
-				<input type="text" class="form-control search_bar">
+				<input type="text" class="form-control search_bar" name="search_value">
 				<div class="col-auto my-1">
 					<button type="submit" class="btn btn-primary">&nbsp;검색&nbsp;</button>
 				</div>
@@ -115,15 +112,15 @@
 					</ol>
 					<div class="carousel-inner">
 						<div class="carousel-item active">
-							<img src="./images/consert1.jpg" class="img-fluid" alt="..."
+							<img src="${root }images/consert1.jpg" class="img-fluid" alt="..."
 								style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
 						</div>
 						<div class="carousel-item">
-							<img src="./images/consert2.jpg" class="img-fluid" alt="..."
+							<img src="${root }images/consert2.jpg" class="img-fluid" alt="..."
 								style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
 						</div>
 						<div class="carousel-item">
-							<img src="./images/consert3.jpg" class="img-fluid" alt="..."
+							<img src="${root }images/consert3.jpg" class="img-fluid" alt="..."
 								style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
 						</div>
 					</div>
@@ -150,7 +147,7 @@
 		<div class="items-songrec-songchart">
 			<div class="songrec">
 				<div class="card">
-					<img src="./images/song.jpg" class="song-img-top" alt="...">
+					<img src="${root }images/song.jpg" class="song-img-top" alt="...">
 					<div class="card-body">
 						<h5 class="card-title">노래 추천</h5>
 						<a href="#" class="btn btn-primary">추천 페이지 이동</a>
