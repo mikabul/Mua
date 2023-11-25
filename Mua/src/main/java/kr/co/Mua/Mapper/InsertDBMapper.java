@@ -21,7 +21,7 @@ public interface InsertDBMapper {
 	@Insert("insert into song values(song_seq.nextval, #{song_name}, #{sing_genre}, to_date(#{release_date}), null, 0, #{artist_num}, #{album_num})")
 	public void insert_song(SongDTO songDTO);
 	
-	@Insert("")
+	@Insert("insert into artist values(artist_seq.nextval,)")
 	public void insert_artist(SongDTO songDTO);
 	
 	@Insert("")
