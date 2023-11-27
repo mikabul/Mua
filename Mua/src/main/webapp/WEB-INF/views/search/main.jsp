@@ -20,10 +20,10 @@
 					<tr>
 						<td><a href="${root}search/SongInfo?song_id=${item.songDTO.song_id}">${item.songDTO.song_name}</a></td>
 						<td>
-							<c:if test="${item.artistDTO.artist_num!=-1}">
-								<a href="${root}search/ArtistInfo?song_id=${item.artistDTO.artist_num}">${item.artistDTO.artist_name}</a>
+							<c:if test="${item.artistDTO.artist_id!=-1}">
+								<a href="${root}search/ArtistInfo?song_id=${item.artistDTO.artist_id}">${item.artistDTO.artist_name}</a>
 							</c:if>
-							<c:if test="${item.artistDTO.artist_num==-1}">
+							<c:if test="${item.artistDTO.artist_id==-1}">
 								${item.artistDTO.artist_name}
 							</c:if>
 						</td>

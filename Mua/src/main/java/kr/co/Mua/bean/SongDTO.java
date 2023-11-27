@@ -8,10 +8,22 @@ public class SongDTO {
 	private String release_date;
 	private String lyrics;
 	private int views;
-	private int artist_num;
+	private String song_thumbnail;
 	private int album_id;
 	
-	//-----------get, set----------------
+	//--------기본 생성자--------
+	public SongDTO() {
+		song_id = 0;
+		song_name = "-";
+		song_genre = "-";
+		release_date = "-";
+		lyrics = "-";
+		views = 0;
+		song_thumbnail = "-";
+		album_id = 0;
+	}
+	
+	//-----------get, set-----------
 	public int getSong_id() {
 		return song_id;
 	}
@@ -48,11 +60,11 @@ public class SongDTO {
 	public void setViews(int views) {
 		this.views = views;
 	}
-	public int getArtist_num() {
-		return artist_num;
+	public String getSong_thumbnail() {
+		return song_thumbnail;
 	}
-	public void setArtist_num(int artist_num) {
-		this.artist_num = artist_num;
+	public void setSong_thumbnail(String song_thumbnail) {
+		this.song_thumbnail = song_thumbnail;
 	}
 	public int getAlbum_id() {
 		return album_id;
@@ -60,5 +72,7 @@ public class SongDTO {
 	public void setAlbum_id(int album_id) {
 		this.album_id = album_id;
 	}
+	
+	
 
 }

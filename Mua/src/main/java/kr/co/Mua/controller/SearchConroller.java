@@ -72,9 +72,9 @@ public class SearchConroller {
 						int artist_num = Integer.parseInt(
 								hrefArtist.substring(hrefArtist.lastIndexOf("goArtistDetail") + 16, 
 								hrefArtist.lastIndexOf("melon")-3));
-						artistDTO.setArtist_num(artist_num);
+						artistDTO.setArtist_id(artist_num);
 					} else {
-						artistDTO.setArtist_num(-1);
+						artistDTO.setArtist_id(-1);
 						artistDTO.setArtist_name("Various Artists");
 					}
 					

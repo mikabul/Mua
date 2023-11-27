@@ -9,30 +9,36 @@ import kr.co.Mua.bean.SongDTO;
 
 public interface InsertDBMapper {
 	
-	@Select("select song_name from song where song_name=#{arg0.song_name} " + 
-			"and artist_num=(select artist_num from artist " + 
-			"where artist_name=#{arg1.artist_name} and artist_date=to_date(#{arg1.artist_date}) " + 
-			"and artist_type=#{arg1.artist_type} and agency=#{arg1.agency})")
-	public SongDTO song_search(SongDTO songDTO, ArtistDTO artistDTO);
+	//----------정보가 있는지 찾는 부분---------------
+	@Select("select song_id from song "
+			+ "where song_name=#{song_name} and song_genre=#{song_genre} "
+			+ "and release_date=#{release_date}")
+	public SongDTO song_match(SongDTO songDTO);
 	
-	@Select("select artist_num from artist where artist_name=#{artist_name} and "
-			+ "artist_date=to_date(#{artist_date}) and artist_type=#{artist_type} "
-			+ "and agency=#{agency}")
-	public ArtistDTO artist_search(ArtistDTO artistDTO);
+	@Select("select artist_id from artist where artist_name=#{artist_name} and "
+			+ "artist_date=#{artist_date} and artist_type=#{artist_type} "
+			+ "and artist_agency=#{artist_agency}")
+	public ArtistDTO artist_match(ArtistDTO artistDTO);
 	
-	@Select("select album_id from album where album_name=#{arg0.album_name} " + 
-			"and artist_num=(select artist_num from artist " + 
-			"where artist_name=#{arg1.artist_name} and artist_date=to_date(#{arg1.artist_date}) " +
-			"and artist_type=#{arg1.artist_type} and agency=#{arg1.agency})")
-	public AlbumDTO album_search(AlbumDTO albumDTO, ArtistDTO artistDTO);
+	@Select("select album_id from album "
+			+ "where album_name=#{album_name} and album_genre=#{album_genre} "
+			+ "and release_date=#{release_date}")
+	public AlbumDTO album_match(AlbumDTO albumDTO);
 	
-	@Insert("insert into song values(song_seq.nextval, #{song_name}, #{song_genre}, to_date(#{release_date}), null, 0, #{artist_num}, #{album_id})")
+	//-----------정보를 저장하는 부분----------------
+	@Insert("insert into song values(song_seq.nextval, #{song_name}, #{song_genre}, #{release_date}, '-', 0, '-', #{album_id})")
 	public void insert_song(SongDTO songDTO);
 	
-	@Insert("insert into artist values(artist_seq.nextval, #{artist_name}, to_date(#{artist_date}), #{artist_type}, #{agency})")
+	@Insert("insert into artist values(artist_seq.nextval, #{artist_name}, #{artist_date}, #{artist_type}, '-', #{artist_agency})")
 	public void insert_artist(ArtistDTO artistDTO);
 	
-	@Insert("insert into album values(album_seq.nextval, #{album_name}, to_date(#{release_date}), #{album_genre}, #{album_agency}, #{artist_num})")
-	public void insert_albem(AlbumDTO albumDTO);
+	@Insert("insert into album values(album_seq.nextval, #{album_name}, #{release_date}, #{album_genre}, #{album_publisher}, #{album_agency}, '-')")
+	public void insert_album(AlbumDTO albumDTO);
+	
+	@Insert("insert into song_artist values(#{arg0}, #{arg1})")
+	public void insert_song_artist(int song_id, int artist_id);
+	
+	@Insert("insert into album_artist values(#{arg0}, #{arg1})")
+	public void insert_album_artist(int album_id, int artist_id);
 	
 }

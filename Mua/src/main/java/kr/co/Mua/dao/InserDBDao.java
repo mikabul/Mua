@@ -14,27 +14,35 @@ public class InserDBDao {
 	@Autowired
 	private InsertDBMapper insertDBMapper;
 
-	public SongDTO getSongDTO(SongDTO songDTO, ArtistDTO artistDTO) {
-		return insertDBMapper.song_search(songDTO, artistDTO);
+	public SongDTO song_match(SongDTO songDTO) {
+		return insertDBMapper.song_match(songDTO);
 	}
 
-	public ArtistDTO getArtistDTO(ArtistDTO artistDTO) {
-		return insertDBMapper.artist_search(artistDTO);
+	public ArtistDTO artist_match(ArtistDTO artistDTO) {
+		return insertDBMapper.artist_match(artistDTO);
 	}
 
-	public AlbumDTO getAlbumDTO(AlbumDTO albumDTO, ArtistDTO artistDTO) {
-		return insertDBMapper.album_search(albumDTO, artistDTO);
+	public AlbumDTO album_match(AlbumDTO albumDTO) {
+		return insertDBMapper.album_match(albumDTO);
 	}
 
-	public void insertSong(SongDTO songDTO) {
+	public void insert_song(SongDTO songDTO) {
 		insertDBMapper.insert_song(songDTO);
 	}
 
-	public void insertArtist(ArtistDTO artistDTO) {
+	public void insert_artist(ArtistDTO artistDTO) {
 		insertDBMapper.insert_artist(artistDTO);
 	}
 
-	public void insertAlbum(AlbumDTO albumDTO) {
-		insertDBMapper.insert_albem(albumDTO);
+	public void insert_album(AlbumDTO albumDTO) {
+		insertDBMapper.insert_album(albumDTO);
+	}
+	
+	public void insert_song_artist(int song_id, int artist_id) {
+		insertDBMapper.insert_song_artist(song_id, artist_id);
+	}
+	
+	public void insert_album_artist(int album_id, int artist_id) {
+		insertDBMapper.insert_album_artist(album_id, artist_id);
 	}
 }

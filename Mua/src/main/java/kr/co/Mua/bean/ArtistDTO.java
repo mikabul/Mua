@@ -2,18 +2,29 @@ package kr.co.Mua.bean;
 
 public class ArtistDTO {
 
-	private int artist_num;
+	private int artist_id;
 	private String artist_name;
 	private String artist_date;
 	private String artist_type;
-	private String agency;
+	private String artist_thumbnail;
+	private String artist_agency;
 	
-	//----------get, set----------
-	public int getArtist_num() {
-		return artist_num;
+	//------------기본 생성자------------
+	public ArtistDTO() {
+		artist_id = 0;
+		artist_name = "-";
+		artist_date = "-";
+		artist_type = "-";
+		artist_thumbnail = "-";
+		artist_agency = "-";
 	}
-	public void setArtist_num(int artist_num) {
-		this.artist_num = artist_num;
+	
+	//-----------get, set------------
+	public int getArtist_id() {
+		return artist_id;
+	}
+	public void setArtist_id(int artist_id) {
+		this.artist_id = artist_id;
 	}
 	public String getArtist_name() {
 		return artist_name;
@@ -33,11 +44,17 @@ public class ArtistDTO {
 	public void setArtist_type(String artist_type) {
 		this.artist_type = artist_type;
 	}
-	public String getAgency() {
-		return agency;
+	public String getArtist_thumbnail() {
+		return artist_thumbnail;
 	}
-	public void setAgency(String agency) {
-		this.agency = agency;
+	public void setArtist_thumbnail(String artist_thumbnail) {
+		this.artist_thumbnail = artist_thumbnail;
 	}
-	
+	public String getArtist_agency() {
+		return artist_agency;
+	}
+	public void setArtist_agency(String artist_agency) {
+		this.artist_agency = artist_agency;
+	}
+
 }
