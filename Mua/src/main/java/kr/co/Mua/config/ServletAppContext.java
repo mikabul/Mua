@@ -14,7 +14,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.Mua.Mapper.ChartMapper;
 import kr.co.Mua.Mapper.InsertDBMapper;
+import kr.co.Mua.Mapper.SearchMapper;
 
 @Configuration
 @EnableWebMvc
@@ -67,6 +69,20 @@ public class ServletAppContext implements WebMvcConfigurer{
 	@Bean
 	public MapperFactoryBean<InsertDBMapper> getInsertDBMapper(SqlSessionFactory factory){
 		MapperFactoryBean<InsertDBMapper> factoryBean = new MapperFactoryBean<InsertDBMapper>(InsertDBMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<ChartMapper> getChartMapper(SqlSessionFactory factory){
+		MapperFactoryBean<ChartMapper> factoryBean = new MapperFactoryBean<ChartMapper>(ChartMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<SearchMapper> getSearchMapper(SqlSessionFactory factory){
+		MapperFactoryBean<SearchMapper> factoryBean = new MapperFactoryBean<SearchMapper>(SearchMapper.class);
 		factoryBean.setSqlSessionFactory(factory);
 		return factoryBean;
 	}

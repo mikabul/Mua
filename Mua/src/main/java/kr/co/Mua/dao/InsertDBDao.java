@@ -9,21 +9,29 @@ import kr.co.Mua.bean.ArtistDTO;
 import kr.co.Mua.bean.SongDTO;
 
 @Repository
-public class InserDBDao {
+public class InsertDBDao {
 
 	@Autowired
 	private InsertDBMapper insertDBMapper;
-
+	// 데이터베이스에 노래가 있는지?
 	public SongDTO song_match(SongDTO songDTO) {
 		return insertDBMapper.song_match(songDTO);
 	}
-
+	// 데이터베이스에 아티스트가 있는지?
 	public ArtistDTO artist_match(ArtistDTO artistDTO) {
 		return insertDBMapper.artist_match(artistDTO);
 	}
-
+	// 데이터베이스에 엘범이 있는지?
 	public AlbumDTO album_match(AlbumDTO albumDTO) {
 		return insertDBMapper.album_match(albumDTO);
+	}
+	
+	public Integer song_artist_match(int song_id, int artist_id) {
+		return insertDBMapper.song_artist_match(song_id, artist_id);
+	}
+	
+	public Integer album_artist_match(int album_id, int artist_id) {
+		return insertDBMapper.album_artist_match(album_id, artist_id);
 	}
 
 	public void insert_song(SongDTO songDTO) {

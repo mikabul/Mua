@@ -20,14 +20,14 @@ import kr.co.Mua.bean.AlbumDTO;
 import kr.co.Mua.bean.ArtistDTO;
 import kr.co.Mua.bean.SearchResultDTO;
 import kr.co.Mua.bean.SongDTO;
-import kr.co.Mua.service.SearchService;
+import kr.co.Mua.service.InsertDBService;
 
 @Controller
-@RequestMapping(value = "/search", method = RequestMethod.GET)
-public class SearchConroller {
+@RequestMapping(value = "/insert", method = RequestMethod.GET)
+public class InsertConroller {
 	
 	@Autowired
-	SearchService searchService;
+	InsertDBService insertDBService;
 
 	@GetMapping("/main")
 	public String main(HttpServletRequest res, Model model) {
@@ -101,12 +101,12 @@ public class SearchConroller {
 		return "search/main";
 	}
 	
-	@GetMapping("/SongInfo")
+	@GetMapping("/songinfo")
 	public String songInfo(@RequestParam("song_id") int song_id) {
 		
-		searchService.insertDB(song_id);
+		insertDBService.insertDB(song_id);
 		
-		return "search/SongInfo";
+		return "/search/main";
 	}
 
 }

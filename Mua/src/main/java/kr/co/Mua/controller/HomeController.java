@@ -1,79 +1,31 @@
 package kr.co.Mua.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import javax.servlet.http.HttpSession;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import kr.co.Mua.bean.ChartDTO;
+import kr.co.Mua.service.ChartService;
 
 @Controller
 public class HomeController {
-	
-	ArrayList<ChartDTO> chart;
-	
-	@RequestMapping(value="/", method=RequestMethod.GET)
-	public String home(HttpSession session ) {
-		if(session.getAttribute("user_num") == null) {
-			session.setAttribute("login_state","false");
+
+	@Autowired
+	private ChartService chartService;
+
+	@RequestMapping(value = "/")
+	public String home(HttpSession session) {
+		if (session.getAttribute("user_num") == null) {
+			session.setAttribute("login_state", "false");
 		}
-		getChart();
+		ArrayList<ChartDTO> chart = chartService.getChart();
+		System.out.println("!!!!!!!!!!!!ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ!!!!!!!!!!!!");
 		session.setAttribute("chart", chart);
 		return "redirect:/main";
 	}
-	
-	public void getChart(){
-		
-		 chart = new ArrayList<ChartDTO>();
-		
-		// URL
-		String urlSearch = "https://www.melon.com/chart/index.htm?dayTime=";
-		// ÇöÀç ³¯Â¥¸¦ ¹Þ¾Æ¿È(23112013 23³â 11¿ù 20ÀÏ 13½Ã)
-		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHH");
-		Calendar cal = Calendar.getInstance();
-		String now = sdf.format(cal.getTime());
-		
-		Document searchResult;
-		
-		try {
-			// »çÀÌÆ®¿¡ ¿¬°áÇÏ¿© HTMLÀü¹®À» ±Ü¾î¿È
-			searchResult = Jsoup.connect(urlSearch + now).get();
-			// tbody ³»ÀÇ ¸ðµç tr ¿ä¼Ò¸¦ ¼±ÅÃÇÕ´Ï´Ù.
-			Elements trElements = searchResult.select("tbody tr");
 
-			// °¢ tr ¿ä¼Ò¿¡¼­ ´Ù¼¸ ¹øÂ° td¸¦ °¡Á®¿É´Ï´Ù.
-			for (Element trElement : trElements) {
-				
-				// Á¤º¸¸¦ ÀúÀåÇÏ±âÀ§ÇÑ °´Ã¼ »ý¼º
-				ChartDTO temp = new ChartDTO();
-				
-				// ³ë·¡Á¦¸ñ
-			    Elements nameElements = trElement.select("td:nth-child(6) div:nth-child(1) div.rank01");
-			    temp.setName(nameElements.text());
-			    // ¾ÆÆ¼½ºÆ®ÀÌ¸§
-			    Elements artistElements = trElement.select("td:nth-child(6) div:nth-child(1)");
-			    temp.setArtist(artistElements.text());
-			    // ¾Ù¹üÀÌ¸§
-			    Elements albumElements = trElement.select("td:nth-child(7)");
-			    temp.setAlbum(albumElements.text());
-			    
-			    chart.add(temp);
-			}
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
 }
