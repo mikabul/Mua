@@ -22,8 +22,8 @@
 
 .flex-container {
 	display: flex;
-	flex-direction: row; /* °¡·Î·Î ¹è¿­ */
-	justify-content: space-between; /* °¢ Ç×¸ñ »çÀÌÀÇ °£°ÝÀ» ÃÖ´ëÈ­ÇÏ¿© Á¤·Ä */
+	flex-direction: row; /* ï¿½ï¿½ï¿½Î·ï¿½ ï¿½è¿­ */
+	justify-content: space-between; /* ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½È­ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 	align-items: center;
 	position: absolute;
 	top: 20%;
@@ -32,7 +32,7 @@
 }
 
 .flex-item {
-	width: 30%; /* °¢ Å×ÀÌºíÀÇ ³Êºñ ¼³Á¤ */
+	width: 30%; /* ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½Êºï¿½ ï¿½ï¿½ï¿½ï¿½ */
 	margin: 20px;
 }
 
@@ -42,4 +42,18 @@
 
 .table_hover:hover {
 	background-color: #ADD8E6;
+}
+
+.list_group {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 0;
+}
+
+.a_black {
+	text-decoration: none;
+	color: black;
+	width: 100%;
 }

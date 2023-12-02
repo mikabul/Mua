@@ -4,7 +4,7 @@
 <c:set var='root' value='${pageContext.request.contextPath}/' />
 <script src="${root}script/top_menu.js"></script>
 <c:set var='user_num' />
-<link rel="styleSheet" href="./style/top_menu.css">
+<link rel="styleSheet" href="${root }style/top_menu.css">
 <div style="position: fixed; width: 100%; height: 90px; z-index: 100; background-color: white; top: 0px;">
 	<div>
 		<nav class="nav nav-pills nav-fill" style="align-items: center">
@@ -13,12 +13,12 @@
 				<button class="btn btn-outline-secondary btn_left" type="button"
 					data-toggle="collapse" data-target="#collapseExample"
 					aria-expanded="false" aria-controls="collapseExample">
-					<img src="./images/menu-line.png" alt="" />
+					<img src="${root }images/menu-line.png" alt="" />
 				</button>
 			</div>
 			<!-- 로고 -->
 			<a class="nav-link" href="#" style="margin: 0; padding: 0;">
-				<img src="./images/Mua.png" alt="" style="width: auto; height: 90px;"/>
+				<img src="${root}/images/logo.png" alt="" style="width: auto; height: 90px;"/>
 			</a>
 			<!-- 로그인 회원가입 -->
 			<div class="nav-link">

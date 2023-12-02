@@ -1,43 +1,52 @@
 package kr.co.Mua.config;
 
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
 
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class SpringConfigClass implements WebApplicationInitializer {
+public class SpringConfigClass extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
+	protected String[] getServletMappings() {
+		// TODO Auto-generated method stub
+		return new String[] { "/" };
+	}
 
-		// -----------------------Servlet-----------------------------
-		AnnotationConfigWebApplicationContext servletAppContext = new AnnotationConfigWebApplicationContext();
-		servletAppContext.register(ServletAppContext.class);
+	@Override
+	protected Class<?>[] getServletConfigClasses() {
+		// TODO Auto-generated method stub
+		return new Class[] { ServletAppContext.class };
+	}
 
-		DispatcherServlet dispatcherServlet = new DispatcherServlet(servletAppContext);
-		ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", dispatcherServlet);
+	@Override
+	protected Class<?>[] getRootConfigClasses() {
+		// TODO Auto-generated method stub
+		return new Class[] { RootAppContext.class };
+	}
 
-		servlet.setLoadOnStartup(1);
-		servlet.addMapping("/");
+	@Override
+	protected Filter[] getServletFilters() {
+		// TODO Auto-generated method stub
+		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+		encodingFilter.setEncoding("UTF-8");
+		return new Filter[] { encodingFilter };
+	}
 
-		// --------------------Bean---------------------
-		AnnotationConfigWebApplicationContext rootAppContext = new AnnotationConfigWebApplicationContext();
-		rootAppContext.register(RootAppContext.class);
+	/*
+	 * null : 사용자가 입력한 내용을 임시기억할 아파치톰켓에서 제공하는 서버의 임시기억장소 52428800 : 업로드 데이터의 용량(1024
+	 * * 50, 50MB) 524288000 : 파일데이터를 포함한 전체 용량 (500MB) 0 : 파일의 임계값(데이터를 받아서 자동으로
+	 * 저장)
+	 */
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		// TODO Auto-generated method stub
+		super.customizeRegistration(registration);
 
-		ContextLoaderListener listener = new ContextLoaderListener(rootAppContext);
-		servletContext.addListener(listener);
-
-		// -----------------------------------------------------------
-		FilterRegistration.Dynamic filter = servletContext.addFilter("encodingFilter", CharacterEncodingFilter.class);
-		filter.setInitParameter("encodig", "utf-8");
-		filter.addMappingForServletNames(null, false, "dispatcher");
-
+		MultipartConfigElement config1 = new MultipartConfigElement(null, 52428800, 524288000, 0);
+		registration.setMultipartConfig(config1);
 	}
 
 }

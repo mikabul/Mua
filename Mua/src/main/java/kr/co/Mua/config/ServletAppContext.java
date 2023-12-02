@@ -3,19 +3,31 @@ package kr.co.Mua.config;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.Mua.Mapper.ChartMapper;
+import kr.co.Mua.Mapper.InsertDBMapper;
+import kr.co.Mua.Mapper.SearchMapper;
+import kr.co.Mua.interceptor.ChartInterceptor;
+import kr.co.Mua.service.ChartService;
+
 @Configuration
 @EnableWebMvc
 @ComponentScan("kr.co.Mua.controller")
+@ComponentScan("kr.co.Mua.service")
+@ComponentScan("kr.co.Mua.dao")
 @PropertySource("/WEB-INF/properties/db.properties")
 public class ServletAppContext implements WebMvcConfigurer{
 	
@@ -27,7 +39,10 @@ public class ServletAppContext implements WebMvcConfigurer{
 	private String db_username;
 	@Value("${db.password}")
 	private String db_password;
-
+	
+	@Autowired
+	private ChartService chartService;
+	
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
 		WebMvcConfigurer.super.configureViewResolvers(registry);
@@ -40,6 +55,16 @@ public class ServletAppContext implements WebMvcConfigurer{
 		registry.addResourceHandler("/**").addResourceLocations("/resources/");
 	}
 	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		
+		WebMvcConfigurer.super.addInterceptors(registry);
+		
+		ChartInterceptor chartInterceptor = new ChartInterceptor(chartService);
+		InterceptorRegistration reg1 = registry.addInterceptor(chartInterceptor);
+		reg1.addPathPatterns("/main", "/chart/top100");
+	}
+
 	@Bean
 	public BasicDataSource dataSource() {
 		BasicDataSource source = new BasicDataSource();
@@ -59,10 +84,24 @@ public class ServletAppContext implements WebMvcConfigurer{
 		return factory;
 	}
 	
-//	@Bean
-//	public MapperFactoryBean<> getBoardMapper(SqlSessionFactory factory){
-//		MapperFactoryBean<TopMenuMapper> factoryBean = new MapperFactoryBean<TopMenuMapper>(TopMenuMapper.class);
-//		factoryBean.setSqlSessionFactory(factory);
-//		return factoryBean;
-//	}
+	@Bean
+	public MapperFactoryBean<InsertDBMapper> getInsertDBMapper(SqlSessionFactory factory){
+		MapperFactoryBean<InsertDBMapper> factoryBean = new MapperFactoryBean<InsertDBMapper>(InsertDBMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<ChartMapper> getChartMapper(SqlSessionFactory factory){
+		MapperFactoryBean<ChartMapper> factoryBean = new MapperFactoryBean<ChartMapper>(ChartMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<SearchMapper> getSearchMapper(SqlSessionFactory factory){
+		MapperFactoryBean<SearchMapper> factoryBean = new MapperFactoryBean<SearchMapper>(SearchMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
 }
