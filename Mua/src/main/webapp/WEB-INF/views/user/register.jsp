@@ -9,7 +9,9 @@
 <meta charset="UTF-8">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<% request.setCharacterEncoding("utf-8"); %>
+<%
+request.setCharacterEncoding("utf-8");
+%>
 <script>
 	function checkUserIDExist(){
 		var user_id=$("#user_id").val()
@@ -40,61 +42,78 @@
 		$("#userIdExit").val('false')
 	}
 </script>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
+	rel='stylesheet'>
+<link rel="stylesheet" href="../style/register.css" />
 </head>
 <body>
+	<div class="wrapper">
+		<form:form action="${root }user/register_pro" method="post"
+			modelAttribute="registerUserBean">
+			<form:hidden path="userIdExit" />
 
-	<form:form action="${root }user/register_pro" method="post"
-		modelAttribute="registerUserBean">
-		<form:hidden path="userIdExit" />
-		<div class="form-group">
-			<form:label path="user_name">이름</form:label>
-			<form:input path="user_name" class="form-control" />
-			<form:errors path="user_name" style="color:red" />
-		</div>
-		<div class="form-group">
-			<form:label path="user_id">아이디</form:label>
-			<div class="input-group">
-				<form:input path="user_id" class="form-control"
-					onkeypress="resetUserIdExist()" />
-				<div class="input-group-append">
-					<button type="button" class="btn btn-primary"
-						onclick="checkUserIDExist()">중복확인</button>
+			<h1>Register</h1>
+
+			<div class="input-box">
+				<form:input path="user_name" placeholder="User Name" />
+				<div class="error-wrapper">
+					<form:errors path="user_name" class="error-box" />
+				</div>
+				<i class='bx bx-edit-alt'></i>
+			</div>
+			
+			<div class="input-box-id">
+				<form:input path="user_id" placeholder="User Id" onkeypress="resetUserIdExist()" />
+					<button type="button" class="idbtn"
+						onclick="checkUserIDExist()">Duplication</button>
+				<div class="error-wrapperID">
+					<form:errors path="user_id" class="error-boxID"/>
+				</div>
+				<i class='bx bxs-user'></i>
+			</div>
+			
+			<div class="input-box">
+				<form:password path="user_pw" placeholder="Password" />
+				<div class="error-wrapper">
+					<form:errors path="user_pw" class="error-box" />
+				</div>
+				<i class='bx bxs-lock-alt'></i>
+			</div>
+			<div class="input-box">
+				<form:password path="user_pw2" placeholder="Password Check" />
+				<div class="error-wrapper">
+					<form:errors path="user_pw2" class="error-box" />
+				</div>
+				<i class='bx bxs-lock-alt'></i>
+			</div>
+			<div class="input-box">
+				<form:input path="user_email" placeholder="User Email" />
+				<div class="error-wrapper">
+					<form:errors path="user_email" class="error-box" />
+				</div>
+				<i class='bx bx-envelope'></i>
+			</div>
+			<div class="input-box">
+				<form:input path="user_tel" placeholder="User Tel" />
+				<div class="error-wrapper">
+					<form:errors path="user_tel" class="error-box" />
+				</div>
+				<i class='bx bxs-phone' ></i>
+			</div>
+			<div class="input-box">
+				<form:input path="user_address" placeholder="User Address" />
+				<div class="error-wrapper">
+					<form:errors path="user_address" class="error-box" />
+				</div>
+				<i class='bx bx-home' ></i>
+			</div>
+			<div class="form-group">
+				<div class="text-right">
+					<form:button type="submit" class="btn">Register</form:button>
 				</div>
 			</div>
-			<form:errors path="user_id" style="color:red" />
-		</div>
-		<div class="form-group">
-			<form:label path="user_pw">비밀번호</form:label>
-			<form:password path="user_pw" class="form-control" />
-			<form:errors path="user_pw" style="color:red" />
-		</div>
-		<div class="form-group">
-			<form:label path="user_pw2">비밀번호 확인</form:label>
-			<form:password path="user_pw2" class="form-control" />
-			<form:errors path="user_pw2" style="color:red" />
-		</div>
-		<div class="form-group">
-			<form:label path="user_email">이메일</form:label>
-			<form:input path="user_email" class="form-control" />
-			<form:errors path="user_email" style="color:red" />
-		</div>
-		<div class="form-group">
-			<form:label path="user_tel">전화번호</form:label>
-			<form:input path="user_tel" class="form-control" />
-			<form:errors path="user_tel" style="color:red" />
-		</div>
-		<div class="form-group">
-			<form:label path="user_address">주소</form:label>
-			<form:input path="user_address" class="form-control" />
-			<form:errors path="user_address" style="color:red" />
-		</div>
-		<div class="form-group">
-			<div class="text-right">
-				<form:button type="submit" class="btn btn-primary">회원가입</form:button>
-			</div>
-		</div>
-	</form:form>
-
+		</form:form>
+	</div>
 </body>
 </html>
 

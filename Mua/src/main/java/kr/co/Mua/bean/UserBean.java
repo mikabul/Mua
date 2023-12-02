@@ -1,13 +1,33 @@
 package kr.co.Mua.bean;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class UserBean {
 	
 	private int user_num;
+	
+	@NotEmpty
+	@Size(min = 6 , max = 12)
+	@Pattern(regexp = "[a-zA-Z0-9]*")
 	private String user_id;
+	
+	@NotEmpty
+	@Size(min = 8 , max = 21)
+	@Pattern(regexp = "[a-zA-Z0-9!@#$%^&*()_+=\\-`~]*")
 	private String user_pw;
+	
+	@Email
 	private String user_email;
+	
 	private String user_tel;
+	
 	private String user_address;
+	
 	private String user_name;
 	
 	
@@ -15,6 +35,7 @@ public class UserBean {
 	private boolean userLogin;
 	
 	private String user_pw2;
+	
 	public UserBean() {
 		this.userIdExit = false;
 		this.userLogin = false;

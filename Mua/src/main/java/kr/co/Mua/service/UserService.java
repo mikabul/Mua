@@ -17,7 +17,7 @@ public class UserService {
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean;
 	
-	//id를 통해 유저 네임 존재여부 확인
+	//id瑜� �넻�빐 �쑀�� �꽕�엫 議댁옱�뿬遺� �솗�씤
 	public boolean checkUserIDExit(String user_id) {
 		
 		String user_name = userDAO.checkUserIDExit(user_id);
@@ -29,12 +29,12 @@ public class UserService {
 		
 	}
 	
-	//사용자 정보 추가 (중복확인은 페이지에서 아작스로 컨트롤)
+	//�궗�슜�옄 �젙蹂� 異붽� (以묐났�솗�씤�� �럹�씠吏��뿉�꽌 �븘�옉�뒪濡� 而⑦듃濡�)
 	public void addUserInfo(UserBean RegisterUserBean) {
 		userDAO.addUserInfo(RegisterUserBean);
 	}
 	
-	// 비밀번호와 아이디로 로그인 유저 정보 가져오기 (끌고다니는 정보는 num과 id 두개)
+	// 鍮꾨�踰덊샇�� �븘�씠�뵒濡� 濡쒓렇�씤 �쑀�� �젙蹂� 媛��졇�삤湲� (�걣怨좊떎�땲�뒗 �젙蹂대뒗 num怨� id �몢媛�)
 	public void getLoginUserInfo(UserBean tempLoginUserBean) {
 		UserBean tempLoginUserBean2 = userDAO.getLoginUserInfo(tempLoginUserBean);
 		
@@ -45,7 +45,7 @@ public class UserService {
 		}
 	}
 	
-	// 로그인된 유저 넘버를 통해 사용자 아이디, 이름, 이메일, 주소, 전화번호를 가져와서 모디파이유저빈에 설정
+	// 濡쒓렇�씤�맂 �쑀�� �꽆踰꾨�� �넻�빐 �궗�슜�옄 �븘�씠�뵒, �씠由�, �씠硫붿씪, 二쇱냼, �쟾�솕踰덊샇瑜� 媛��졇���꽌 紐⑤뵒�뙆�씠�쑀��鍮덉뿉 �꽕�젙
 	public UserBean getModifyUserInfo(UserBean modifyUserBean) {
 		
 		UserBean tempModifyUserBean = userDAO.getModifyUserInfo(loginUserBean.getUser_num());
@@ -60,7 +60,7 @@ public class UserService {
 		return modifyUserBean;
 	}
 	
-	// 아이디 비밀번호를 한번 더 확인 받은후 모디파이유저빈을 현재 로그인된 사용자 넘버를 찾아서 조인후 업데이트
+	// �븘�씠�뵒 鍮꾨�踰덊샇瑜� �븳踰� �뜑 �솗�씤 諛쏆��썑 紐⑤뵒�뙆�씠�쑀��鍮덉쓣 �쁽�옱 濡쒓렇�씤�맂 �궗�슜�옄 �꽆踰꾨�� 李얠븘�꽌 議곗씤�썑 �뾽�뜲�씠�듃
 	public boolean modifyUserInfo(UserBean modifyUserBean) {
 		UserBean tempLoginUserBean2 = userDAO.getLoginUserInfo(modifyUserBean);
 		

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.Mua.bean.UserBean;
 import kr.co.Mua.service.UserService;
+import kr.co.Mua.validator.UserValidator;
 
 @Controller
 @RequestMapping("/user")
@@ -67,15 +70,25 @@ public class UserController {
 		
 	}
 	
+	@GetMapping("/info")
+	public String info(@ModelAttribute("infoUserBean") UserBean infoUserBean) {
+		
+		infoUserBean = userService.getModifyUserInfo(infoUserBean);
+		
+		return "user/info";
+	}
+	
 	@GetMapping("/modify")
 	public String modify(@ModelAttribute("modifyUserBean") UserBean modifyUserBean) {
 		
 		modifyUserBean = userService.getModifyUserInfo(modifyUserBean);
+		
 		return "user/modify";
 	}
 	
 	@PostMapping("/modify_pro")
-	public String modify_pro(@Valid @ModelAttribute("modifyUserBean") UserBean modifyUserBean, BindingResult result) {
+	public String modify_pro(
+			@Valid @ModelAttribute("modifyUserBean") UserBean modifyUserBean , BindingResult result ) {
 		
 		if(result.hasErrors()) {
 			return "user/modify";
@@ -86,11 +99,23 @@ public class UserController {
 		return "user/modify_success";
 	}
 	
-//	@InitBinder
-//	public void initBinder(WebDataBinder binder) {
-//		UserValidator validator1 = new UserValidator();
-//		binder.addValidators(validator1);
-//	}
+	@GetMapping("/logout")
+	public String logout() {
+		loginUserBean.setUserLogin(false);
+		
+		return "user/logout";
+	}
+	
+	@GetMapping("/not_login")
+	public String not_login() {
+		return "user/not_login";
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		UserValidator validator1 = new UserValidator();
+		binder.addValidators(validator1);
+	}
 }
 
 

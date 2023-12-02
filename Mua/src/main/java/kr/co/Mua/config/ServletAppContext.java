@@ -11,13 +11,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import kr.co.Mua.Mapper.UserMapper;
 import kr.co.Mua.bean.UserBean;
+import kr.co.Mua.interceptor.CheckLoginInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -52,6 +58,13 @@ public class ServletAppContext implements WebMvcConfigurer{
 	}
 	
 	@Bean
+	public ReloadableResourceBundleMessageSource messageSource() {
+		ReloadableResourceBundleMessageSource res = new ReloadableResourceBundleMessageSource();
+		res.setBasenames("/WEB-INF/properties/error_message");
+		return res;
+	}
+	
+	@Bean
 	public BasicDataSource dataSource() {
 		BasicDataSource source = new BasicDataSource();
 		source.setDriverClassName(db_classname);
@@ -60,6 +73,21 @@ public class ServletAppContext implements WebMvcConfigurer{
 		source.setPassword(db_password);
 		
 		return source;
+	}
+	
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer PropertySourcesPlaceholderConfigurer() {
+		return new PropertySourcesPlaceholderConfigurer();
+	}																																								
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		WebMvcConfigurer.super.addInterceptors(registry);
+		
+		CheckLoginInterceptor checkLoginInterceptor = new CheckLoginInterceptor(loginUserBean);
+		
+		InterceptorRegistration reg1 = registry.addInterceptor(checkLoginInterceptor);
+		reg1.addPathPatterns("/**");
 	}
 	
 	@Bean
@@ -76,10 +104,10 @@ public class ServletAppContext implements WebMvcConfigurer{
 		factoryBean.setSqlSessionFactory(factory);
 		return factoryBean;
 	}
-//	@Bean
-//	public MapperFactoryBean<> getBoardMapper(SqlSessionFactory factory){
-//		MapperFactoryBean<TopMenuMapper> factoryBean = new MapperFactoryBean<TopMenuMapper>(TopMenuMapper.class);
-//		factoryBean.setSqlSessionFactory(factory);
-//		return factoryBean;
-//	}
+	
+	@Bean
+	public StandardServletMultipartResolver multipartResolver() {
+		return new StandardServletMultipartResolver(); //梓端 持失馬食 鋼発
+	}
+	
 }
