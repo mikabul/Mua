@@ -8,11 +8,7 @@ public class MainController {
 
 	@GetMapping("/main")
 	public String main() {
-<<<<<<< HEAD
-		return "main";
-=======
 		return "/main";
->>>>>>> refs/remotes/origin/이영민
 	}
 	
 }

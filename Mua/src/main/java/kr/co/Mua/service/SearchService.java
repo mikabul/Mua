@@ -1,11 +1,5 @@
 package kr.co.Mua.service;
 
-<<<<<<< HEAD
-public class SearchService {
-
-	public void insertDB() {
-		
-=======
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +25,5 @@ public class SearchService {
 	
 	public ArrayList<SongDto> getMoreSong_info(int artist_id){
 		return searchDAO.getMoreSong_info(artist_id);
->>>>>>> refs/remotes/origin/이영민
 	}
 }

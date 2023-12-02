@@ -1,28 +1,5 @@
 package kr.co.Mua.controller;
 
-<<<<<<< HEAD
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
-import kr.co.Mua.service.UserService;
-
-@RestController
-public class RestApiController {
-	
-	@Autowired
-	private UserService userService;
-	
-	@GetMapping("/user/checkUserIdExist/{user_id}")
-	public String checkUserIdExit(@PathVariable String user_id) {
-		
-		boolean check = userService.checkUserIDExit(user_id);
-		
-		return check+"";
-		
-	}
-=======
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -37,24 +14,35 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import kr.co.Mua.service.UserService;
 import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.SongDto;
 import kr.co.Mua.service.SearchService;
 
 @RestController
-@PropertySource("/WEB-INF/properties/option.properties")
 public class RestApiController {
-
+	
 	@Value("${resources.path}")
 	private String path;
 	
 	@Autowired
+	private UserService userService;
+	
+	@Autowired
 	private SearchService searchService;
+	
+	@GetMapping("/user/checkUserIdExist/{user_id}")
+	public String checkUserIdExit(@PathVariable String user_id) {
+		
+		boolean check = userService.checkUserIDExit(user_id);
+		
+		return check+"";
+		
+	}
 	
 	@RequestMapping(value = "/getLyric", produces = "application/text; charset=UTF-8")
 	public String getLyric(@RequestParam("file_name") String file_name) {
@@ -105,6 +93,4 @@ public class RestApiController {
 	    
 	    return jsonString;
 	}
-	
->>>>>>> refs/remotes/origin/이영민
 }

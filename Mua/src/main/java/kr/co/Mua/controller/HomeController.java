@@ -57,7 +57,7 @@ public class HomeController {
 		
 		// URL
 		String urlSearch = "https://www.melon.com/chart/index.htm?dayTime=";
-		// ÇöÀç ³¯Â¥¸¦ ¹Þ¾Æ¿È(23112013 23³â 11¿ù 20ÀÏ 13½Ã)
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½(23112013 23ï¿½ï¿½ 11ï¿½ï¿½ 20ï¿½ï¿½ 13ï¿½ï¿½)
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHH");
 		Calendar cal = Calendar.getInstance();
 		String now = sdf.format(cal.getTime());
@@ -65,24 +65,24 @@ public class HomeController {
 		Document searchResult;
 		
 		try {
-			// »çÀÌÆ®¿¡ ¿¬°áÇÏ¿© HTMLÀü¹®À» ±Ü¾î¿È
+			// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ HTMLï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ü¾ï¿½ï¿½
 			searchResult = Jsoup.connect(urlSearch + now).get();
-			// tbody ³»ÀÇ ¸ðµç tr ¿ä¼Ò¸¦ ¼±ÅÃÇÕ´Ï´Ù.
+			// tbody ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ tr ï¿½ï¿½Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 			Elements trElements = searchResult.select("tbody tr");
 
-			// °¢ tr ¿ä¼Ò¿¡¼­ ´Ù¼¸ ¹øÂ° td¸¦ °¡Á®¿É´Ï´Ù.
+			// ï¿½ï¿½ tr ï¿½ï¿½Ò¿ï¿½ï¿½ï¿½ ï¿½Ù¼ï¿½ ï¿½ï¿½Â° tdï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½É´Ï´ï¿½.
 			for (Element trElement : trElements) {
 				
-				// Á¤º¸¸¦ ÀúÀåÇÏ±âÀ§ÇÑ °´Ã¼ »ý¼º
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
 				ChartDTO temp = new ChartDTO();
 				
-				// ³ë·¡Á¦¸ñ
+				// ï¿½ë·¡ï¿½ï¿½ï¿½ï¿½
 			    Elements nameElements = trElement.select("td:nth-child(6) div:nth-child(1) div.rank01");
 			    temp.setName(nameElements.text());
-			    // ¾ÆÆ¼½ºÆ®ÀÌ¸§
+			    // ï¿½ï¿½Æ¼ï¿½ï¿½Æ®ï¿½Ì¸ï¿½
 			    Elements artistElements = trElement.select("td:nth-child(6) div:nth-child(1)");
 			    temp.setArtist(artistElements.text());
-			    // ¾Ù¹üÀÌ¸§
+			    // ï¿½Ù¹ï¿½ï¿½Ì¸ï¿½
 			    Elements albumElements = trElement.select("td:nth-child(7)");
 			    temp.setAlbum(albumElements.text());
 			    
