@@ -7,9 +7,7 @@ import javax.servlet.ServletRegistration.Dynamic;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-<<<<<<< HEAD
 public class SpringConfigClass extends AbstractAnnotationConfigDispatcherServletInitializer {
-=======
 /*public class SpringConfigClass implements WebApplicationInitializer{
 >>>>>>> refs/heads/김진욱
 
