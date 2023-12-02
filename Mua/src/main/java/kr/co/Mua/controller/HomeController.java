@@ -1,5 +1,6 @@
 package kr.co.Mua.controller;
 
+<<<<<<< HEAD
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,14 +11,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+=======
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> refs/remotes/origin/이영민
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
+import kr.co.Mua.service.ChartService;
 
 import kr.co.Mua.bean.ChartDTO;
 
 @Controller
 public class HomeController {
+<<<<<<< HEAD
 	
 	ArrayList<ChartDTO> chart;
 	
@@ -28,8 +36,20 @@ public class HomeController {
 		}
 		getChart();
 		session.setAttribute("chart", chart);
+=======
+
+	@Autowired
+	private ChartService chartService;
+
+	@RequestMapping(value = "/")
+	public String home(HttpSession session) {
+		if (session.getAttribute("user_num") == null) {
+			session.setAttribute("login_state", "false");
+		}
+>>>>>>> refs/remotes/origin/이영민
 		return "redirect:/main";
 	}
+<<<<<<< HEAD
 	
 	public void getChart(){
 		
@@ -76,4 +96,7 @@ public class HomeController {
 		
 	}
 	
+=======
+
+>>>>>>> refs/remotes/origin/이영민
 }

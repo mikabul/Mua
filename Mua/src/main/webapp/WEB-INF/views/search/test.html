@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flickity 슬라이드</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.min.css">
+  <style>
+/* 슬라이드의 스타일링을 추가할 수 있습니다 */
+    .carousel-cell {
+      width: 200px;
+      height: 200px;
+      margin-right: 10px;
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      position: relative;
+    }
+    .additional-div {
+      display: none;
+      position: absolute;
+      bottom: -30px; /* 예시에 맞게 조정 */
+      left: 50%; /* 예시에 맞게 조정 */
+      transform: translateX(-50%);
+    }
+    .additional-div.active {
+      display: block;
+    }
+
+</style>
+</head>
+<body>
+  <div class="main-carousel">
+    <!-- 슬라이드들 -->
+    <div class="carousel-cell">Slide 1</div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.pkgd.min.js"></script>
+  <script>
+  $(document).ready(function(){
+      var $carousel = $('.main-carousel').flickity({
+        cellAlign: 'center',
+        contain: false,
+        pageDots: false,
+        wrapAround: true,
+        prevNextButtons: false,
+        freeScroll: true
+      });
+      
+    });
+  </script>
+</body>
+</html>

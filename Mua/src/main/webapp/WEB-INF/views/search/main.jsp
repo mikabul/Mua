@@ -18,9 +18,22 @@
 			<tbody>
 				<c:forEach var="item" items="${arrayResultDTOs}">
 					<tr>
+<<<<<<< HEAD
 						<td><a href="${root}search/SongInfo?song_id=${item.songDTO.song_id}">${item.songDTO.song_name}</a></td>
 						<td><a href="${root}search/SongInfo?song_id=${item.artistDTO.artist_num}">${item.artistDTO.artist_name}</a></td>
 						<td><a href="${root}search/SongInfo?song_id=${item.albumDTO.album_id}">${item.albumDTO.album_name}</a></td>
+=======
+						<td><a href="${root}insert/songinfo?song_id=${item.songDTO.song_id}">${item.songDTO.song_name}</a></td>
+						<td>
+							<c:if test="${item.artistDTO.artist_id!=-1}">
+								<a href="${root}search/ArtistInfo?artist_id=${item.artistDTO.artist_id}">${item.artistDTO.artist_name}</a>
+							</c:if>
+							<c:if test="${item.artistDTO.artist_id==-1}">
+								${item.artistDTO.artist_name}
+							</c:if>
+						</td>
+						<td><a href="${root}search/AlnumInfo?album_id=${item.albumDTO.album_id}">${item.albumDTO.album_name}</a></td>
+>>>>>>> refs/remotes/origin/이영민
 					</tr>
 				</c:forEach>
 			</tbody>

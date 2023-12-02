@@ -8,10 +8,14 @@ import kr.co.Mua.bean.UserBean;
 
 @Configuration
 public class RootAppContext {
+<<<<<<< HEAD
 
 	@Bean("loginUserBean")
 	@SessionScope
 	public UserBean loginUserBean() {
 		return new UserBean();
 	}
+=======
+	
+>>>>>>> refs/remotes/origin/이영민
 }
