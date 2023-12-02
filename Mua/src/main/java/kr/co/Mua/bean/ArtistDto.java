@@ -1,6 +1,6 @@
 package kr.co.Mua.bean;
 
-public class ArtistDTO {
+public class ArtistDto {
 
 	private int artist_id;
 	private String artist_name;
@@ -10,7 +10,7 @@ public class ArtistDTO {
 	private String artist_agency;
 	
 	//------------기본 생성자------------
-	public ArtistDTO() {
+	public ArtistDto() {
 		artist_id = 0;
 		artist_name = "-";
 		artist_date = "-";

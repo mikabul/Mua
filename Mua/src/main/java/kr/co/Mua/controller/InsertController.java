@@ -16,22 +16,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.co.Mua.bean.AlbumDTO;
-import kr.co.Mua.bean.ArtistDTO;
-import kr.co.Mua.bean.SearchResultDTO;
-import kr.co.Mua.bean.SongDTO;
+import kr.co.Mua.bean.AlbumDto;
+import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.SearchResultDto;
+import kr.co.Mua.bean.SongDto;
 import kr.co.Mua.service.InsertDBService;
 
 @Controller
 @RequestMapping(value = "/insert", method = RequestMethod.GET)
-public class InsertConroller {
+public class InsertController {
 	
 	@Autowired
 	InsertDBService insertDBService;
 
 	@GetMapping("/main")
 	public String main(HttpServletRequest res, Model model) {
-		ArrayList<SearchResultDTO> arrayResultDTOs = new ArrayList<SearchResultDTO>();
+		ArrayList<SearchResultDto> arrayResultDTOs = new ArrayList<SearchResultDto>();
 		
 		String search_value = res.getParameter("search_value");
 		String search_where = res.getParameter("search_where").trim();
@@ -47,11 +47,11 @@ public class InsertConroller {
 			Elements elements = doc.select("form#" + search_where + " div table tr");
 
 			for (Element ele : elements) {
-				SearchResultDTO searchResultDTO = new SearchResultDTO();
+				SearchResultDto searchResultDTO = new SearchResultDto();
 				
-				SongDTO songDTO = new SongDTO();
-				ArtistDTO artistDTO = new ArtistDTO();
-				AlbumDTO albumDTO = new AlbumDTO();
+				SongDto songDTO = new SongDto();
+				ArtistDto artistDTO = new ArtistDto();
+				AlbumDto albumDTO = new AlbumDto();
 
 				Elements tempSong = ele.select("td:nth-child(3) div.ellipsis a").eq(1);
 				Elements tempArtist = ele.select("td:nth-child(4) div#artistName a").eq(0);

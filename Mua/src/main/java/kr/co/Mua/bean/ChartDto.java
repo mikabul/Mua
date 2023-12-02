@@ -1,6 +1,9 @@
 package kr.co.Mua.bean;
 
-public class ChartDTO {
+import java.io.Serializable;
+
+public class ChartDto implements Serializable {
+	static final long serialVersionUID = 1L;
 
 	private String song_name;
 	private int song_id;
@@ -8,6 +11,9 @@ public class ChartDTO {
 	private int artist_id[];
 	private String album_name;
 	private int album_id;
+	private String song_thumbnail;
+	private String artist_thumbnail[];
+	private int song_thumbup;
 	
 	//-----------get, set------------
 	public String getSong_name() {
@@ -45,6 +51,24 @@ public class ChartDTO {
 	}
 	public void setAlbum_id(int album_id) {
 		this.album_id = album_id;
+	}
+	public String getSong_thumbnail() {
+		return song_thumbnail;
+	}
+	public void setSong_thumbnail(String song_thumbnail) {
+		this.song_thumbnail = song_thumbnail;
+	}
+	public int getSong_thumbup() {
+		return song_thumbup;
+	}
+	public void setSong_thumbup(int song_thumbup) {
+		this.song_thumbup = song_thumbup;
+	}
+	public String[] getArtist_thumbnail() {
+		return artist_thumbnail;
+	}
+	public void setArtist_thumbnail(String[] artist_thumbnail) {
+		this.artist_thumbnail = artist_thumbnail;
 	}
 	
 }

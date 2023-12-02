@@ -2,10 +2,12 @@ package kr.co.Mua.service;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -17,9 +19,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import kr.co.Mua.bean.AlbumDTO;
-import kr.co.Mua.bean.ArtistDTO;
-import kr.co.Mua.bean.SongDTO;
+import kr.co.Mua.bean.AlbumDto;
+import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.SongDto;
 import kr.co.Mua.dao.InsertDBDao;
 
 @Service
@@ -32,10 +34,10 @@ public class InsertDBService {
 	@Autowired
 	private InsertDBDao insertDBDao;
 
-	private SongDTO tempSongDTO;
-	private ArtistDTO tempArtsitDTO;
-	private ArrayList<ArtistDTO> artistList;
-	private AlbumDTO tempAlbumDTO;
+	private SongDto tempSongDTO;
+	private ArtistDto tempArtsitDTO;
+	private ArrayList<ArtistDto> artistList;
+	private AlbumDto tempAlbumDTO;
 
 	private int artist_id[];
 	private int album_id;
@@ -45,6 +47,10 @@ public class InsertDBService {
 	private String album_thumbnail;
 
 	public void insertDB(int song_id) {
+		
+		Integer temp_album_id;
+		Integer temp_song_id;
+		Integer temp_artist_id;
 
 		// 노래 아티스트 앨범 정보를 가져옴
 		getSong(song_id);
@@ -53,37 +59,46 @@ public class InsertDBService {
 
 		// album insert
 		if (insertDBDao.album_match(tempAlbumDTO) == null) {
-			// 썸네일
-			tempAlbumDTO.setAlbum_thumbnail(thumbnailSave(tempAlbumDTO.getAlbum_name(), "album", 0));
+			// 데이터베이스에 저장후 앨범 번호를 가져옴
 			insertDBDao.insert_album(tempAlbumDTO);
+			temp_album_id = insertDBDao.album_match(tempAlbumDTO).getAlbum_id();
+			//썸네일 저장
+			insertDBDao.insert_album_thumbnail(temp_album_id, thumbnailSave(temp_album_id, "album", 0));
+		} else {
+			temp_album_id = insertDBDao.album_match(tempAlbumDTO).getAlbum_id();
 		}
-		int temp_album_id = insertDBDao.album_match(tempAlbumDTO).getAlbum_id();
 
 		// song insert
-		// 앨범 아이디 입력
-		tempSongDTO.setAlbum_id(temp_album_id);
 		if (insertDBDao.song_match(tempSongDTO) == null) {
-			// 썸네일
-			tempSongDTO.setSong_thumbnail(thumbnailSave(tempSongDTO.getSong_name(), "song", 0));
-			// 가사
-			tempSongDTO.setLyrics(lyricSave(tempSongDTO.getSong_name()));
+			// 데이터베이스에 저장 전 앨범 번호를 입력
+			tempSongDTO.setAlbum_id(temp_album_id);
+			// 데이터 베이스에 저장후 노래 번호를 가져옴
 			insertDBDao.insert_song(tempSongDTO);
+			temp_song_id = insertDBDao.song_match(tempSongDTO).getSong_id();
+			// 썸네일, 가사 저장
+			insertDBDao.insert_song_thumbnail(temp_song_id, thumbnailSave(temp_song_id, "song", 0));
+			insertDBDao.insert_lyrics(temp_song_id, lyricSave(temp_song_id));
+		} else {
+			temp_song_id = insertDBDao.song_match(tempSongDTO).getSong_id();
 		}
-		int temp_song_id = insertDBDao.song_match(tempSongDTO).getSong_id();
 
 		// artist insert
 		int count = 0;
-		Iterator<ArtistDTO> it = artistList.iterator();
+		Iterator<ArtistDto> it = artistList.iterator();
 		while (it.hasNext()) {
 
-			ArtistDTO artistDTO = it.next();
+			ArtistDto artistDTO = it.next();
 			System.out.println(artistDTO.getArtist_name());
 			if (insertDBDao.artist_match(artistDTO) == null) {
-				artistDTO.setArtist_thumbnail(thumbnailSave(artistDTO.getArtist_name(), "artist", count));
+				// 데이터 베이스에 저장후 아티스트 번호를 가져옴
 				insertDBDao.insert_artist(artistDTO);
+				temp_artist_id = insertDBDao.artist_match(artistDTO).getArtist_id();
+				// 썸네일 저장
+				insertDBDao.insert_artist_thumbnail(temp_artist_id, thumbnailSave(temp_artist_id, "artist", count));
+			} else {
+				temp_artist_id = insertDBDao.artist_match(artistDTO).getArtist_id();
 			}
 			count++;
-			int temp_artist_id = insertDBDao.artist_match(artistDTO).getArtist_id();
 			// 중복 방지
 			if (insertDBDao.song_artist_match(temp_song_id, temp_artist_id) == null) {
 				insertDBDao.insert_song_artist(temp_song_id, temp_artist_id);
@@ -102,7 +117,7 @@ public class InsertDBService {
 	// ===================노래 정보를 가져옴=======================
 	private void getSong(int song_id) {
 
-		tempSongDTO = new SongDTO();
+		tempSongDTO = new SongDto();
 
 		String url = "https://www.melon.com/song/detail.htm?songId=" + song_id;
 
@@ -160,6 +175,7 @@ public class InsertDBService {
 
 				if (dropdown_artist_elements.size() > 0) {// 아티스트가 매우 많다면
 
+					// 아티스트 인원 수 만큼 배열 생성
 					artist_id = new int[dropdown_artist_elements.size()];
 					artist_thumbnail = new String[dropdown_artist_elements.size()];
 
@@ -173,6 +189,8 @@ public class InsertDBService {
 
 				} else {
 					Elements artist_num_elements = elements.select("div.info div.artist a");
+					
+					// 아티스트의 인원 수 만큼 배열 생성
 					artist_id = new int[artist_num_elements.size()];
 					artist_thumbnail = new String[artist_num_elements.size()];
 					
@@ -202,7 +220,7 @@ public class InsertDBService {
 	// ===================아티스트의 정보를 가져오기=======================
 	private void getArtist() {
 
-		artistList = new ArrayList<ArtistDTO>();
+		artistList = new ArrayList<ArtistDto>();
 
 		if (artist_id[0] != -1) {
 
@@ -210,7 +228,7 @@ public class InsertDBService {
 
 				for (int i = 0; i < artist_id.length; i++) {
 
-					tempArtsitDTO = new ArtistDTO();
+					tempArtsitDTO = new ArtistDto();
 
 					String url = "https://www.melon.com/artist/timeline.htm?artistId=" + artist_id[i];
 					Document doc;
@@ -260,7 +278,7 @@ public class InsertDBService {
 	// ===============앨범의 정보를 가져오기==================
 	private void getAlbum() {
 
-		tempAlbumDTO = new AlbumDTO();
+		tempAlbumDTO = new AlbumDto();
 		String url = "https://www.melon.com/album/detail.htm?albumId=" + album_id;
 		Document doc;
 
@@ -300,35 +318,32 @@ public class InsertDBService {
 	}
 
 	// =================노래 가사 저장======================
-	private String lyricSave(String song_name) {
+	private String lyricSave(int song_id) {
 
 		//노래 정보를 불러오지 못했는지?
 		if (lyric != null) {
-			
-			if(song_name.length() > 10) {
-				song_name = song_name.substring(0, 10);
-			}
+		    String file_name = System.currentTimeMillis() + "_" + song_id + ".txt";
 
-			String file_name = System.currentTimeMillis() + song_name + ".lyric";
+		    try {
+		        FileOutputStream fos = new FileOutputStream(path + "/lyric/" + file_name);
+		        OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+		        BufferedWriter bw = new BufferedWriter(osw);
 
-			try {
+		        bw.write("<div>" + lyric);
 
-				FileOutputStream fos = new FileOutputStream(path + "/lyric/" + file_name);
-				DataOutputStream dos = new DataOutputStream(fos);
+		        bw.close();
+		        osw.close();
+		        fos.close();
 
-				dos.writeUTF(lyric);
+		    } catch (Exception e) {
+		        System.out.println("노래 가사 저장 이상발생");
+		        System.out.println(e);
+		    }
 
-				dos.close();
-				fos.close();
+		    return file_name;
 
-			} catch (Exception e) {
-				System.out.println("노래 가사 저장 이상발생");
-			}
-			
-			return file_name;
-			
 		} else {
-			return "-";
+		    return "-";
 		}
 
 	}
@@ -337,18 +352,9 @@ public class InsertDBService {
 	// type = album, artist, song 중 택1
 	// i = album, song 일경우 아무 숫자나 입력
 	// i = artist 일경우 while문 내부에서 작동. count입력
-	private String thumbnailSave(String name, String type, int i) {
+	private String thumbnailSave(int id, String type, int i) {
 
-		if(name.length() > 10) {
-			name = name.substring(0, 10);
-		}
-		name = name.replace(':', ' ');
-		name = name.replace(">", "");
-		name = name.replace("<", "");
-		
-		name = name.trim();
-		
-		String file_name = System.currentTimeMillis() + name + ".jpg";
+		String file_name = System.currentTimeMillis()+ "_" + id + ".jpg";
 		URL url;
 
 		try {

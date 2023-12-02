@@ -1,6 +1,6 @@
 package kr.co.Mua.bean;
 
-public class AlbumDTO {
+public class AlbumDto {
 
 	private int album_id;
 	private String album_name;
@@ -11,7 +11,7 @@ public class AlbumDTO {
 	private String album_thumbnail;
 	
 	//----------기본 생성자-------------
-	public AlbumDTO() {
+	public AlbumDto() {
 		album_id = 0;
 		album_name = "-";
 		release_date = "-";
