@@ -22,8 +22,8 @@
 
 .flex-container {
 	display: flex;
-	flex-direction: row; /* ���η� �迭 */
-	justify-content: space-between; /* �� �׸� ������ ������ �ִ�ȭ�Ͽ� ���� */
+	flex-direction: row;
+	justify-content: space-between;
 	align-items: center;
 	position: absolute;
 	top: 20%;
@@ -32,7 +32,7 @@
 }
 
 .flex-item {
-	width: 30%; /* �� ���̺��� �ʺ� ���� */
+	width: 30%;
 	margin: 20px;
 }
 

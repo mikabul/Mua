@@ -10,28 +10,24 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class SpringConfigClass extends AbstractAnnotationConfigDispatcherServletInitializer {
 	
-	// DispatcherServlet�� ������ ��û �ּҸ� �����Ѵ�.
 	@Override
 	protected String[] getServletMappings() {
 		// TODO Auto-generated method stub
 		return new String[] { "/" };
 	}
 
-	// Spring MVC ������Ʈ ������ ���� Ŭ������ �����Ѵ�.
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
 		// TODO Auto-generated method stub
 		return new Class[] { ServletAppContext.class };
 	}
 
-	// ������Ʈ���� ����� Bean���� ���Ǳ� ���� Ŭ������ �����Ѵ�.
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		// TODO Auto-generated method stub
 		return new Class[] { RootAppContext.class };
 	}
 
-	// �Ķ���� ���ڵ� ���� ����
 	@Override
 	protected Filter[] getServletFilters() {
 		// TODO Auto-generated method stub
