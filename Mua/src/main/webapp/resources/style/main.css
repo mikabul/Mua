@@ -22,6 +22,7 @@
 
 .flex-container {
 	display: flex;
+<<<<<<< HEAD
 	flex-direction: row; /* ï¿½ï¿½ï¿½Î·ï¿½ ï¿½è¿­ */
 	justify-content: space-between; /* ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½È­ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 	align-items: center;
@@ -56,4 +57,26 @@
 	text-decoration: none;
 	color: black;
 	width: 100%;
+=======
+	flex-direction: row; /* °¡·Î·Î ¹è¿­ */
+	justify-content: space-between; /* °¢ Ç×¸ñ »çÀÌÀÇ °£°ÝÀ» ÃÖ´ëÈ­ÇÏ¿© Á¤·Ä */
+	align-items: center;
+	position: absolute;
+	top: 20%;
+	width: 100%;
+	height: 80%;
+}
+
+.flex-item {
+	width: 30%; /* °¢ Å×ÀÌºíÀÇ ³Êºñ ¼³Á¤ */
+	margin: 20px;
+}
+
+.tr_bgc {
+	background-color: #E0FFFF;
+}
+
+.table_hover:hover {
+	background-color: #ADD8E6;
+>>>>>>> refs/heads/ê¹€ì§„ìš±
 }

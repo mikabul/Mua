@@ -32,21 +32,33 @@
 	</properties>
 	<!--  라이브러리 세팅  -->
 	<dependencies>
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> refs/heads/김진욱
 		<!--  https://mvnrepository.com/artifact/org.springframework/spring-webmvc  -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/heads/김진욱
 		<!--  https://mvnrepository.com/artifact/org.slf4j/slf4j-api  -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${org.slf4j-version}</version>
 		</dependency>
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/heads/김진욱
 		<!--  https://mvnrepository.com/artifact/ch.qos.logback/logback-classic  -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -54,21 +66,38 @@
 			<version>${ch.qos.logback-version}</version>
 			<scope>test</scope>
 		</dependency>
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/heads/김진욱
 		<!--  https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api  -->
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
 			<version>${javax.annotation-version}</version>
 		</dependency>
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> refs/heads/김진욱
 		<!--  https://mvnrepository.com/artifact/org.aspectj/aspectjweaver  -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>${javax.servlet.jsp-version}</version>
+			<scope>provided</scope>
+		</dependency>
 
+<<<<<<< HEAD
 		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -98,6 +127,29 @@
 			<version>6.1.2.Final</version>
 		</dependency>
 
+=======
+		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${javax.servlet.jsp.jstl-version}</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.1.2.Final</version>
+		</dependency>
+		
+>>>>>>> refs/heads/김진욱
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -111,19 +163,29 @@
 			<artifactId>commons-dbcp2</artifactId>
 			<version>2.7.0</version>
 		</dependency>
-
+		
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>3.5.4</version>
 		</dependency>
-
+		
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>2.0.3</version>
+<<<<<<< HEAD
+=======
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.15.3</version>
+>>>>>>> refs/heads/김진욱
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->

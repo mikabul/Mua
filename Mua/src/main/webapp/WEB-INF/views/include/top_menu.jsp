@@ -23,15 +23,16 @@
 			<!-- 로그인 회원가입 -->
 			<div class="nav-link">
 				<div style="text-align: right; margin-right: 3%;">
-					<c:if test="${login_state==null or login_state=='false'}">
-						<button type="button" class="btn btn-outline-primary">로그인</button>
-						<button type="button" class="btn btn-outline-primary">회원가입</button>
-					</c:if>
-					<c:if test="${login_state=='true'}">
-						<button type="button" class="btn btn-outline-primary">회원정보</button>
-						<button type="button" class="btn btn-outline-primary">로그아웃</button>
-					</c:if>
-
+				<c:choose>
+					<c:when test="${loginUserBean.userLogin == true }">
+						<button type="button" class="btn btn-outline-primary" onclick = "location.href='${root}user/info'">회원정보</button>
+						<button type="button" class="btn btn-outline-primary" onclick = "location.href='${root}user/logout'">로그아웃</button>
+					</c:when>
+					<c:when test="${loginUserBean.userLogin == false }">
+						<button type="button" class="btn btn-outline-primary" onclick="location.href='${root}user/login'">로그인</button>
+						<button type="button" class="btn btn-outline-primary" onclick="location.href='${root}user/register'">회원가입</button>
+					</c:when>
+				</c:choose>
 				</div>
 			</div>
 		</nav>

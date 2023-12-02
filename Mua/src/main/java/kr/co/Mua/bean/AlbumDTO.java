@@ -1,27 +1,15 @@
 package kr.co.Mua.bean;
 
-public class AlbumDto {
+public class AlbumDTO {
 
 	private int album_id;
 	private String album_name;
 	private String release_date;
 	private String album_genre;
-	private String album_publisher;
 	private String album_agency;
-	private String album_thumbnail;
+	private int artist_num;
 	
-	//----------기본 생성자-------------
-	public AlbumDto() {
-		album_id = 0;
-		album_name = "-";
-		release_date = "-";
-		album_genre = "-";
-		album_publisher = "-";
-		album_agency = "-";
-		album_thumbnail = "-";
-	}
-	
-	//-----------get, set------------
+	//----------get,set------------
 	public int getAlbum_id() {
 		return album_id;
 	}
@@ -46,23 +34,17 @@ public class AlbumDto {
 	public void setAlbum_genre(String album_genre) {
 		this.album_genre = album_genre;
 	}
-	public String getAlbum_publisher() {
-		return album_publisher;
-	}
-	public void setAlbum_publisher(String album_publisher) {
-		this.album_publisher = album_publisher;
-	}
 	public String getAlbum_agency() {
 		return album_agency;
 	}
 	public void setAlbum_agency(String album_agency) {
 		this.album_agency = album_agency;
 	}
-	public String getAlbum_thumbnail() {
-		return album_thumbnail;
+	public int getArtist_num() {
+		return artist_num;
 	}
-	public void setAlbum_thumbnail(String album_thumbnail) {
-		this.album_thumbnail = album_thumbnail;
+	public void setArtist_num(int artist_num) {
+		this.artist_num = artist_num;
 	}
-
+	
 }

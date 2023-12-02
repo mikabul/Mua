@@ -1,5 +1,6 @@
 package kr.co.Mua.service;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,11 @@ public class SearchService {
 	
 	public ArrayList<SongDto> getMoreSong_info(int artist_id){
 		return searchDAO.getMoreSong_info(artist_id);
+=======
+public class SearchService {
+
+	public void insertDB() {
+		
+>>>>>>> refs/heads/김진욱
 	}
 }
