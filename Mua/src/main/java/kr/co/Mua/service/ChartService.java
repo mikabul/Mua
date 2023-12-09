@@ -23,95 +23,95 @@ public class ChartService {
 	@Autowired
 	private InsertDBService insertDBService;
 
-	// ------------해당하는 노래의 id를 가져옴--------------
+	// ------------�빐�떦�븯�뒗 �끂�옒�쓽 id瑜� 媛��졇�샂--------------
 	public Integer chartSongMatch(String song_name, String artist_name, String album_name, int tempSong_id) {
 
 		String temp_artist_name;
 		Integer temp = chartDAO.chartSongMatch(song_name, artist_name, album_name);
 
-		// null이라면 마지막 공백의 뒷부분 혹은 ()를 제거 후 한번더 시도
+		// null�씠�씪硫� 留덉�留� 怨듬갚�쓽 �뮮遺�遺� �샊�� ()瑜� �젣嫄� �썑 �븳踰덈뜑 �떆�룄
 		if (temp == null) {
 
 			try {
 				temp_artist_name = artist_name.substring(0, artist_name.indexOf("("));
 				temp = chartDAO.chartSongMatch(song_name, temp_artist_name.trim(), album_name);
 			} catch (Exception e) {// IndexOutofBounds
-				System.out.println("ChartService 39: 가수 이름 자르기 불가능 =>" + artist_name);
+				System.out.println("ChartService 39: 媛��닔 �씠由� �옄瑜닿린 遺덇��뒫 =>" + artist_name);
 			}
 
 		}
 
-		// null이라면 등록 후 반환
+		// null�씠�씪硫� �벑濡� �썑 諛섑솚
 		if (temp == null) {
 			insertDBService.insertDB(tempSong_id);
 			temp = chartDAO.chartSongMatch(song_name, artist_name, album_name);
 		}
 
-		// 등록 후 null이라면 마지막 공백의 뒷부분 혹은 ()를 제거 후 한번더 시도
+		// �벑濡� �썑 null�씠�씪硫� 留덉�留� 怨듬갚�쓽 �뮮遺�遺� �샊�� ()瑜� �젣嫄� �썑 �븳踰덈뜑 �떆�룄
 		if (temp == null) {
 
 			try {
 				temp_artist_name = artist_name.substring(0, artist_name.indexOf("("));
 				temp = chartDAO.chartSongMatch(song_name, temp_artist_name.trim(), album_name);
 			} catch (Exception e) {// IndexOutofBounds
-				System.out.println("ChartService 57: 가수 이름 자르기 불가능 =>" + artist_name);
+				System.out.println("ChartService 57: 媛��닔 �씠由� �옄瑜닿린 遺덇��뒫 =>" + artist_name);
 			}
 
 		}
 		return temp;
 	}
 
-	// -----------해당하는 아티스트의 id를 가져옴--------------
+	// -----------�빐�떦�븯�뒗 �븘�떚�뒪�듃�쓽 id瑜� 媛��졇�샂--------------
 	public Integer chartArtistmatch(int song_id, String artist_name, int tempSong_id) {
 
 		String temp_artist_name;
 		Integer temp = chartDAO.chartArtistmatch(song_id, artist_name);
 
-		// temp가 null일경우 artist_name에서 마지막 공백의 뒷부분 혹은 ()를 제거 후 한번더 시도
+		// temp媛� null�씪寃쎌슦 artist_name�뿉�꽌 留덉�留� 怨듬갚�쓽 �뮮遺�遺� �샊�� ()瑜� �젣嫄� �썑 �븳踰덈뜑 �떆�룄
 		if (temp == null) {
 			
 			try {
 				temp_artist_name = artist_name.substring(0, artist_name.indexOf("("));
 				temp = chartDAO.chartArtistmatch(song_id, temp_artist_name.trim());
 			} catch (Exception e) {// IndexOutofBounds
-				System.out.println("ChartService 77: 가수 이름 자르기 불가능 =>" + artist_name);
+				System.out.println("ChartService 77: 媛��닔 �씠由� �옄瑜닿린 遺덇��뒫 =>" + artist_name);
 			}
 			
 		}
 		
-		// temp가 null 일 경우 등록 후 재시도
+		// temp媛� null �씪 寃쎌슦 �벑濡� �썑 �옱�떆�룄
 		if (temp == null) {
 			insertDBService.insertDB(tempSong_id);
 			temp = chartDAO.chartArtistmatch(song_id, artist_name);
 		}
 		
-		// 그래도 temp가 null일경우 artist_name에서 마지막 공백의 뒷부분 혹은 ()를 제거 후 한번더 시도
+		// 洹몃옒�룄 temp媛� null�씪寃쎌슦 artist_name�뿉�꽌 留덉�留� 怨듬갚�쓽 �뮮遺�遺� �샊�� ()瑜� �젣嫄� �썑 �븳踰덈뜑 �떆�룄
 		if (temp == null) {
 			
 			try {
 				temp_artist_name = artist_name.substring(0, artist_name.indexOf("("));
 				temp = chartDAO.chartArtistmatch(song_id, temp_artist_name);
 			} catch (Exception e) {// IndexOutofBounds
-				System.out.println("ChartService 57: 가수 이름 자르기 불가능 =>" + artist_name);
+				System.out.println("ChartService 57: 媛��닔 �씠由� �옄瑜닿린 遺덇��뒫 =>" + artist_name);
 			}
 			
 		}
 		return temp;
 	}
 
-	// ---------------해당하는 앨범의 id를 가져옴-------------
+	// ---------------�빐�떦�븯�뒗 �븿踰붿쓽 id瑜� 媛��졇�샂-------------
 	public Integer chartAlbumMatch(int song_id) {
 		return chartDAO.chartAlbumMatch(song_id);
 	}
 
-	// ---------차트 정보를 얻어옴------------
+	// ---------李⑦듃 �젙蹂대�� �뼸�뼱�샂------------
 	public ArrayList<ChartDto> getChart() {
 
 		ArrayList<ChartDto> chart = new ArrayList<ChartDto>();
 
 		// URL
 		String urlSearch = "https://www.melon.com/chart/index.htm?dayTime=";
-		// 날짜 형식 지정(2023년 11월 27일 13시=> 23112713)
+		// �궇吏� �삎�떇 吏��젙(2023�뀈 11�썡 27�씪 13�떆=> 23112713)
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHH");
 		Calendar cal = Calendar.getInstance();
 		String now = sdf.format(cal.getTime());
@@ -119,38 +119,35 @@ public class ChartService {
 		Document searchResult;
 
 		try {
-			// 테스트용, 삭제필요 10개로 제한
+			// �뀒�뒪�듃�슜, �궘�젣�븘�슂 10媛쒕줈 �젣�븳
 			int limit = 0;
-			// HTML전문 가져오기
+			// HTML�쟾臾� 媛��졇�삤湲�
 			searchResult = Jsoup.connect(urlSearch + now).get();
-			// 차트를 이루는 tbody내부의 tr을 전부 불러옴
+			// 李⑦듃瑜� �씠猷⑤뒗 tbody�궡遺��쓽 tr�쓣 �쟾遺� 遺덈윭�샂
 			Elements trElements = searchResult.select("tbody tr");
 			int nothing = 1;
 
-			// tr을 하나씩 가져옴
+			// tr�쓣 �븯�굹�뵫 媛��졇�샂
 			for (Element trElement : trElements) {
-				if(nothing == 1) {
-					break;
-				}
-				// ==================이름======================
-				// 저장을 위한 객체 생성
+				// ==================�씠由�======================
+				// ���옣�쓣 �쐞�븳 媛앹껜 �깮�꽦
 				ChartDto temp = new ChartDto();
 
-				// 노래 이름
+				// �끂�옒 �씠由�
 				Elements nameElements = trElement.select("td:nth-child(6) div:nth-child(1) div.rank01 a");
 				temp.setSong_name(nameElements.text());
 
-				// 임시로 사용할 song_id
+				// �엫�떆濡� �궗�슜�븷 song_id
 				int tempSong_id = 0;
 				try {
 					String strSong_id = nameElements.attr("href");
 					tempSong_id = Integer.parseInt(
 							strSong_id.substring(strSong_id.lastIndexOf(",") + 1, strSong_id.lastIndexOf(")")));
 				} catch (Exception e) {
-					System.out.println("ChartService 임시 Song_id 오류" + tempSong_id);
+					System.out.println("ChartService �엫�떆 Song_id �삤瑜�" + tempSong_id);
 					e.printStackTrace();
 				}
-				// 아티스트 이름
+				// �븘�떚�뒪�듃 �씠由�
 				Elements artistElements = trElement
 						.select("td:nth-child(6) div.wrap_song_info div.ellipsis.rank02 span a");
 				String tempArtist_name[] = new String[artistElements.size()];
@@ -158,11 +155,11 @@ public class ChartService {
 					tempArtist_name[i] = artistElements.get(i).text();
 				}
 				temp.setArtist_name(tempArtist_name);
-				// 앨범 이름
+				// �븿踰� �씠由�
 				Elements albumElements = trElement.select("td:nth-child(7)");
 				temp.setAlbum_name(albumElements.text());
 
-				// ================== 데이터 베이스 불러오기 ==================
+				// ================== �뜲�씠�꽣 踰좎씠�뒪 遺덈윭�삤湲� ==================
 				// song_id
 				temp.setSong_id(chartSongMatch(temp.getSong_name(), temp.getArtist_name()[0], temp.getAlbum_name(),
 						tempSong_id));
@@ -180,14 +177,14 @@ public class ChartService {
 				// album_id
 				temp.setAlbum_id(chartAlbumMatch(temp.getSong_id()));
 
-				// 노래의 썸네일을 가져옴
+				// �끂�옒�쓽 �뜽�꽕�씪�쓣 媛��졇�샂
 				temp.setSong_thumbnail(chartDAO.getSong_thumbnail(temp.getSong_id()));
 
-				// 노래의 좋아요 갯수를 가져옴
+				// �끂�옒�쓽 醫뗭븘�슂 媛��닔瑜� 媛��졇�샂
 				temp.setSong_thumbup(chartDAO.getCount_thumbup(temp.getSong_id()));
 				chart.add(temp);
 				
-				// 테스트용, 삭제필요 10개로 제한
+				// �뀒�뒪�듃�슜, �궘�젣�븘�슂 10媛쒕줈 �젣�븳
 				if(++limit == 100) {
 					break;
 				}
