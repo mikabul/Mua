@@ -16,8 +16,8 @@
 					<img src="${root }images/menu-line.png" alt="" />
 				</button>
 			</div>
-			<!-- 로고 -->
-			<a class="nav-link" href="${root}main" style="margin: 0; padding: 0;">
+			<!-- 로고 / 메인 페이지로 이동할 수 있도록 연결-->
+			<a class="nav-link" href="${root }main" style="margin: 0; padding: 0;">
 				<img src="${root}/images/logo.png" alt="" style="width: auto; height: 90px;"/>
 			</a>
 			<!-- 로그인 회원가입 -->
@@ -41,9 +41,10 @@
 	<div class="collapse" id="collapseExample" style="margin-top: 0.1px;">
 		<div class="card card-body">
 			<ul class="nav nav-pills nav-fill" style="width: 100%;">
-				<li class="nav-item"><a class="nav-link" href="#"> 차트 </a></li>
-				<li class="nav-item"><a class="nav-link" href="#"> 신? </a></li>
-				<li class="nav-item"><a class="nav-link" href="#"> 장르별 노래 탐색 </a></li>
+				<!-- 페이지 연결 -->
+				<li class="nav-item"><a class="nav-link" href="${root }chart/top100"> 차트 </a></li>
+				<li class="nav-item"><a class="nav-link" href="${root }chart/newchart"> 최신곡 </a></li>
+				<li class="nav-item"><a class="nav-link" href="${root }chart/genre"> 장르별 노래 탐색 </a></li>
 				<li class="nav-item"><a class="nav-link" href="#"> 콘서트 </a></li>
 			</ul>
 		</div>

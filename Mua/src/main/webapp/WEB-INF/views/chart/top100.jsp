@@ -143,7 +143,6 @@
 		</tbody>
 	</table>
 	</section>
-	
 	<!-- bottom -->
 	<c:import url="/WEB-INF/views/include/bottom.jsp" />
 </body>

@@ -162,5 +162,4 @@ public class SearchService {
 	public int getThumbup(int id, String infoType) {
 		return searchDAO.getThumbup(id, infoType);
 	}
-	
 }

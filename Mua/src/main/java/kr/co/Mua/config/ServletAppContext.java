@@ -36,6 +36,8 @@ import kr.co.Mua.bean.UserBean;
 import kr.co.Mua.interceptor.AcceptAdminInterceptor;
 import kr.co.Mua.interceptor.ChartInterceptor;
 import kr.co.Mua.interceptor.CheckLoginInterceptor;
+import kr.co.Mua.interceptor.NewChartInterceptor;
+import kr.co.Mua.interceptor.GenreChartInterceptor;
 import kr.co.Mua.service.ChartService;
 
 @Configuration
@@ -60,6 +62,7 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Resource(name = "loginAdminDto")
 	private AdminDto loginAdminDto;
+	
 	@Autowired
 	private ChartService chartService;
 	
@@ -116,6 +119,14 @@ public class ServletAppContext implements WebMvcConfigurer{
 		InterceptorRegistration reg3 = registry.addInterceptor(acceptAdminInterceptor);
 		reg3.addPathPatterns("/admin/**");
 		reg3.excludePathPatterns("/admin/login", "/admin/login_pro", "/admin/login_fail");
+		
+		NewChartInterceptor newchartInterceptor = new NewChartInterceptor(chartService);
+		InterceptorRegistration reg4 = registry.addInterceptor(newchartInterceptor);
+		reg4.addPathPatterns("/chart/newchart");
+
+		GenreChartInterceptor genrechartInterceptor = new GenreChartInterceptor(chartService);
+		InterceptorRegistration reg5 = registry.addInterceptor(genrechartInterceptor);
+		reg5.addPathPatterns("/chart/genre");
 	}
 	
 	@Bean
