@@ -395,7 +395,7 @@ public class InsertDBService {
 		    String file_name = System.currentTimeMillis() + "_" + song_id + ".txt";
 
 		    try {
-		        FileOutputStream fos = new FileOutputStream(path + "/lyric/" + file_name);
+		        FileOutputStream fos = new FileOutputStream(path + "lyric/" + file_name);
 		        OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
 		        BufferedWriter bw = new BufferedWriter(osw);
 

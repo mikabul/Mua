@@ -1,5 +1,10 @@
 package kr.co.Mua.config;
 
+<<<<<<< HEAD
+=======
+import java.util.Properties;
+
+>>>>>>> refs/remotes/origin/源�吏꾩슧
 import javax.annotation.Resource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -8,6 +13,8 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +37,7 @@ import kr.co.Mua.Mapper.UserMapper;
 import kr.co.Mua.bean.AdminDto;
 import kr.co.Mua.bean.UserBean;
 import kr.co.Mua.interceptor.AcceptAdminInterceptor;
+import kr.co.Mua.bean.UserBean;
 import kr.co.Mua.interceptor.ChartInterceptor;
 import kr.co.Mua.interceptor.CheckLoginInterceptor;
 import kr.co.Mua.service.ChartService;
@@ -56,7 +64,6 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Resource(name = "loginAdminDto")
 	private AdminDto loginAdminDto;
-	
 	@Autowired
 	private ChartService chartService;
 	
@@ -108,12 +115,11 @@ public class ServletAppContext implements WebMvcConfigurer{
 		InterceptorRegistration reg2 = registry.addInterceptor(chartInterceptor);
 		reg2.addPathPatterns("/main", "/chart/top100");
 		
-		//============ 어드민 페이지 인터셉터 ============
+		//============ �뼱�뱶誘� �럹�씠吏� �씤�꽣�뀎�꽣 ============
 		AcceptAdminInterceptor acceptAdminInterceptor = new AcceptAdminInterceptor(loginAdminDto);
 		InterceptorRegistration reg3 = registry.addInterceptor(acceptAdminInterceptor);
 		reg3.addPathPatterns("/admin/**");
 		reg3.excludePathPatterns("/admin/login", "/admin/login_pro", "/admin/login_fail");
-		
 	}
 	
 	@Bean
@@ -133,7 +139,7 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
-		return new StandardServletMultipartResolver(); //��ü �����Ͽ� ��ȯ
+		return new StandardServletMultipartResolver(); //占쏙옙체 占쏙옙占쏙옙占싹울옙 占쏙옙환
 	}
 	
 	@Bean
@@ -163,4 +169,28 @@ public class ServletAppContext implements WebMvcConfigurer{
 		factoryBean.setSqlSessionFactory(factory);
 		return factoryBean;
 	}
+    @Bean("mailSender")
+    public JavaMailSender javaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("dma0501011@gmail.com");
+        mailSender.setPassword("rrcz edmq hlci qrgl");
+        mailSender.setDefaultEncoding("UTF-8");
+        mailSender.setJavaMailProperties(getMailProperties());
+
+        return mailSender;
+    }
+	
+    private Properties getMailProperties() {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", true);
+        properties.put("mail.smtp.starttls.enable", true);
+        properties.put("mail.smtp.starttls.required", true);
+        properties.put("mail.smtp.connectiontimeout", 5000);
+        properties.put("mail.smtp.timeout", 5000);
+        properties.put("mail.smtp.writetimeout", 5000);
+
+        return properties;
+    }
 }
