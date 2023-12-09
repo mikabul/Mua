@@ -7,62 +7,27 @@ import javax.servlet.ServletRegistration.Dynamic;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-/*public class SpringConfigClass implements WebApplicationInitializer{
-
-	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
-		
-		AnnotationConfigWebApplicationContext servletAppContext = new AnnotationConfigWebApplicationContext();
-		servletAppContext.register(ServletAppContext.class);
-		
-		DispatcherServlet dispatcherServlet = new DispatcherServlet(servletAppContext);
-		ServletRegistration.Dynamic servlet =  servletContext.addServlet("dispatcher", dispatcherServlet);
-		
-		//�ΰ�����
-		servlet.setLoadOnStartup(1); //������� ��û������ �޾Ƶ��̰ڴٴ� �� => ���⼭���� ���
-		servlet.addMapping("/");
-		
-		//=========================================================================================================
-		//Bean���� �����Ͽ� ������
-		AnnotationConfigWebApplicationContext rootAppContext = new AnnotationConfigWebApplicationContext();
-		rootAppContext.register(RootAppContext.class);
-		
-		ContextLoaderListener listner = new ContextLoaderListener(rootAppContext);
-		servletContext.addListener(listner);
-		
-		//�Ķ���� ���ڵ� ����
-		FilterRegistration.Dynamic filter = servletContext.addFilter("encodingFilter", CharacterEncodingFilter.class);
-		filter.setInitParameter("encoding", "UTF-8");
-		filter.addMappingForServletNames(null, false, "dispatcher");
-		
-	}
-	
-}*/
 
 public class SpringConfigClass extends AbstractAnnotationConfigDispatcherServletInitializer {
 	
-	// DispatcherServlet�� ������ ��û �ּҸ� �����Ѵ�.
 	@Override
 	protected String[] getServletMappings() {
 		// TODO Auto-generated method stub
 		return new String[] { "/" };
 	}
 
-	// Spring MVC ������Ʈ ������ ���� Ŭ������ �����Ѵ�.
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
 		// TODO Auto-generated method stub
 		return new Class[] { ServletAppContext.class };
 	}
 
-	// ������Ʈ���� ����� Bean���� ���Ǳ� ���� Ŭ������ �����Ѵ�.
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		// TODO Auto-generated method stub
 		return new Class[] { RootAppContext.class };
 	}
 
-	// �Ķ���� ���ڵ� ���� ����
 	@Override
 	protected Filter[] getServletFilters() {
 		// TODO Auto-generated method stub

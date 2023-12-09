@@ -6,6 +6,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,9 +22,16 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.Mua.Mapper.ChartMapper;
+import kr.co.Mua.Mapper.InsertDBMapper;
+import kr.co.Mua.Mapper.SearchMapper;
 import kr.co.Mua.Mapper.UserMapper;
 import kr.co.Mua.bean.UserBean;
+import kr.co.Mua.interceptor.ChartInterceptor;
 import kr.co.Mua.interceptor.CheckLoginInterceptor;
+import kr.co.Mua.interceptor.NewChartInterceptor;
+import kr.co.Mua.interceptor.GenreChartInterceptor;
+import kr.co.Mua.service.ChartService;
 
 @Configuration
 @EnableWebMvc
@@ -44,6 +52,9 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean;
+	
+	@Autowired
+	private ChartService chartService;
 	
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -88,6 +99,18 @@ public class ServletAppContext implements WebMvcConfigurer{
 		
 		InterceptorRegistration reg1 = registry.addInterceptor(checkLoginInterceptor);
 		reg1.addPathPatterns("/**");
+		
+		ChartInterceptor chartInterceptor = new ChartInterceptor(chartService);
+		InterceptorRegistration reg2 = registry.addInterceptor(chartInterceptor);
+		reg2.addPathPatterns("/main", "/chart/top100");
+		
+		NewChartInterceptor newchartInterceptor = new NewChartInterceptor(chartService);
+		InterceptorRegistration reg3 = registry.addInterceptor(newchartInterceptor);
+		reg3.addPathPatterns("/chart/newchart");
+
+		GenreChartInterceptor genrechartInterceptor = new GenreChartInterceptor(chartService);
+		InterceptorRegistration reg4 = registry.addInterceptor(genrechartInterceptor);
+		reg4.addPathPatterns("/chart/genre");
 	}
 	
 	@Bean
@@ -107,7 +130,27 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
-		return new StandardServletMultipartResolver(); //°´Ã¼ »ý¼ºÇÏ¿© ¹ÝÈ¯
+		return new StandardServletMultipartResolver(); //ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½È¯
 	}
 	
+	@Bean
+	public MapperFactoryBean<InsertDBMapper> getInsertDBMapper(SqlSessionFactory factory){
+		MapperFactoryBean<InsertDBMapper> factoryBean = new MapperFactoryBean<InsertDBMapper>(InsertDBMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<ChartMapper> getChartMapper(SqlSessionFactory factory){
+		MapperFactoryBean<ChartMapper> factoryBean = new MapperFactoryBean<ChartMapper>(ChartMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<SearchMapper> getSearchMapper(SqlSessionFactory factory){
+		MapperFactoryBean<SearchMapper> factoryBean = new MapperFactoryBean<SearchMapper>(SearchMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
 }

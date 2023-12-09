@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+body {
+	position: relative;
+	top: 160px;
+	bottom: 200px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    letter-spacing: 0;
+    color: #666;
+    line-height: 18px;
+    background: #fff;
+    -webkit-text-size-adjust: none;
+}
+
+#cont_section {
+    position: relative;
+    width: 80%;
+    margin:auto;
+    padding:20px;
+}

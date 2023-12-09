@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="root" value="${pageContext.request.contextPath}/" />
 <!DOCTYPE html>
@@ -78,22 +79,32 @@
 	overflow-x: hidden;
 	   overflow-y: auto;
 }
+
+.flex_items {
+	height: 80px;
+	display: flex;
+	align-items: center;
+}
+
 </style>
 <body>
 	<!-- 상단 메뉴 부분 -->
 	<c:import url="/WEB-INF/views/include/top_menu.jsp" />
 	<!-- 중단 부분 -->
 	<section style="position: relative; height: 2000px; width: 100%;">
-		<form action="${root }search/main" method="get">
+	<!-- 나중에 수정필요 insert -> search -->
+		<form action="${root }insert/main" method="get">
 			<div class="form-row align-items-center search_form">
 				<div class="col-auto my-1">
-					<select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="search_where">
+					<select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
+						name="search_where">
 						<option value="frm_searchSong" selected>노래</option>
 						<option value="frm_searchArtist">가수</option>
 						<option value="frm_searchAlbum">앨범</option>
 					</select>
 				</div>
-				<input type="text" class="form-control search_bar" name="search_value">
+				<input type="text" class="form-control search_bar"
+					name="search_value">
 				<div class="col-auto my-1">
 					<button type="submit" class="btn btn-primary">&nbsp;검색&nbsp;</button>
 				</div>
@@ -112,15 +123,18 @@
 					</ol>
 					<div class="carousel-inner">
 						<div class="carousel-item active">
-							<img src="${root }images/consert1.jpg" class="img-fluid" alt="..."
+							<img src="${root }images/consert1.jpg" class="img-fluid"
+								alt="..."
 								style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
 						</div>
 						<div class="carousel-item">
-							<img src="${root }images/consert2.jpg" class="img-fluid" alt="..."
+							<img src="${root }images/consert2.jpg" class="img-fluid"
+								alt="..."
 								style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
 						</div>
 						<div class="carousel-item">
-							<img src="${root }images/consert3.jpg" class="img-fluid" alt="..."
+							<img src="${root }images/consert3.jpg" class="img-fluid"
+								alt="..."
 								style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
 						</div>
 					</div>
@@ -156,15 +170,46 @@
 			</div>
 			<div class="songchart">
 				<div class="list-group">
-					<a class="list-group-item list-group-item-action active" aria-current="true" disabled> TOP10 </a> 
-						<a href="" class="list-group-item list-group-item-action">노래1</a>
-						<c:forEach var="item" items="${sessionScope.chart}" end="10">
-							<a href="">${item.name}</a>
-						</c:forEach>
+					<div class="list-group-item list-group-item-action active"
+						aria-current="true" disabled>
+						<div style="display: flex; justify-content: space-between;">
+							<div>TOP10</div>
+							<div>
+								<a href="${root }chart/top100?type=song" style="text-align: right; color: black; text-decoration: none;">
+								더보기
+								</a>
+							</div>
+						</div>
+					</div>
+					<c:set var="rank" value="1" />
+					<c:forEach var="item" items="${chart}" end="9">
+						<ul class="list-group list-group-horizontal list_group">
+							<li class="list-group-item flex_items"
+								style="flex: 1; justify-content: center; border-right: none;">${rank}</li>
+							<c:set var="rank" value="${rank + 1}" />
+							<li class="list-group-item flex_items"
+								style="flex: 3; border-left: none; border-right: none;"><a
+								class="a_black"
+								href="${root }search/song_info?song_id=${item.song_id}">${item.song_name}</a>
+							</li>
+							<li class="list-group-item flex_items"
+								style="flex: 4; text-align: center; border-left: none; border-right: none;">
+								<c:forEach var="i" begin="0"
+									end="${fn:length(item.artist_name)}">
+									<a class="a_black"
+										href="${root }search/artist_info?artist_id=${item.artist_id[i]}">${item.artist_name[i]}</a>
+									<br />
+								</c:forEach>
+							</li>
+							<li class="list-group-item flex_items"
+								style="flex: 3; border-left: none;"><a class="a_black"
+								href="${root }search/album_info?album_id=${item.album_id}">${item.album_name}</a>
+							</li>
+						</ul>
+					</c:forEach>
 				</div>
 			</div>
 		</div>
-
 
 	</section>
 

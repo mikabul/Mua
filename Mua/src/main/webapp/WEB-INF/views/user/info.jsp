@@ -19,7 +19,7 @@
 			<div class="row justify-content-center">
 				<form:form modelAttribute = "infoUserBean" action = "${root }main" method = "get">
 					<div class="input-box">
-					<form:label path = "user_id">좋아하는 노래 : </form:label>
+					<form:label path = "user_id">좋아하는 노래는? : </form:label>
 					<c:out value = "despacito"> </c:out>
 					</div>
 					
