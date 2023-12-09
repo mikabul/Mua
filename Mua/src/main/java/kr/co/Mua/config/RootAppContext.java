@@ -8,7 +8,7 @@ import kr.co.Mua.bean.UserBean;
 
 @Configuration
 public class RootAppContext {
-
+	
 	@Bean("loginUserBean")
 	@SessionScope
 	public UserBean loginUserBean() {

@@ -123,10 +123,13 @@ public class ChartService {
 			searchResult = Jsoup.connect(urlSearch + now).get();
 			// 차트를 이루는 tbody내부의 tr을 전부 불러옴
 			Elements trElements = searchResult.select("tbody tr");
+			int nothing = 1;
 
 			// tr을 하나씩 가져옴
 			for (Element trElement : trElements) {
-
+				if(nothing == 1) {
+					break;
+				}
 				// ==================이름======================
 				// 저장을 위한 객체 생성
 				ChartDto temp = new ChartDto();
@@ -182,7 +185,6 @@ public class ChartService {
 				temp.setSong_thumbup(chartDAO.getCount_thumbup(temp.getSong_id()));
 				chart.add(temp);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

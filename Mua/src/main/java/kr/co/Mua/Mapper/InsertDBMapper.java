@@ -33,10 +33,10 @@ public interface InsertDBMapper {
 	public Integer album_artist_match(int album_id, int artist_id);
 	
 	//-----------정보를 저장하는 부분----------------
-	@Insert("insert into song values(song_seq.nextval, #{song_name}, #{song_genre}, #{release_date}, #{lyrics}, 0, #{song_thumbnail}, #{album_id})")
+	@Insert("insert into song values(song_seq.nextval, #{song_name}, #{song_genre}, #{release_date}, #{lyrics}, 0, #{song_thumbnail}, #{album_id},'-')")
 	public void insert_song(SongDto songDTO);
 	
-	@Insert("insert into artist values(artist_seq.nextval, #{artist_name}, #{artist_date}, #{artist_type}, #{artist_thumbnail}, #{artist_agency})")
+	@Insert("insert into artist values(artist_seq.nextval, #{artist_name}, #{artist_date}, #{artist_type}, #{artist_thumbnail}, #{artist_agency},'-')")
 	public void insert_artist(ArtistDto artistDTO);
 	
 	@Insert("insert into album values(album_seq.nextval, #{album_name}, #{release_date}, #{album_genre}, #{album_publisher}, #{album_agency}, #{album_thumbnail})")

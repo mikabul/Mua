@@ -9,13 +9,17 @@ import kr.co.Mua.bean.UserBean;
 @Repository
 public class UserDAO {
 	
-	//유저맵퍼 저장소
+	//�쑀��留듯띁 ���옣�냼
 	
 	@Autowired
 	private UserMapper userMapper;
 	
 	public String checkUserIDExit(String user_id) {
 		return userMapper.checkUserIDExit(user_id);
+	}
+	
+	public String checkUserEmailExit(String user_email) {
+		return userMapper.checkUserEmailExit(user_email);
 	}
 	
 	public void addUserInfo(UserBean RegisterUserBean) {

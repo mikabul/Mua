@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.SongDto;
+import kr.co.Mua.service.MailSendService;
 import kr.co.Mua.service.SearchService;
 import kr.co.Mua.service.UserService;
 
@@ -37,6 +39,10 @@ public class RestApiController {
 	@Autowired
 	private SearchService searchService;
 	
+	@Autowired
+	private MailSendService mailService;
+	
+	//유저 중복체크
 	@GetMapping("/user/checkUserIdExist/{user_id}")
 	public String checkUserIdExit(@PathVariable String user_id) {
 		
@@ -44,6 +50,24 @@ public class RestApiController {
 		
 		return check+"";
 		
+	}
+	
+	//이메일 중복체크
+	@GetMapping("/user/checkUserEmailExit/{user_email}")
+	public String checkUserEmailExit(@PathVariable String user_email) {
+		
+		boolean check = userService.checkUserEmailExit(user_email);
+		
+		return check+"";
+		
+	}
+	
+	// 이메일 중복체크후 인증요청 발송
+	@GetMapping("/user/checkCertificationCode/{user_email}")
+	public String mailCheck(@PathVariable String user_email) {
+		System.out.println("이메일 인증 요청 들어옴.");
+		System.out.println("이메일 인증 이메일 : "+user_email);
+		return mailService.joinEmail(user_email);
 	}
 	
 	@RequestMapping(value = "/getLyric", produces = "application/text; charset=UTF-8")
@@ -79,7 +103,7 @@ public class RestApiController {
 	    ArrayList<ArtistDto> artistList = searchService.getBriefArtist(song_id);
 	    String lyric = getLyric(infoSongDto.getLyrics());
 	    
-	    // 데이터를 JSON 문자열로 변환
+	    // �뜲�씠�꽣瑜� JSON 臾몄옄�뿴濡� 蹂��솚
 	    ObjectMapper objectMapper = new ObjectMapper();
 	    Map<String, Object> responseData = new HashMap<>();
 	    responseData.put("infoSongDto", infoSongDto);
@@ -90,7 +114,7 @@ public class RestApiController {
 	        jsonString = objectMapper.writeValueAsString(responseData);
 	    } catch (JsonProcessingException e) {
 	        e.printStackTrace();
-	        jsonString = ""; // 에러 처리 필요
+	        jsonString = ""; // �뿉�윭 泥섎━ �븘�슂
 	    }
 	    
 	    return jsonString;

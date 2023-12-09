@@ -38,14 +38,14 @@
 
 			<div class="remember-forgot">
 				<label><input type="checkbox">Remember Me</label> <a
-					href="#">Forgot password?</a>
+					href="# }">Forgot password?</a>
 			</div>
 
 			<form:button type="submit" class="btn">Login</form:button>
 
 			<div class="register-link">
 				<p>
-					Don't have an account? <a href="#">Register</a>
+					Don't have an account? <a href="${root }user/register">Register</a>
 				</p>
 			</div>
 		</form:form>

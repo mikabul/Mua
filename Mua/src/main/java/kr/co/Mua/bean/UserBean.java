@@ -1,23 +1,21 @@
 package kr.co.Mua.bean;
 
+import java.util.Date;
+
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class UserBean {
 	
 	private int user_num;
 	
-	@NotEmpty
-	@Size(min = 6 , max = 12)
 	@Pattern(regexp = "[a-zA-Z0-9]*")
 	private String user_id;
 	
-	@NotEmpty
-	@Size(min = 8 , max = 21)
 	@Pattern(regexp = "[a-zA-Z0-9!@#$%^&*()_+=\\-`~]*")
 	private String user_pw;
 	
@@ -30,15 +28,25 @@ public class UserBean {
 	
 	private String user_name;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date user_birthday;
+	
+	private String user_registdate;
 	
 	private boolean userIdExit;
 	private boolean userLogin;
+	private boolean userEmailExit;
+	
+	//1 = code, 2 = input code
+	private String authCode1;
+	private String authCode2;
 	
 	private String user_pw2;
 	
 	public UserBean() {
 		this.userIdExit = false;
 		this.userLogin = false;
+		this.userEmailExit = false;
 	}
 	
 	public int getUser_num() {
@@ -106,6 +114,45 @@ public class UserBean {
 
 	public void setUser_pw2(String user_pw2) {
 		this.user_pw2 = user_pw2;
+	}
+	public boolean isUserEmailExit() {
+		return userEmailExit;
+	}
+
+	public void setUserEmailExit(boolean userEmailExit) {
+		this.userEmailExit = userEmailExit;
+	}
+
+	public Date getUser_birthday() {
+		return user_birthday;
+	}
+
+	public void setUser_birthday(Date user_birthday) {
+		this.user_birthday = user_birthday;
+	}
+
+	public String getUser_registdate() {
+		return user_registdate;
+	}
+
+	public void setUser_registdate(String user_registdate) {
+		this.user_registdate = user_registdate;
+	}
+
+	public String getAuthCode1() {
+		return authCode1;
+	}
+
+	public void setAuthCode1(String authCode1) {
+		this.authCode1 = authCode1;
+	}
+
+	public String getAuthCode2() {
+		return authCode2;
+	}
+
+	public void setAuthCode2(String authCode2) {
+		this.authCode2 = authCode2;
 	}
 	
 	
