@@ -119,6 +119,8 @@ public class ChartService {
 		Document searchResult;
 
 		try {
+			// 테스트용, 삭제필요 10개로 제한
+			int limit = 0;
 			// HTML전문 가져오기
 			searchResult = Jsoup.connect(urlSearch + now).get();
 			// 차트를 이루는 tbody내부의 tr을 전부 불러옴
@@ -181,6 +183,11 @@ public class ChartService {
 				// 노래의 좋아요 갯수를 가져옴
 				temp.setSong_thumbup(chartDAO.getCount_thumbup(temp.getSong_id()));
 				chart.add(temp);
+				
+				// 테스트용, 삭제필요 10개로 제한
+				if(++limit == 100) {
+					break;
+				}
 			}
 
 		} catch (Exception e) {

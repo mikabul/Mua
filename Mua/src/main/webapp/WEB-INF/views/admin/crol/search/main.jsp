@@ -18,16 +18,16 @@
 			<tbody>
 				<c:forEach var="item" items="${arrayResultDTOs}">
 					<tr>
-						<td><a href="${root}insert/songinfo?song_id=${item.songDTO.song_id}">${item.songDTO.song_name}</a></td>
+						<td><a href="${root}admin/crol/search/insert_song?song_id=${item.songDto.song_id}">${item.songDto.song_name}</a></td>
 						<td>
-							<c:if test="${item.artistDTO.artist_id!=-1}">
-								<a href="${root}search/ArtistInfo?artist_id=${item.artistDTO.artist_id}">${item.artistDTO.artist_name}</a>
+							<c:if test="${item.artistDto.artist_id!=-1}">
+								<a href="${root}search/ArtistInfo?artist_id=${item.artistDto.artist_id}">${item.artistDto.artist_name}</a>
 							</c:if>
-							<c:if test="${item.artistDTO.artist_id==-1}">
-								${item.artistDTO.artist_name}
+							<c:if test="${item.artistDto.artist_id==-1}">
+								${item.artistDto.artist_name}
 							</c:if>
 						</td>
-						<td><a href="${root}search/AlnumInfo?album_id=${item.albumDTO.album_id}">${item.albumDTO.album_name}</a></td>
+						<td><a href="${root}search/AlnumInfo?album_id=${item.albumDto.album_id}">${item.albumDto.album_name}</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

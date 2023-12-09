@@ -17,27 +17,28 @@
 				</button>
 			</div>
 			<!-- 로고 -->
-			<a class="nav-link" href="#" style="margin: 0; padding: 0;">
+			<a class="nav-link" href="${root}main" style="margin: 0; padding: 0;">
 				<img src="${root}/images/logo.png" alt="" style="width: auto; height: 90px;"/>
 			</a>
 			<!-- 로그인 회원가입 -->
 			<div class="nav-link">
 				<div style="text-align: right; margin-right: 3%;">
-					<c:if test="${login_state==null or login_state=='false'}">
-						<button type="button" class="btn btn-outline-primary">로그인</button>
-						<button type="button" class="btn btn-outline-primary">회원가입</button>
-					</c:if>
-					<c:if test="${login_state=='true'}">
-						<button type="button" class="btn btn-outline-primary">회원정보</button>
-						<button type="button" class="btn btn-outline-primary">로그아웃</button>
-					</c:if>
-
+					<c:choose>
+					<c:when test="${loginUserBean.userLogin == true }">
+						<button type="button" class="btn btn-outline-primary" onclick = "location.href='${root}user/info'">회원정보</button>
+						<button type="button" class="btn btn-outline-primary" onclick = "location.href='${root}user/logout'">로그아웃</button>
+					</c:when>
+					<c:when test="${loginUserBean.userLogin == false }">
+						<button type="button" class="btn btn-outline-primary" onclick="location.href='${root}user/login'">로그인</button>
+						<button type="button" class="btn btn-outline-primary" onclick="location.href='${root}user/register'">회원가입</button>
+					</c:when>
+				</c:choose>
 				</div>
 			</div>
 		</nav>
 	</div>
 	<!-- 추가 메뉴(삼선 버튼) -->
-	<div class="collapse" id="collapseExample" style="margin-top: 10px;">
+	<div class="collapse" id="collapseExample" style="margin-top: 0.1px;">
 		<div class="card card-body">
 			<ul class="nav nav-pills nav-fill" style="width: 100%;">
 				<li class="nav-item"><a class="nav-link" href="#"> 차트 </a></li>

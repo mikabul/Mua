@@ -10,7 +10,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,19 +21,33 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.SearchResultDto;
 import kr.co.Mua.bean.SongDto;
 import kr.co.Mua.service.SearchService;
+import kr.co.Mua.service.UserService;
 
 @RestController
-@PropertySource("/WEB-INF/properties/option.properties")
 public class RestApiController {
-
+	
 	@Value("${resources.path}")
 	private String path;
 	
 	@Autowired
+	private UserService userService;
+	
+	@Autowired
 	private SearchService searchService;
 	
+	@GetMapping("/user/checkUserIdExist/{user_id}")
+	public String checkUserIdExit(@PathVariable String user_id) {
+		
+		boolean check = userService.checkUserIDExit(user_id);
+		
+		return check+"";
+		
+	}
+	
+	// 가사 불러오기
 	@RequestMapping(value = "/getLyric", produces = "application/text; charset=UTF-8")
 	public String getLyric(@RequestParam("file_name") String file_name) {
 		
@@ -59,12 +74,19 @@ public class RestApiController {
 		return lyric;
 	}
 	
+	// 노래정보 변경
 	@RequestMapping(value = "/changeSong_info", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String chageSong_info(@RequestParam("song_id") int song_id) {
 	    SongDto infoSongDto = searchService.getSong_info(song_id);
 	    ArrayList<ArtistDto> artistList = searchService.getBriefArtist(song_id);
-	    String lyric = getLyric(infoSongDto.getLyrics());
+	    
+	    String lyric;
+	    if(!infoSongDto.getLyrics().equals("-")) {
+	    	lyric = getLyric(infoSongDto.getLyrics());
+	    } else {
+	    	lyric = "-";
+	    }
 	    
 	    // 데이터를 JSON 문자열로 변환
 	    ObjectMapper objectMapper = new ObjectMapper();
@@ -77,10 +99,81 @@ public class RestApiController {
 	        jsonString = objectMapper.writeValueAsString(responseData);
 	    } catch (JsonProcessingException e) {
 	        e.printStackTrace();
-	        jsonString = ""; // 에러 처리 필요
+	        jsonString = "";
 	    }
 	    
 	    return jsonString;
+	}
+	
+	// 앨범의 노래리스트
+	@RequestMapping(value = "/changeSongList", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String changeSongList(@RequestParam("index") int index,
+								@RequestParam("maxView") int maxView,
+								@RequestParam("album_id") int album_id) {
+		ArrayList<SearchResultDto> searchResultList = searchService.getAlbum_Song(album_id, index, maxView);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonString = "";
+		 try {
+			 jsonString = objectMapper.writeValueAsString(searchResultList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return jsonString;
+	}
+	
+	// 좋아요
+	@RequestMapping(value = "/thumbup")
+	@ResponseBody
+	public String thumbup(@RequestParam("user_num") int user_num,
+							@RequestParam("id") int id,
+							@RequestParam("infoType") String infoType) {
+		String likeIcon = "heart-solid.png";
+		String disLikeIcon = "heart-regula.png";
+		String resultJson = "";
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if(searchService.getUserThumbup(id, user_num, infoType) == 0) {
+				searchService.thumbup(id, user_num, infoType);
+				int thumbupCount = searchService.getThumbup(id, infoType);
+				
+				map.put("icon", likeIcon);
+				map.put("thumbupCount", thumbupCount);
+				
+				resultJson = objectMapper.writeValueAsString(map);
+			} else {
+				searchService.delThumbup(id, user_num, infoType);
+				int thumbupCount = searchService.getThumbup(id, infoType);
+				
+				map.put("icon", disLikeIcon);
+				map.put("thumbupCount", thumbupCount);
+				
+				resultJson = objectMapper.writeValueAsString(map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultJson;
+	}
+	
+	// 좋아요 여부 판단
+	@RequestMapping(value = "/getThumbup")
+	public String getThumbup(@RequestParam("user_num") int user_num,
+							@RequestParam("id") int id,
+							@RequestParam("infoType") String infoType) {
+		
+		String likeIcon = "heart-solid.png";
+		String disLikeIcon = "heart-regula.png";
+		
+		if(searchService.getUserThumbup(id, user_num, infoType) == 0) {
+			return disLikeIcon;
+		} else {
+			return likeIcon;
+		}
 	}
 	
 }

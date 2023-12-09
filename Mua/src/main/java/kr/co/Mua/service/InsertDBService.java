@@ -13,6 +13,7 @@ import java.util.Iterator;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,8 +34,11 @@ public class InsertDBService {
 
 	@Autowired
 	private InsertDBDao insertDBDao;
+	
+	// 크롤링시 과도하게 많은 시도를 막는 변수
+	static int sleepCount = 0;
 
-	private SongDto tempSongDTO;
+	private SongDto tempSongDto;
 	private ArtistDto tempArtsitDTO;
 	private ArrayList<ArtistDto> artistList;
 	private AlbumDto tempAlbumDTO;
@@ -45,6 +49,8 @@ public class InsertDBService {
 	private String song_thumbnail;
 	private String artist_thumbnail[];
 	private String album_thumbnail;
+	private String nation[];
+	private ArrayList<String[]> memberList;
 
 	public void insertDB(int song_id) {
 		
@@ -54,6 +60,7 @@ public class InsertDBService {
 
 		// 노래 아티스트 앨범 정보를 가져옴
 		getSong(song_id);
+		getNation();
 		getArtist();
 		getAlbum();
 
@@ -69,17 +76,29 @@ public class InsertDBService {
 		}
 
 		// song insert
-		if (insertDBDao.song_match(tempSongDTO) == null) {
+		if (insertDBDao.song_match(tempSongDto) == null) {
+			// 국내노래인지?
+			
 			// 데이터베이스에 저장 전 앨범 번호를 입력
-			tempSongDTO.setAlbum_id(temp_album_id);
+			tempSongDto.setAlbum_id(temp_album_id);
+			// 국내, 해외 인지 구분
+			for(int i = 0; i < nation.length; i++) {
+				if(nation[i].equals("대한민국") || nation[i].equals("한국")) {
+					tempSongDto.setSong_nation("국내");
+				} else if(nation[i].equals("-") || nation[i].equals("")) {
+					tempSongDto.setSong_nation("-");
+				} else {
+					tempSongDto.setSong_nation("해외");
+				}
+			}
 			// 데이터 베이스에 저장후 노래 번호를 가져옴
-			insertDBDao.insert_song(tempSongDTO);
-			temp_song_id = insertDBDao.song_match(tempSongDTO).getSong_id();
+			insertDBDao.insert_song(tempSongDto);
+			temp_song_id = insertDBDao.song_match(tempSongDto).getSong_id();
 			// 썸네일, 가사 저장
 			insertDBDao.insert_song_thumbnail(temp_song_id, thumbnailSave(temp_song_id, "song", 0));
 			insertDBDao.insert_lyrics(temp_song_id, lyricSave(temp_song_id));
 		} else {
-			temp_song_id = insertDBDao.song_match(tempSongDTO).getSong_id();
+			temp_song_id = insertDBDao.song_match(tempSongDto).getSong_id();
 		}
 
 		// artist insert
@@ -92,24 +111,42 @@ public class InsertDBService {
 			if (insertDBDao.artist_match(artistDTO) == null) {
 				// 데이터 베이스에 저장후 아티스트 번호를 가져옴
 				insertDBDao.insert_artist(artistDTO);
+				System.out.println(insertDBDao.artist_match(artistDTO) == null);
 				temp_artist_id = insertDBDao.artist_match(artistDTO).getArtist_id();
 				// 썸네일 저장
 				insertDBDao.insert_artist_thumbnail(temp_artist_id, thumbnailSave(temp_artist_id, "artist", count));
 			} else {
 				temp_artist_id = insertDBDao.artist_match(artistDTO).getArtist_id();
 			}
-			count++;
-			// 중복 방지
+			// 중복 방지 song_artist
 			if (insertDBDao.song_artist_match(temp_song_id, temp_artist_id) == null) {
 				insertDBDao.insert_song_artist(temp_song_id, temp_artist_id);
 			}
-			// 중복 방지
+			// 중복 방지 album_artist
 			if (insertDBDao.album_artist_match(temp_album_id, temp_artist_id) == null) {
 				insertDBDao.insert_album_artist(temp_album_id, temp_artist_id);
 			}
-
+			//
+			if(artistDTO.getArtist_type().equals("그룹")) {
+				for(String[] member : memberList) {
+					for(int i = 0; i < member.length; i++) {
+						if(insertDBDao.member_match(temp_artist_id, member[i]) == null) {
+							insertDBDao.insert_member(temp_artist_id, member[i]);
+						}
+					}
+				}
+			}
+			count++;
 			System.out.println(artistList.size() + "개 중 " + count + "개 완료");
 
+		}
+		if(++sleepCount % 10 == 0) {
+			System.out.println("쉬는 시간");
+			try {
+				Thread.sleep(5000);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -117,7 +154,7 @@ public class InsertDBService {
 	// ===================노래 정보를 가져옴=======================
 	private void getSong(int song_id) {
 
-		tempSongDTO = new SongDto();
+		tempSongDto = new SongDto();
 
 		String url = "https://www.melon.com/song/detail.htm?songId=" + song_id;
 
@@ -135,7 +172,7 @@ public class InsertDBService {
 			if(span_name.length() > 0) {
 				song_name = song_name.substring(song_name.lastIndexOf(span_name) + span_name.length() + 1);
 			}
-			tempSongDTO.setSong_name(song_name);
+			tempSongDto.setSong_name(song_name);
 
 			// 노래의 정보를 가져옴
 			// 노래의 정보를 구분하기위한 Elements
@@ -144,12 +181,15 @@ public class InsertDBService {
 			Elements song_info = elements.select("div.meta dl.list dd");
 			// 발매일과 장르의 위치를 찾음
 			for (int i = 0; i < song_info_elements.size(); i++) {
-				if (song_info_elements.get(i).text().equals("발매일")) {
-					tempSongDTO.setRelease_date(song_info.get(i).text());
-				}
-
-				if (song_info_elements.get(i).text().equals("장르")) {
-					tempSongDTO.setSong_genre(song_info.get(i).text());
+				String tempString = song_info.get(i).text();
+				if(!tempString.isEmpty()) {
+					if (song_info_elements.get(i).text().equals("발매일")) {
+						tempSongDto.setRelease_date(tempString);
+					}
+					
+					if (song_info_elements.get(i).text().equals("장르")) {
+						tempSongDto.setSong_genre(tempString);
+					}
 				}
 			}
 
@@ -158,6 +198,8 @@ public class InsertDBService {
 			String str_lyric = lyric_elements.toString();
 			if (str_lyric.length() > 0) {
 				lyric = str_lyric.substring(str_lyric.lastIndexOf("-->") + 4);
+			} else {
+				lyric = null;
 			}
 
 			// 노래 이미지의 url을 가져옴
@@ -221,6 +263,8 @@ public class InsertDBService {
 	private void getArtist() {
 
 		artistList = new ArrayList<ArtistDto>();
+		memberList = new ArrayList<String[]>();
+		String member[];
 
 		if (artist_id[0] != -1) {
 
@@ -246,24 +290,46 @@ public class InsertDBService {
 					// 데부일, 활동유형, 소속사를 저장하기위한 Elements
 					Elements artist_info_elements = elements.select("dl.atist_info.clfix dd");
 					for (int j = 0; j < info_elements.size(); j++) {
-						if (info_elements.get(j).text().equals("데뷔")) {
-							String str = artist_info_elements.get(j).select("span").text();
-							try {
-								tempArtsitDTO.setArtist_date(str.substring(0, str.indexOf(" ", 2)));
-							} catch (Exception e) {
-								tempArtsitDTO.setArtist_date(str);
+						// 비어있는지 확인
+						String tempString = artist_info_elements.get(j).text();
+						if(!tempString.isEmpty()) {
+							if (info_elements.get(j).text().equals("데뷔")) {
+								String str = artist_info_elements.get(j).select("span").text();
+								if(!str.isEmpty()) {
+									try {
+										tempArtsitDTO.setArtist_date(str.substring(0, str.indexOf(" ", 2)));
+									} catch (Exception e) {
+										tempArtsitDTO.setArtist_date(str);
+									}
+								}
+							} else if (info_elements.get(j).text().equals("활동유형")) {
+								tempArtsitDTO.setArtist_type(tempString);
+							} else if (info_elements.get(j).text().equals("소속사")) {
+								tempArtsitDTO.setArtist_agency(tempString);
 							}
-						} else if (info_elements.get(j).text().equals("활동유형")) {
-							tempArtsitDTO.setArtist_type(artist_info_elements.get(j).text());
-						} else if (info_elements.get(j).text().equals("소속사")) {
-							tempArtsitDTO.setArtist_agency(artist_info_elements.get(j).text());
 						}
 					}
 
 					// 썸네일 경로
 					Elements thumbnail_elements = doc.select("div.dtl_atist.clfix span#artistImgArea img");
 					artist_thumbnail[i] = thumbnail_elements.attr("src");
-
+					
+					// 국적 추가
+					tempArtsitDTO.setArtist_nation(nation[i]);
+					
+					// 멤버
+					System.out.println("그룹 ? " + tempArtsitDTO.getArtist_type().trim().equals("그룹"));
+					if(tempArtsitDTO.getArtist_type().trim().equals("그룹")) {
+						Elements memberElements = elements.select("div.wrap_atistname a");
+						member = new String[memberElements.size()];
+						
+						for(int j =0; j < memberElements.size(); j++) {
+							Element ele = memberElements.get(j);
+							member[j] = ele.text();
+						}
+						memberList.add(member);
+					}
+					
 					artistList.add(tempArtsitDTO);
 				}
 			} catch (Exception e) {
@@ -297,14 +363,18 @@ public class InsertDBService {
 			// 앨범의 발매일, 장르, 발매사, 기획사를 저장하기위한 Elements
 			Elements album_info_elements = elements.select("div.meta dl.list dd");
 			for (int i = 0; i < info_elements.size(); i++) {
-				if (info_elements.get(i).text().equals("발매일")) {
-					tempAlbumDTO.setRelease_date(album_info_elements.get(i).text());
-				} else if (info_elements.get(i).text().equals("장르")) {
-					tempAlbumDTO.setAlbum_genre(album_info_elements.get(i).text());
-				} else if (info_elements.get(i).text().equals("발매사")) {
-					tempAlbumDTO.setAlbum_publisher(album_info_elements.get(i).text());
-				} else if (info_elements.get(i).text().equals("기획사")) {
-					tempAlbumDTO.setAlbum_agency(album_info_elements.get(i).text());
+				// 비어있는지 확인
+				String tempString = album_info_elements.get(i).text();
+				if(!tempString.isEmpty()) {
+					if (info_elements.get(i).text().equals("발매일")) {
+						tempAlbumDTO.setRelease_date(tempString);
+					} else if (info_elements.get(i).text().equals("장르")) {
+						tempAlbumDTO.setAlbum_genre(tempString);
+					} else if (info_elements.get(i).text().equals("발매사")) {
+						tempAlbumDTO.setAlbum_publisher(tempString);
+					} else if (info_elements.get(i).text().equals("기획사")) {
+						tempAlbumDTO.setAlbum_agency(tempString);
+					}
 				}
 			}
 
@@ -359,9 +429,6 @@ public class InsertDBService {
 
 		try {
 
-			FileOutputStream fos = new FileOutputStream(path + "images/thumbnail/" + type + "/" + file_name);
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-
 			// type에 따른 경로 설정
 			switch (type) {
 			case "song":
@@ -383,6 +450,10 @@ public class InsertDBService {
 			// 파일을 받아옴
 			InputStream is = url.openStream();
 			BufferedInputStream bis = new BufferedInputStream(is);
+			
+			// 저장할 파일을 생성
+			FileOutputStream fos = new FileOutputStream(path + "images/thumbnail/" + type + "/" + file_name);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
 
 			// 파일을 저장
 			int data;
@@ -397,10 +468,47 @@ public class InsertDBService {
 
 		} catch (Exception e) {
 			System.out.println(type + "사진 저장에 문제발생");
-			System.out.println(file_name);
+			System.out.println(e);
+			return "default.jpg";
 		}
 
 		return file_name;
 	}
-
+	
+	// 아티스트의 국적을 가져옴
+	private void getNation() {
+		
+		nation = new String[artist_id.length];
+		
+		for(int i = 0; i < nation.length; i++) {
+			
+			String url = "https://www.melon.com/artist/detail.htm?artistId=" + artist_id[i];
+			Document doc;
+			
+			try {
+				doc = Jsoup.connect(url).get();
+				
+				Elements elements = doc.select("#conts div.section_atistinfo04 dl");
+				
+				// 정보를 분류하는 dt 와 정보를 담고있는 dd를 가져옴
+				Elements dtElements = elements.select("dt");
+				Elements ddElements = elements.select("dd");
+				
+				// 원하는 정보인 '국적'을 찾을 때까지 반복
+				for(int j = 0; j < dtElements.size(); j++) {
+					if(dtElements.get(j).text().equals("국적")) {
+						nation[i] = ddElements.get(j).text();
+						break;
+					}
+				}
+				if(nation[i] == null) {
+					nation[i] = "-";
+				}
+			} catch (Exception e) {
+				System.out.println(e);
+				System.out.println("InsertDBSrvice 461 : 국적 가져오는중 이상 발생");
+			}
+		}
+	}
+	
 }

@@ -7,8 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Mua</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -16,101 +15,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
 <link rel="styleSheet" href="${root}/style/main.css">
 </head>
-<style>
-.items-consertrec {
-	position: relative;
-	top: 700px;
-	width: 100%;
-	height: 800px;
-}
-
-.consertrec {
-	height: 500px;
-	width: 90%;
-	margin: 5%;
-}
-
-#carouselExampleIndicators {
-	height: 100%;
-	width: 100%;
-}
-
-.carousel-inner {
-	height: 100%;
-	width: 100%;
-}
-
-.consert-img {
-	position: absolute;
-	width: 1207.8px;
-	height: 500px;
-}
-
-.d-block w-100 {
-	width: 300px;
-	height: 300px;
-	object-fit: cover;
-}
-
-.items-songrec-songchart {
-	position: relative;
-	top: 500px;
-	width: 100%;
-	height: 500px;
-}
-
-.songrec {
-	float: left;
-	height: 500px;
-	width: 40%;
-	margin: 5%;
-}
-
-.song-img-top {
-	width: 300px;
-	height: 300px;
-	object-fit: cover;
-}
-
-.songchart {
-	float: left;
-	height: 420px;
-	width: 40%;
-	margin: 5%;
-	overflow-x: hidden;
-	   overflow-y: auto;
-}
-
-.flex_items {
-	height: 80px;
-	display: flex;
-	align-items: center;
-}
-
-</style>
 <body>
 	<!-- 상단 메뉴 부분 -->
 	<c:import url="/WEB-INF/views/include/top_menu.jsp" />
 	<!-- 중단 부분 -->
-	<section style="position: relative; height: 2000px; width: 100%;">
-	<!-- 나중에 수정필요 insert -> search -->
-		<form action="${root }insert/main" method="get">
-			<div class="form-row align-items-center search_form">
-				<div class="col-auto my-1">
-					<select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
-						name="search_where">
-						<option value="frm_searchSong" selected>노래</option>
-						<option value="frm_searchArtist">가수</option>
-						<option value="frm_searchAlbum">앨범</option>
-					</select>
-				</div>
-				<input type="text" class="form-control search_bar"
-					name="search_value">
-				<div class="col-auto my-1">
-					<button type="submit" class="btn btn-primary">&nbsp;검색&nbsp;</button>
-				</div>
-			</div>
-		</form>
+	<section style="min-height: 1300px; width: 100%;">
+	<!-- 검색바 -->
+		<c:import url="/WEB-INF/views/include/searchBar.jsp" />
+		
 		<div class="items-consertrec">
 			<div class="consertrec">
 				<h1 style="text-align: center;" class="card-title">맞춤 콘서트 추천</h1>
@@ -184,27 +96,40 @@
 					</div>
 					<c:set var="rank" value="1" />
 					<c:forEach var="item" items="${chart}" end="9">
-						<ul class="list-group list-group-horizontal list_group">
-							<li class="list-group-item flex_items"
-								style="flex: 1; justify-content: center; border-right: none;">${rank}</li>
+						<ul class="list-group list-group-horizontal list_group" id="item${rank}">
+							<li class="list-group-item flex_items flex-1 ellipsis">
+								${rank}
+							</li>
 							<c:set var="rank" value="${rank + 1}" />
-							<li class="list-group-item flex_items"
-								style="flex: 3; border-left: none; border-right: none;"><a
-								class="a_black"
-								href="${root }search/song_info?song_id=${item.song_id}">${item.song_name}</a>
+							<li class="list-group-item flex_items flex-2 ellipsis">
+							<a class="a_black" href="${root }search/song_info?song_id=${item.song_id}" title="${item.song_name}">
+								${item.song_name}
+							</a>
 							</li>
-							<li class="list-group-item flex_items"
-								style="flex: 4; text-align: center; border-left: none; border-right: none;">
-								<c:forEach var="i" begin="0"
-									end="${fn:length(item.artist_name)}">
-									<a class="a_black"
-										href="${root }search/artist_info?artist_id=${item.artist_id[i]}">${item.artist_name[i]}</a>
-									<br />
-								</c:forEach>
+							<li class="list-group-item flex_items flex-3 ellipsis" >
+								<c:choose>
+									<c:when test="${item.artist_name[0] == 'Various Artists'}">
+										<span>Various Artists</span>
+									</c:when>
+									<c:otherwise>
+										<a class="a_black" href="${root}search/artist_info?artist_id=${item.artist_id[0]}" title="${item.artist_name[0]}">
+											${item.artist_name[0]}
+										</a>
+										<c:if test="${fn:length(item.artist_name) > 1}">
+											<c:forEach var="i" begin="1" end="${fn:length(item.artist_name) - 1}">
+												,
+												<a class="a_black" href="${root}search/artist_info?artist_id=${item.artist_id[i]}" title="${item.artist_name[i]}">
+													${item.artist_name[i]}
+												</a>
+											</c:forEach>
+										</c:if>
+									</c:otherwise>
+								</c:choose>
 							</li>
-							<li class="list-group-item flex_items"
-								style="flex: 3; border-left: none;"><a class="a_black"
-								href="${root }search/album_info?album_id=${item.album_id}">${item.album_name}</a>
+							<li class="list-group-item flex_items flex-4 ellipsis">
+								<a class="a_black" href="${root }search/album_info?album_id=${item.album_id}" title="${item.album_name}">
+									${item.album_name}
+								</a>
 							</li>
 						</ul>
 					</c:forEach>
@@ -215,6 +140,8 @@
 	</section>
 
 	<!-- 하단 부분 -->
+	<footer>
 	<c:import url="/WEB-INF/views/include/bottom.jsp" />
+	</footer>
 </body>
 </html>

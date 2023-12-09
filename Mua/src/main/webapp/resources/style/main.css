@@ -7,23 +7,10 @@
 	display: none;
 }
 
-.search_bar {
-	width: 30%;
-}
-
-.search_form {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-	top: 10%;
-	width: 100%
-}
-
 .flex-container {
 	display: flex;
-	flex-direction: row; /* ���η� �迭 */
-	justify-content: space-between; /* �� �׸� ������ ������ �ִ�ȭ�Ͽ� ���� */
+	flex-direction: row;
+	justify-content: space-between;
 	align-items: center;
 	position: absolute;
 	top: 20%;
@@ -32,16 +19,8 @@
 }
 
 .flex-item {
-	width: 30%; /* �� ���̺��� �ʺ� ���� */
+	width: 30%;
 	margin: 20px;
-}
-
-.tr_bgc {
-	background-color: #E0FFFF;
-}
-
-.table_hover:hover {
-	background-color: #ADD8E6;
 }
 
 .list_group {
@@ -56,4 +35,105 @@
 	text-decoration: none;
 	color: black;
 	width: 100%;
+}
+
+.items-consertrec {
+	margin-top: 500px;
+	width: 100%;
+	height: auto;
+}
+
+.consertrec {
+	height: 500px;
+	width: 90%;
+	margin: 5%;
+}
+
+#carouselExampleIndicators {
+	height: 100%;
+	width: 100%;
+}
+
+.carousel-inner {
+	height: 100%;
+	width: 100%;
+}
+
+.consert-img {
+	position: absolute;
+	width: 1207.8px;
+	height: 500px;
+}
+
+.d-block w-100 {
+	width: 300px;
+	height: 300px;
+	object-fit: cover;
+}
+
+.items-songrec-songchart {
+	margin-top: 200px;
+	width: 100%;
+	height: 500px;
+}
+
+.songrec {
+	float: left;
+	height: 500px;
+	width: 40%;
+	margin: 5%;
+}
+
+.song-img-top {
+	width: 300px;
+	height: 300px;
+	object-fit: cover;
+}
+
+.songchart {
+	float: left;
+	height: 420px;
+	width: 40%;
+	margin: 5%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.flex_items {
+	display: flex;
+	align-items: center;
+}
+
+.flex-1 {
+	flex: 1;
+	justify-content: center;
+	border-right: none;
+	width: 30px;
+}
+
+.flex-2 {
+	flex: 3;
+	border-left: none;
+	border-right: none;
+	text-align: left;
+}
+
+.flex-3 {
+	flex: 4;
+	text-align: center;
+	border-left: none;
+	border-right: none;
+	text-align: left;
+}
+
+.flex-4 {
+	flex: 3;
+	border-left: none;
+	text-align: left;
+}
+
+.ellipsis {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
