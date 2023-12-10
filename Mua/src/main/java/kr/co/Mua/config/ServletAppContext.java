@@ -114,7 +114,7 @@ public class ServletAppContext implements WebMvcConfigurer{
 		InterceptorRegistration reg2 = registry.addInterceptor(chartInterceptor);
 		reg2.addPathPatterns("/main", "/chart/top100");
 		
-		//============ �뼱�뱶誘� �럹�씠吏� �씤�꽣�뀎�꽣 ============
+		//============ 어드민 잘못된 접근 ============
 		AcceptAdminInterceptor acceptAdminInterceptor = new AcceptAdminInterceptor(loginAdminDto);
 		InterceptorRegistration reg3 = registry.addInterceptor(acceptAdminInterceptor);
 		reg3.addPathPatterns("/admin/**");

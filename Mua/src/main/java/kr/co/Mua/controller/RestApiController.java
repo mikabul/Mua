@@ -110,7 +110,7 @@ public class RestApiController {
 	    	lyric = "-";
 	    }
 	    
-	    // �뜲�씠�꽣瑜� JSON 臾몄옄�뿴濡� 蹂��솚
+	    // 받아온 정보를 JSON형식으로 변환
 	    ObjectMapper objectMapper = new ObjectMapper();
 	    Map<String, Object> responseData = new HashMap<>();
 	    responseData.put("infoSongDto", infoSongDto);
