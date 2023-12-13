@@ -177,7 +177,6 @@ public class SearchService {
 	public int getThumbup(int id, String infoType) {
 		return searchDAO.getThumbup(id, infoType);
 	}
-	
 	//=============== 리뷰 ===============
 	public ArrayList<ReviewDto> getReview(String flag, int id, int index, int endIndex) {
 		return searchDAO.getReview(flag, id, index, endIndex);
@@ -212,5 +211,4 @@ public class SearchService {
 			return true;
 		}
 	}
-	
 }

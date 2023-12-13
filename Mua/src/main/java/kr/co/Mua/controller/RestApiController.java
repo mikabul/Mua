@@ -49,7 +49,6 @@ public class RestApiController {
 	
 	@Resource(name="loginUserBean")
 	private UserBean loginUserBean;
-	
 	//유저 중복체크
 	@GetMapping("/user/checkUserIdExist/{user_id}")
 	public String checkUserIdExit(@PathVariable String user_id) {
@@ -59,7 +58,6 @@ public class RestApiController {
 		return check+"";
 		
 	}
-	
 	//이메일 중복체크
 	@GetMapping("/user/checkUserEmailExit/{user_email}")
 	public String checkUserEmailExit(@PathVariable String user_email) {
@@ -216,7 +214,6 @@ public class RestApiController {
 			return likeIcon;
 		}
 	}
-	
 	// 리뷰를 가져옴
 	@RequestMapping(value="getFirstReview", produces = "application/json; charset=UTF-8")
 	@ResponseBody

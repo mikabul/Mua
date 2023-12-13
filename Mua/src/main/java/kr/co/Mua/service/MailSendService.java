@@ -20,7 +20,7 @@ public class MailSendService {
 	public void makeRandomNumber() {
 		Random r = new Random();
 		int checkNum = r.nextInt(888888)+111111;
-		System.out.println("ÀÎÁõ¹øÈ£ : "+checkNum);
+		System.out.println("ì¸ì¦ë²ˆí˜¸ : "+checkNum);
 		authNumber = checkNum;
 	}
 	
@@ -28,13 +28,10 @@ public class MailSendService {
 		makeRandomNumber();
 		String setFrom = "dma0501011@gmail.com";
 		String toMail = email;
-		String title = "Mua È¸¿ø °¡ÀÔ ÀÎÁõ ÀÌ¸ŞÀÏÀÔ´Ï´Ù.";
+		String title = "Mua ì¸ì¦ë²ˆí˜¸ ìš”ì²­.";
 		String content = 
-				"È¨ÆäÀÌÁö¸¦ ¹æ¹®ÇØÁÖ¼Å¼­ °¨»çÇÕ´Ï´Ù." +
-                "<br><br>" + 
-			    "ÀÎÁõ ¹øÈ£´Â " + authNumber + "ÀÔ´Ï´Ù." + 
-			    "<br>" + 
-			    "ÇØ´ç ÀÎÁõ¹øÈ£¸¦ ÀÎÁõ¹øÈ£ È®ÀÎ¶õ¿¡ ±âÀÔÇÏ¿© ÁÖ¼¼¿ä.";
+				"ì•„ë˜ì˜ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì‹œê¸¸ ë°”ëë‹ˆë‹¤."+ 
+			    "ì¸ì¦ë²ˆí˜¸ëŠ” " + authNumber + "ì…ë‹ˆë‹¤.";
 		mailSend(setFrom,toMail,title,content);
 		return Integer.toString(authNumber);
 	}

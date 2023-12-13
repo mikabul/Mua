@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<<<<<<< HEAD
                                                 
+=======
+                                                    
+    
+>>>>>>> refs/heads/김진욱
     
     
     
@@ -11,7 +16,12 @@
     
     
     <wb-module deploy-name="Mua-0.0.1-SNAPSHOT">
+<<<<<<< HEAD
                                                                                                 
+=======
+                                                                                                        
+        
+>>>>>>> refs/heads/김진욱
         
         
         
@@ -23,7 +33,12 @@
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+<<<<<<< HEAD
                                                                                                 
+=======
+                                                                                                        
+        
+>>>>>>> refs/heads/김진욱
         
         
         
@@ -35,6 +50,7 @@
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+<<<<<<< HEAD
                                                                                                 
         
         
@@ -46,8 +62,15 @@
         
         
         
+=======
+>>>>>>> refs/heads/김진욱
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+<<<<<<< HEAD
                                                                                                 
+=======
+                                                                                                        
+        
+>>>>>>> refs/heads/김진욱
         
         
         
@@ -59,7 +82,12 @@
         
         
         <property name="java-output-path" value="/project_Song/build/classes"/>
+<<<<<<< HEAD
                                                                                         
+=======
+                                                                                                
+        
+>>>>>>> refs/heads/김진욱
         
         
         
@@ -70,7 +98,12 @@
         
         
         <property name="context-root" value="Mua"/>
+<<<<<<< HEAD
                                                                                             
+=======
+                                                                                                    
+    
+>>>>>>> refs/heads/김진욱
     
     
     
@@ -82,7 +115,12 @@
     
     
     </wb-module>
+<<<<<<< HEAD
                                             
+=======
+                                                
+
+>>>>>>> refs/heads/김진욱
 
 
 
