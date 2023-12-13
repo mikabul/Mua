@@ -27,7 +27,10 @@ import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SearchResultDto;
 import kr.co.Mua.bean.SongDto;
+<<<<<<< HEAD
 import kr.co.Mua.bean.UserBean;
+=======
+>>>>>>> refs/heads/김진욱
 import kr.co.Mua.service.MailSendService;
 import kr.co.Mua.service.SearchService;
 import kr.co.Mua.service.UserService;
@@ -49,7 +52,6 @@ public class RestApiController {
 	
 	@Resource(name="loginUserBean")
 	private UserBean loginUserBean;
-	
 	//유저 중복체크
 	@GetMapping("/user/checkUserIdExist/{user_id}")
 	public String checkUserIdExit(@PathVariable String user_id) {
@@ -59,7 +61,6 @@ public class RestApiController {
 		return check+"";
 		
 	}
-	
 	//이메일 중복체크
 	@GetMapping("/user/checkUserEmailExit/{user_email}")
 	public String checkUserEmailExit(@PathVariable String user_email) {

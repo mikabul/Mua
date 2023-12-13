@@ -15,7 +15,7 @@ import kr.co.Mua.bean.ViewedSongDto;
 
 public interface SearchMapper {
 
-	// 노래의 정보와 앨범 name, id를 가져옴
+	// �끂�옒�쓽 �젙蹂댁� �븿踰� name, id瑜� 媛��졇�샂
 	@Select("select s.song_id, s.song_name, s.song_genre, s.release_date, s.lyrics, "
 			+ "s.song_thumbnail, a.album_id, a.album_name, count(t.song_id) as song_thumbup "
 			+ "from song s "
@@ -26,12 +26,12 @@ public interface SearchMapper {
 			+ "s.song_thumbnail, a.album_id, a.album_name")
 	public SongDto getSong_info(int song_id);
 	
-	// 해당 노래의 아티스트의 간략한 정보를 가져옴
+	// �빐�떦 �끂�옒�쓽 �븘�떚�뒪�듃�쓽 媛꾨왂�븳 �젙蹂대�� 媛��졇�샂
 	@Select("select artist_id, artist_name, artist_thumbnail from artist "
 			+ "where artist_id in (select artist_id from song_artist where song_id=#{song_id})")
 	public ArrayList<ArtistDto> getBriefArtist(int song_id);
 	
-	// 아티스트의 노래를 전부 가져옴
+	// �븘�떚�뒪�듃�쓽 �끂�옒瑜� �쟾遺� 媛��졇�샂
 	@Select("select distinct song_id, song_name, song_thumbnail, album_name, "
 			+ "ListAgg(artist_name,', ') within group (order by artist_name) as artist_name "
 			+ "from artist, song s, album "
@@ -41,7 +41,7 @@ public interface SearchMapper {
 			+ "group by song_id, song_name, song_thumbnail, album_name")
 	public ArrayList<SongDto> getMoreSong_info(int artist_id);
 	
-	// 아티스트의 정보를 가져옴
+	// �븘�떚�뒪�듃�쓽 �젙蹂대�� 媛��졇�샂
 	@Select("select ar.artist_id, ar.artist_name, ar.artist_date, ar.artist_type, "
 			+ "ar.artist_thumbnail, ar.artist_agency, ar.artist_nation, "
 			+ "count(t.artist_id) artist_thumbup, listAgg(member_name, ', ') as member "
@@ -53,7 +53,7 @@ public interface SearchMapper {
 			+ "ar.artist_thumbnail, ar.artist_agency, ar.artist_nation")
 	public ArtistDto getArtist_info(int artist_id);
 	
-	// 아티스트의 아이디를 이용해 앨범의 정보를 가져옴
+	// �븘�떚�뒪�듃�쓽 �븘�씠�뵒瑜� �씠�슜�빐 �븿踰붿쓽 �젙蹂대�� 媛��졇�샂
 	// album_id, album_name, album_thumbnailm, release_date, artist_name
 	@Select("select al.album_name, al.album_id, al.album_thumbnail, al.release_date, "
 			+ "listagg(ar.artist_name, ', ') as artist_name "
@@ -64,18 +64,18 @@ public interface SearchMapper {
 			+ "group by al.album_name, al.album_id, al.album_thumbnail, al.release_date")
 	public ArrayList<AlbumDto> getArtist_album_info(int artist_id);
 	
-	// 앨범의 정보를 가져옴
+	// �븿踰붿쓽 �젙蹂대�� 媛��졇�샂
 	@Select("select * from album where album_id = #{album_id}")
 	public AlbumDto getAlbum_info(int album_id);
 	
-	// 앨범의 아이디를 통해 아티스트의 정보를 가져옴
+	// �븿踰붿쓽 �븘�씠�뵒瑜� �넻�빐 �븘�떚�뒪�듃�쓽 �젙蹂대�� 媛��졇�샂
 	@Select("select ar.artist_id, ar.artist_name "
 			+ "from artist ar "
 			+ "inner join album_artist aa on aa.artist_id=ar.artist_id "
 			+ "where aa.album_id=#{album_id}")
 	public ArrayList<ArtistDto> getAlbum_Artist_info(int album_id);
 	
-	// 앨범의 아이디를 이용하여 노래들을 가져옴 - 페이징
+	// �븿踰붿쓽 �븘�씠�뵒瑜� �씠�슜�븯�뿬 �끂�옒�뱾�쓣 媛��졇�샂 - �럹�씠吏�
 	@Select("select * from( "
 			+ "select s.song_id, s.song_name, s.song_thumbnail, al.album_id, al.album_name, "
 			+ "row_number() over (order by s.song_name) as rn "
@@ -85,14 +85,14 @@ public interface SearchMapper {
 			+ "where rn between #{arg1} and #{arg2}")
 	public ArrayList<SongDto> getAlbum_Song(int album_id, int index, int endIndex);
 	
-	// album_info.jsp의 페이징 처릴위한 count값
+	// album_info.jsp�쓽 �럹�씠吏� 泥섎┫�쐞�븳 count媛�
 	@Select("select count(*) "
 			+ "from song s "
 			+ "inner join album al on al.album_id=s.album_id "
 			+ "where al.album_id=#{album_id}")
 	public Integer getAlbum_Song_MaxIndex(int album_id);
 	
-	// 문자열을 입력 받아 노래를 검색 - 페이징
+	// 臾몄옄�뿴�쓣 �엯�젰 諛쏆븘 �끂�옒瑜� 寃��깋 - �럹�씠吏�
 	@Select("select * from ( "
 			+ "select s.song_id, s.song_name, s.song_thumbnail, a.album_id, a.album_name, "
 			+ "count(t.song_id) as song_thumbup, "
@@ -106,22 +106,22 @@ public interface SearchMapper {
 			+ "where rn between #{arg2} and #{arg3}")
 	public ArrayList<SongDto> getSearch_song(String str, String replaceStr, int index, int endView);
 	
-	// 노래를 클릭해 들어갈시 최근 본 노래 테이블에 등록
+	// �끂�옒瑜� �겢由��빐 �뱾�뼱媛덉떆 理쒓렐 蹂� �끂�옒 �뀒�씠釉붿뿉 �벑濡�
 	@Insert("insert into viewed_song values(#{arg1}, #{arg0}, sysdate)")
 	public void insertViewed_song(int song_id, int user_num);
 	
-	// 최근 본 노래테이블에 정보가 존재하는지
+	// 理쒓렐 蹂� �끂�옒�뀒�씠釉붿뿉 �젙蹂닿� 議댁옱�븯�뒗吏�
 	@Select("select user_num, song_id, to_char(viewed_date, 'yyyy-MM-dd HH24:mi:ss') as viewed_date "
 			+ "from viewed_song "
 			+ "where song_id=#{arg0} and user_num=#{arg1}")
 	public ViewedSongDto getViewed_song(int song_id, int user_num);
 	
-	// 최근 본 노래 테이블에 존재할시 업데이트
+	// 理쒓렐 蹂� �끂�옒 �뀒�씠釉붿뿉 議댁옱�븷�떆 �뾽�뜲�씠�듃
 	@Update("update viewed_song set viewed_date=sysdate "
 			+ "where song_id=#{arg0} and user_num=#{arg1}")
 	public void updateViewed_song(int song_id, int user_num);
 	
-	// 문자열을 입력 받아 아티스트를 검색 - 페이징
+	// 臾몄옄�뿴�쓣 �엯�젰 諛쏆븘 �븘�떚�뒪�듃瑜� 寃��깋 - �럹�씠吏�
 	@Select("select * from ( "
 			+ "select artist.artist_id, artist_name, artist_thumbnail, artist_type, "
 			+ "listagg(member_name, ', ') as member, "
@@ -134,7 +134,7 @@ public interface SearchMapper {
 			+ "where rn between #{arg2} and #{arg3}")
 	public ArrayList<ArtistDto> getSearch_artist(String str, String replaceStr, int index, int endIndex);
 	
-	// 문자열을 입력 받아 앨범을 검색 - 페이징
+	// 臾몄옄�뿴�쓣 �엯�젰 諛쏆븘 �븿踰붿쓣 寃��깋 - �럹�씠吏�
 	@Select("select * from( "
 			+ "select album_id, album_name, album_thumbnail, album_genre, release_date, "
 			+ "row_number() over (order by instr(album_name, #{arg0}), album_name) as rn "
@@ -144,41 +144,41 @@ public interface SearchMapper {
 			+ "where rn between #{arg2} and #{arg3}")
 	public ArrayList<AlbumDto> getSearch_album(String str, String replaceStr, int index, int endView);
 	
-	// 해당 앨범의 아티스트를 가져옴
+	// �빐�떦 �븿踰붿쓽 �븘�떚�뒪�듃瑜� 媛��졇�샂
 	@Select("select artist_id, artist_name "
 			+ "from artist "
 			+ "where artist_id in (select artist_id from album_artist where album_id=#{album_id})")
 	public ArrayList<ArtistDto> getAlbum_Artist(int album_id);
 	
-	// 검색 결과의 갯수를 가져옴
+	// 寃��깋 寃곌낵�쓽 媛��닔瑜� 媛��졇�샂
 	@Select("select count(*) from ${arg1} "
 			+ "where lower(replace(${arg1}_name, ' ','')) like lower(replace(#{arg0}, ' ', ''))")
 	public int getMaxIndex(String str, String type);
 	
-	// 좋아요 했는지?
+	// 醫뗭븘�슂 �뻽�뒗吏�?
 	@Select("select count(*) "
 			+ "from thumbup_${arg2} "
 			+ "where ${arg2}_id = #{arg0} "
 			+ "and user_num=#{arg1}")
 	public int getUserThumbup(int id, int user_num, String infoType);
 	
-	// 좋아요
+	// 醫뗭븘�슂
 	@Insert("insert into thumbup_${arg2} "
 			+ "values(#{arg1}, #{arg0}, sysdate)")
 	public void thumbup(int id, int user_num, String infoType);
 	
-	// 좋아요 취소
+	// 醫뗭븘�슂 痍⑥냼
 	@Delete("delete thumbup_${arg2} "
 			+ "where user_num=#{arg1} and ${arg2}_id=#{arg0}")
 	public void delThumbup(int id, int user_num, String infoType);
 	
-	// 좋아요 갯수
+	// 醫뗭븘�슂 媛��닔
 	@Select("select count(*) from thumbup_${arg1} "
 			+ "where ${arg1}_id=#{arg0}")
 	public int getThumbup(int id, String infoType);
 	
-	//============== 리뷰 ================
-	// 리뷰의 정보를 가져옴
+	//============== 由щ럭 ================
+	// 由щ럭�쓽 �젙蹂대�� 媛��졇�샂
 	@Select("select * from( "
 			+ "select rv.review_num, rv.user_num, us.user_name, rv.type_id, rv.review_point, rv.review_content, "
 			+ "to_char(rv.review_date, 'yyyy.MM.dd HH:mm') as review_date, rv.suggestion, rv.flag, "
@@ -189,40 +189,40 @@ public interface SearchMapper {
 			+ "where rn between #{arg2} and #{arg3}")
 	public ArrayList<ReviewDto> getReview(String flag, int id, int index, int endIndex);
 	
-	// 리뷰의 최대 갯수를 가져옴
+	// 由щ럭�쓽 理쒕� 媛��닔瑜� 媛��졇�샂
 	@Select("select count(*) from review "
 			+ "where flag=#{arg0} and type_id=#{arg1}")
 	public int getReviewCount(String flag, int id);
 	
-	// 사용자 본인의 리뷰를 가져옴
+	// �궗�슜�옄 蹂몄씤�쓽 由щ럭瑜� 媛��졇�샂
 	@Select("select * from review "
 			+ "where flag=#{arg0} and type_id=#{arg1} "
 			+ "and user_num=#{arg2}")
 	public ReviewDto getUserReview(String flag, int type_id, int user_num);
 	
-	// 리뷰 작성
+	// 由щ럭 �옉�꽦
 	@Insert("insert into review values(\r\n"
 			+ "review_seq.nextval, #{user_num}, #{type_id}, #{review_point}, #{review_content}, sysdate, 0, #{flag})")
 	public void insertUserReview(ReviewDto userReview);
 	
-	// 리뷰 수정
+	// 由щ럭 �닔�젙
 	@Update("update review set review_point=#{review_point}, "
 			+ "review_content=#{review_content}, review_date=sysdate "
 			+ "where flag=#{flag} and type_id=#{type_id} and user_num=#{user_num}")
 	public void rewriteUserReview(ReviewDto userReview);
 	
-	// 리뷰 삭제
+	// 由щ럭 �궘�젣
 	@Delete("delete review where flag=#{arg0} "
 			+ "and type_id=#{arg1} and user_num=#{arg2} "
 			+ "and review_num=${arg3}")
 	public void deleteUserReview(String flag, int type_id, int user_num, int review_num);
 	
-	// 리뷰 신고 전 확인
+	// 由щ럭 �떊怨� �쟾 �솗�씤
 	@Select("select report_num from review_report "
 			+ "where user_num=#{arg0} and review_num=#{arg1}")
 	public Integer checkReport(int user_num, int review_num);
 	
-	// 리뷰 신고
+	// 由щ럭 �떊怨�
 	@Insert("insert into review_report "
 			+ "values(report_seq.nextval, #{arg0}, "
 			+ "#{arg1}, #{arg2}, sysdate)")

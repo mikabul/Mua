@@ -37,7 +37,7 @@
 
 			<div class="remember-forgot">
 				<label><input type="checkbox">Remember Me</label>
-				<a href="#">Forgot password?</a>
+				<a href="${root }user/getGoogleAuthUrl">Forgot password?</a>
 			</div>
 
 			<form:button type="submit" class="btn">Login</form:button>

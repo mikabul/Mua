@@ -55,18 +55,18 @@ public class SearchController {
 			maxPage -= 1;
 		}
 		
-		if(maxPage <= 10) { // 최대 페이지 10개이하
+		if(maxPage <= 10) { // 理쒕� �럹�씠吏� 10媛쒖씠�븯
 			loadPage = new int[maxPage];
 			for(int i = 1; i <= maxPage; i++) {
 				loadPage[i - 1] = i;
 			}
-		} else { // 최대 페이지 10개 초과
+		} else { // 理쒕� �럹�씠吏� 10媛� 珥덇낵
 			loadPage = new int[10];
-			if(page < 6) { // 6페이지 미만
+			if(page < 6) { // 6�럹�씠吏� 誘몃쭔
 				for(int i = 1; i <= 10; i++) {
 					loadPage[i - 1] = i;
 				}
-			} else if(page + 6 > maxPage) { // 최대페이지의 -5
+			} else if(page + 6 > maxPage) { // 理쒕��럹�씠吏��쓽 -5
 				int j = 9;
 				for(int i = maxPage; i > maxPage - 10; i-- ) {
 					loadPage[j] = i;
@@ -115,7 +115,7 @@ public class SearchController {
 		ArrayList<ArtistDto> artistList = searchService.getBriefArtist(song_id);
 		List<SongDto> songList = new ArrayList<SongDto>();
 		
-		// 아티스트의 아이디를 통해
+		// �븘�떚�뒪�듃�쓽 �븘�씠�뵒瑜� �넻�빐
 		Iterator<ArtistDto> artistListIt = artistList.iterator();
 		while(artistListIt.hasNext()) {
 			ArtistDto tempArtistDto = artistListIt.next();
@@ -144,7 +144,7 @@ public class SearchController {
 			}
 		}
 		
-		// 스크립트에서 이용하기위해 JSON으로 변환
+		// �뒪�겕由쏀듃�뿉�꽌 �씠�슜�븯湲곗쐞�빐 JSON�쑝濡� 蹂��솚
 		ObjectMapper objectMapper = new ObjectMapper();
 		
 		try {
@@ -162,7 +162,7 @@ public class SearchController {
 		System.out.println("song_id : " + song_id);
 		System.out.println("user_num : " + loginUserBean.getUser_num());
 		
-		// 리뷰
+		// 由щ럭
 		ReviewDto tempReviewDto = searchService.getUserReview("song", song_id, loginUserBean.getUser_num());
 		if(tempReviewDto != null) {
 			userReviewDto.setReview_num(tempReviewDto.getReview_num());
@@ -176,7 +176,7 @@ public class SearchController {
 			userReviewDto.setSuggestion(tempReviewDto.getSuggestion());
 		}
 		
-		// 최근 본 노래
+		// 理쒓렐 蹂� �끂�옒
 		if(loginUserBean.isUserLogin()) {
 			if(searchService.getViewed_song(song_id, loginUserBean.getUser_num()) == null){
 				searchService.insertViewed_song(song_id, loginUserBean.getUser_num());
@@ -198,7 +198,7 @@ public class SearchController {
 		model.addAttribute("artistDto", artistDto);
 		model.addAttribute("albumList", albumList);
 		
-		// 리뷰
+		// 由щ럭
 		ReviewDto tempReviewDto = searchService.getUserReview("artist", artist_id, loginUserBean.getUser_num());
 		if(tempReviewDto != null) {
 			userReviewDto.setReview_num(tempReviewDto.getReview_num());
@@ -220,33 +220,33 @@ public class SearchController {
 		
 		int index = 1;
 		int maxView = 10;
-		// 검색결과의 최대 갯수
+		// 寃��깋寃곌낵�쓽 理쒕� 媛��닔
 		int maxIndex = searchService.getAlbum_Song_MaxIndex(album_id);
-		// 최대 페이지
+		// 理쒕� �럹�씠吏�
 		int maxPage = maxIndex / maxView + 1;
-		// 현재 페이지
+		// �쁽�옱 �럹�씠吏�
 		int page = index / maxView + 1;
-		// 페이지 버튼 배열
+		// �럹�씠吏� 踰꾪듉 諛곗뿴
 		int loadPage[];
-		// 페이징 처리를 위한 쿼리값
+		// �럹�씠吏� 泥섎━瑜� �쐞�븳 荑쇰━媛�
 		int endView = maxView * page;
 		
 		if(maxIndex % 20 == 0) {
 			maxPage -= 1;
 		}
 		
-		if(maxPage <= 10) { // 최대 페이지 10개이하
+		if(maxPage <= 10) { // 理쒕� �럹�씠吏� 10媛쒖씠�븯
 			loadPage = new int[maxPage];
 			for(int i = 1; i <= maxPage; i++) {
 				loadPage[i - 1] = i;
 			}
-		} else { // 최대 페이지 10개 초과
+		} else { // 理쒕� �럹�씠吏� 10媛� 珥덇낵
 			loadPage = new int[10];
-			if(page < 6) { // 6페이지 미만
+			if(page < 6) { // 6�럹�씠吏� 誘몃쭔
 				for(int i = 1; i <= 10; i++) {
 					loadPage[i - 1] = i;
 				}
-			} else if(page + 6 > maxPage) { // 최대페이지의 -5
+			} else if(page + 6 > maxPage) { // 理쒕��럹�씠吏��쓽 -5
 				int j = 9;
 				for(int i = maxPage; i > maxPage - 10; i-- ) {
 					loadPage[j] = i;
@@ -265,7 +265,7 @@ public class SearchController {
 		ArrayList<ArtistDto> artistList = searchService.getAlbum_Artist_info(album_id);
 		ArrayList<SearchResultDto> searchResultList = searchService.getAlbum_Song(album_id, index, endView);
 		
-		// 자바 스크립트에서 사용하기 위한 JSON
+		// �옄諛� �뒪�겕由쏀듃�뿉�꽌 �궗�슜�븯湲� �쐞�븳 JSON
 		ObjectMapper objectMapper = new ObjectMapper();
 		
 		try {
@@ -278,11 +278,11 @@ public class SearchController {
 		model.addAttribute("albumDto", albumDto);
 		model.addAttribute("artistList", artistList);
 		model.addAttribute("searchResultList", searchResultList);
-		// 페이징 처리
+		// �럹�씠吏� 泥섎━
 		model.addAttribute("maxView", maxView);
 		model.addAttribute("loadPage", loadPage);
 		
-		// 리뷰
+		// 由щ럭
 		ReviewDto tempReviewDto = searchService.getUserReview("album", album_id, loginUserBean.getUser_num());
 		if(tempReviewDto != null) {
 			userReviewDto.setReview_num(tempReviewDto.getReview_num());
@@ -300,7 +300,7 @@ public class SearchController {
 	
 	@PostMapping("/insertReview")
 	public String insertReview(@ModelAttribute("userRrviewDto") ReviewDto userReviewDto) {
-		System.out.println("POST들어옴");
+		System.out.println("POST�뱾�뼱�샂");
 		searchService.insertUserReview(userReviewDto);
 		
 		switch(userReviewDto.getFlag()) {

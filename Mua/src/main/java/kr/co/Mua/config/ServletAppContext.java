@@ -45,6 +45,7 @@ import kr.co.Mua.service.ChartService;
 @ComponentScan("kr.co.Mua.dao")
 @ComponentScan("kr.co.Mua.service")
 @ComponentScan("kr.co.Mua.controller")
+@ComponentScan("kr.co.Mua.Social")
 @PropertySource("/WEB-INF/properties/db.properties")
 public class ServletAppContext implements WebMvcConfigurer{
 	
@@ -176,7 +177,6 @@ public class ServletAppContext implements WebMvcConfigurer{
 		factoryBean.setSqlSessionFactory(factory);
 		return factoryBean;
 	}
-	
     @Bean("mailSender")
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

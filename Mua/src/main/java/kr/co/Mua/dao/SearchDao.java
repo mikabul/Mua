@@ -86,7 +86,7 @@ public class SearchDao {
 		return searchMapper.getAlbum_Song_MaxIndex(album_id);
 	}
 	
-	//=========== 좋아요 ==========
+	//=========== 醫뗭븘�슂 ==========
 	public int getUserThumbup(int id, int user_num, String infoType) {
 		return searchMapper.getUserThumbup(id, user_num, infoType);
 	}
@@ -103,7 +103,7 @@ public class SearchDao {
 		return searchMapper.getThumbup(id, infoType);
 	}
 	
-	//============ 리뷰 ===========
+	//============ 由щ럭 ===========
 	public ArrayList<ReviewDto> getReview(String flag, int id, int index, int endIndex) {
 		return searchMapper.getReview(flag, id, index, endIndex);
 	}
