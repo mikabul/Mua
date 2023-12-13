@@ -27,10 +27,7 @@ import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SearchResultDto;
 import kr.co.Mua.bean.SongDto;
-<<<<<<< HEAD
 import kr.co.Mua.bean.UserBean;
-=======
->>>>>>> refs/heads/김진욱
 import kr.co.Mua.service.MailSendService;
 import kr.co.Mua.service.SearchService;
 import kr.co.Mua.service.UserService;
