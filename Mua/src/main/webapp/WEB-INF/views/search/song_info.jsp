@@ -11,6 +11,8 @@ request.setCharacterEncoding("utf-8");
 <head>
 <meta charset="UTF-8">
 <title>Mua</title>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- 부트 스트랩 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -18,12 +20,23 @@ request.setCharacterEncoding("utf-8");
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
 <!-- flickity -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.2/flickity.pkgd.min.js"></script>
 <!-- css -->
 <link rel="stylesheet" href="${root}style/any_info.css">
+<!-- 별점 -->
 <style>
-
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+       .rate { display: inline-block;border: 0;margin-right: 15px;}
+.rate > input {display: none;}
+.rate > label {float: right;color: #ddd}
+.rate > label:before {display: inline-block;font-size: 1rem;padding: .3rem .2rem;margin: 0;cursor: pointer;font-family: FontAwesome;content: "\f005 ";}
+.rate .half:before {content: "\f089 "; position: absolute;padding-right: 0;}
+.rate input:checked ~ label, 
+.rate label:hover,.rate label:hover ~ label { color: #f73c32 !important;  } 
+.rate input:checked + .rate label:hover,
+.rate input input:checked ~ label:hover,
+.rate input:checked ~ .rate label:hover ~ label,  
+.rate label:hover ~ input:checked ~ label { color: #f73c32 !important;  } 
 </style>
 </head>
 <body>
@@ -72,7 +85,7 @@ request.setCharacterEncoding("utf-8");
 							</tr>
 						</table>
 						<div style="margin-top: 30px;">
-							<button id="thumbupBtn" user_num="${loginUserBean.user_num}" song_id="${infoSongDto.song_id}" infoType="song">
+							<button id="thumbupBtn">
 								
 							</button>
 							<span id="thumbupCount">${infoSongDto.song_thumbup}</span>
@@ -110,194 +123,318 @@ request.setCharacterEncoding("utf-8");
 			</div>
 		</div>
 		<!-- 리뷰 -->
-		
+		<div class="container">
+			<div>
+				<table style="margin: 20px auto;">
+					<colgroup>
+						<!-- 리뷰번호 -->
+						<col style="width: 100px;"/>
+						<!-- 작성자 -->
+						<col style="width: 200px;" />
+						<!-- 리뷰내용 -->
+						<col style="width: 330px;" />
+						<!-- 별점 -->
+						<col style="width: 80px;" />
+						<!-- 작성일 -->
+						<col style="width: 50px;" />
+						<!-- 신고 -->
+						<col style="width: 130px;" />
+					</colgroup>
+					<thead>
+						<tr class="line">
+							<th scope="col" class="rank">번호</th>
+							<th scope="col" class="rank">작성자</th>
+							<th scope="col" class="rank">리뷰</th>
+							<th scope="col" class="rank">별점</th>
+							<th scope="col" class="rank">작성일</th>
+							<th scope="col"><span class="none">신고</span></th>
+						</tr>
+					</thead>
+					<tbody id="review">
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="container">
+			<div>
+				<div class="row justify-content-center">
+			        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+			        	<div id="preBtn"></div>
+			        	<div id="reviewPageBtn"></div>
+			        	<div id="postBtn"></div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+		<div class="text-center" style="margin-top: 13px;">
+			<hr />
+		</div>
+		<div class="container" style="margin-top: 13px;width: 50%">
+			<form:form modelAttribute="userReviewDto" action="">
+				<form:hidden path="review_num"/>
+				<form:hidden path="user_num" value="${loginUserBean.user_num}"/>
+				<form:hidden path="type_id" value="${infoSongDto.song_id}"/>
+				<form:hidden path="flag" value="song"/>
+				<form:hidden path="suggestion" value="0"/>
+				<div class="text-center">
+					<fieldset class="rate">
+						<input type="radio" class="review_point" id="rating10" name="review_point" value="5.0"><label for="rating10" title="5점"></label>
+						<input type="radio" class="review_point" id="rating9" name="review_point" value="4.5"><label class="half" for="rating9" title="4.5점"></label>
+						<input type="radio" class="review_point" id="rating8" name="review_point" value="4.0"><label for="rating8" title="4점"></label>
+						<input type="radio" class="review_point" id="rating7" name="review_point" value="3.5"><label class="half" for="rating7" title="3.5점"></label>
+						<input type="radio" class="review_point" id="rating6" name="review_point" value="3.0"><label for="rating6" title="3점"></label>
+						<input type="radio" class="review_point" id="rating5" name="review_point" value="2.5"><label class="half" for="rating5" title="2.5점"></label>
+						<input type="radio" class="review_point" id="rating4" name="review_point" value="2.0"><label for="rating4" title="2점"></label>
+						<input type="radio" class="review_point" id="rating3" name="review_point" value="1.5"><label class="half" for="rating3" title="1.5점"></label>
+						<input type="radio" class="review_point" id="rating2" name="review_point" value="1.0"><label for="rating2" title="1점"></label>
+						<input type="radio" class="review_point" id="rating1" name="review_point" value="0.5"><label class="half" for="rating1" title="0.5점"></label>
+					</fieldset>
+				</div>
+				<div class="form-group row justify-content-center">
+					<div class="col-sm-10">
+						<form:textarea path="review_content" class="form-control" 
+						placeholder="내용을 입력해주세요..." required="true" rows="4"/>
+						<div id="submitBtn" class="text-center" style="margin-top: 13px;"></div>
+					</div>
+				</div>
+			</form:form>
+		</div>
 	</section>
+	<div class="none" id="hiddenValue" flag="song" type_id="${infoSongDto.song_id}"></div>
 
 	<c:import url="/WEB-INF/views/include/bottom.jsp" />
-	
+
 <script>
+var on = true;
+// 가사를 불러옴
+if (${infoSongDto.lyrics != '-'}) {
 	
-	var on = true;
-	// 가사를 불러옴
-	if (${infoSongDto.lyrics != '-'}) {
+	$.ajax({
+	    type: 'GET',
+	    url: "${root}getLyric",
+	    data: {
+	        file_name: '${infoSongDto.lyrics}'
+	    },
+	    success: function(res){
+	    	// 가사
+	    	var htmlLyric = '<div>';
+	    	
+	    	htmlLyric += '가사 <br><hr>';
+	    	htmlLyric += '</div>';
+	    	htmlLyric += res;
+	        $("#lyric").html(htmlLyric);
+	    }
+	});
+
+} else{
+	$("#lyric").html('<div>가사가 존재하지 않습니다.</div>');
+	$("#lyric").addClass(' none-lyric');
+	$("#lyricOn").addClass(' none');
+}
+
+// 가사, 펼치기 접기
+$('#lyricOn').click(function(){
+	if(on){
+		on = false;
+		$('#lyric').addClass('on');
+		$('#lyricOn').text('△접기');
+	} else {
+		on = true;
+		$('#lyric').removeClass('on');
+		$('#lyricOn').text('▽펼치기');
+	}
+});
+
+var $carousel = new Flickity('.main-carousel',{
+	cellAlign: 'center',
+    contain: false,
+    pageDots: false,
+    wrapAround: true,
+    prevNextButtons: false,
+    freeScroll: true
+});
+
+// 다른 노래 클릭시 내용 전환
+$('div.other_song').on('dblclick', function(event){
+	event.preventDefault();
+	
+	var href = $(this).attr('href');
+	
+	$.ajax({
+		url: '${root}changeSong_info?song_id=' + href,
+		type: 'GET',
+		data:{
+			song_id: href
+		},
+		success: function(data){
+			
+			// 현재 URL 가져오기
+			var currentUrl = window.location.href;
+
+			// URL에서 song_id 값 변경
+			var newSongId = href; // 변경할 ID
+			var updatedUrl = currentUrl.replace(/(song_id=)\d+/, '$1' + newSongId);
+
+			// URL 변경 (새로운 페이지 로드)
+			window.history.replaceState(null, null, updatedUrl);
+			
+			var thumbnail_name = data.infoSongDto.song_thumbnail;
+
+			$('#lyricOn').removeClass('none');
+			$("#lyric").removeClass('none-lyric');
+			
+			var thumbnail = '<img src="${root}images/thumbnail/song/';
+			thumbnail += thumbnail_name + '" />';
+			
+			var infoSongDto = data.infoSongDto;
+			var artistList = data.artistList;
+			var lyric = data.lyric;
+			// 노래 이름
+			var songInfoHTML = '<div class="song_name">'
+							+ infoSongDto.song_name
+							+ '</div>';
+			// 아티스트
+			songInfoHTML += '<div class="align_left"><span>'
+						+ '<a href="${root}search/artist_info?artsit_id='
+						+ artistList[0].artist_id + '">'
+						+ artistList[0].artist_name + '</a></span>';
+			
+			if(artistList.length > 1){
+				for(var i = 1; i < artistList.length; i++){
+					songInfoHTML += '<span>, <a href="${root}search/artist_info?artist_id='
+									+ artistList[i].artist_id + '">'
+									+ artistList[i].artist_name + '</a></span>';
+				}
+			}
+			
+			songInfoHTML += '</div>';
+			
+			// 앨범이름, 발매일, 장르
+			var moreInfoHTML = '<table class="align_left">'
+								// 앨범이름
+								+ '<tr><td>앨범</td><td>'
+								+ '<a href="${root}search/album_info?album_id='
+								+ infoSongDto.album_id + '">'
+								+ infoSongDto.album_name + '</a></td></tr>'
+								// 발매일
+								+ '<tr><td>발매일</td><td>'
+								+ infoSongDto.release_date + '</td></tr>'
+								// 장르
+								+ '<tr><td>장르</td><td>'
+								+ infoSongDto.song_genre + '</td></tr>';
+			
+			moreInfoHTML += '<div style="margin-top: 30px;">'
+						+ 	'<button id="thumbupBtn"></button>'
+						+ 	'<span id="thumbupCount">${infoSongDto.song_thumbup}</span>'
+						+ 	'</div>';
+			
+			$('#thumbnail').html(thumbnail);
+			$('#song_info').html(songInfoHTML);
+			$('#more_info').html(moreInfoHTML);
+			getThumbup();
+			
+			// 가사
+			if(lyric != "-"){
+				var lyricHTML = '<div>'
+					+ '가사 <br><hr>'
+					+ '</div>'
+					+ lyric;
 		
-		$.ajax({
-		    type: 'GET',
-		    url: "${root}getLyric",
-		    data: {
-		        file_name: '${infoSongDto.lyrics}'
-		    },
-		    success: function(res){
-		    	// 가사
-		    	var htmlLyric = '<div>';
-		    	
-		    	htmlLyric += '가사 <br><hr>';
-		    	htmlLyric += '</div>';
-		    	htmlLyric += res;
-		        $("#lyric").html(htmlLyric);
-		    }
-		});
+				$("#lyric").html(lyricHTML);
+				
+			} else {
+				$("#lyric").html('<div>가사가 존재하지 않습니다.</div>');
+				$("#lyric").addClass(' none-lyric');
+				$("#lyricOn").addClass(' none');
+			}
+			
+	        // 가사가 펼쳐져 있다면 접기
+	        if(!on){
+	        	on = true;
+				$('#lyric').removeClass('on');
+				$('#lyricOn').text('▽펼치기');
+			}
+	        
+		},
+		error: function(){
+			alert('실패');
+		}
+	}); //ajax_END
+});
+
+// 가수 길이에 따라 버튼 추가
+var artist = "";
+var artistList = JSON.parse('${artistListJson}');
+for(var i = 0; i < artistList.length ; i++){
+	artist += artistList[i].artist_name;
+}
+
+if(artist.length > 35){
+	$('#artist').addClass('ellipsis');
 	
-	} else{
-		$("#lyric").html('<div>가사가 존재하지 않습니다.</div>');
-		$("#lyric").addClass(' none-lyric');
-		$("#lyricOn").addClass(' none');
+	var dropdown = '<span class="btn-group dropright">'
+		+ '<button class="btn btn-outline-dark btn-sm dropdown-toggle" style="border: none" type="button" data-toggle="dropdown" aria-expanded="false">'
+		+ ''
+		+ '</button><div class="dropdown-menu">';
+	
+	for(var i = 0; i < artistList.length ; i++){
+		dropdown += '<a class="dropdown-item" '
+			+ 'href="${root}search/artist_info?artist_id='
+			+ artistList[i].artist_id + '" style="font-size: 14px">'
+			+ artistList[i].artist_name
+			+ '</a>';
 	}
 	
-	// 가사, 펼치기 접기
-	$('#lyricOn').click(function(){
-		if(on){
-			on = false;
-			$('#lyric').addClass('on');
-			$('#lyricOn').text('△접기');
-		} else {
-			on = true;
-			$('#lyric').removeClass('on');
-			$('#lyricOn').text('▽펼치기');
-		}
-	});
-	
-	var $carousel = new Flickity('.main-carousel',{
-		cellAlign: 'center',
-	    contain: false,
-	    pageDots: false,
-	    wrapAround: true,
-	    prevNextButtons: false,
-	    freeScroll: true
-	});
-	
-	// 다른 노래 클릭시 내용 전환
-	$('div.other_song').on('dblclick', function(event){
-		event.preventDefault();
-		
-		var href = $(this).attr('href');
-		
-		$.ajax({
-			url: '${root}changeSong_info',
-			type: 'GET',
-			data:{
-				song_id: href
-			},
-			success: function(data){
-				var thumbnail_name = data.infoSongDto.song_thumbnail;
+	dropdown += '</div></span>';
+	$('#dropdown').html(dropdown);
+}
 
-				$('#lyricOn').removeClass('none');
-				$("#lyric").removeClass('none-lyric');
-				
-				var thumbnail = '<img src="${root}images/thumbnail/song/';
-				thumbnail += thumbnail_name + '" />';
-				
-				var infoSongDto = data.infoSongDto;
-				var artistList = data.artistList;
-				var lyric = data.lyric;
-				// 노래 이름
-				var songInfoHTML = '<div class="song_name">'
-								+ infoSongDto.song_name
-								+ '</div>';
-				// 아티스트 이름
-				songInfoHTML += '<div class="align_left"><span>'
-							+ '<a href="${root}search/artist_info?artsit_id='
-							+ artistList[0].artist_id + '">'
-							+ artistList[0].artist_name + '</a></span>';
-				
-				if(artistList.length > 1){
-					for(var i = 1; i < artistList.length; i++){
-						songInfoHTML += '<span>, <a href="${root}search/artist_info?artist_id='
-										+ artistList[i].artist_id + '">'
-										+ artistList[i].artist_name + '</a></span>';
-					}
-				}
-				
-				songInfoHTML += '</div>';
-				
-				// 앨범이름, 발매일, 장르
-				var moreInfoHTML = '<table class="align_left">'
-									// 앨범이름
-									+ '<tr><td>앨범</td><td>'
-									+ '<a href="${root}search/album_info?album_id='
-									+ infoSongDto.album_id + '">'
-									+ infoSongDto.album_name + '</a></td></tr>'
-									// 발매일
-									+ '<tr><td>발매일</td><td>'
-									+ infoSongDto.release_date + '</td></tr>'
-									// 장르
-									+ '<tr><td>장르</td><td>'
-									+ infoSongDto.song_genre + '</td></tr>';
-									
-				$('#thumbnail').html(thumbnail);
-				$('#song_info').html(songInfoHTML);
-				$('#more_info').html(moreInfoHTML);
-				
-				// 가사
-				if(lyric != "-"){
-					var lyricHTML = '<div>'
-    					+ '가사 <br><hr>'
-    					+ '</div>'
-    					+ lyric;
-			
-					$("#lyric").html(lyricHTML);
-					
-				} else {
-					$("#lyric").html('<div>가사가 존재하지 않습니다.</div>');
-					$("#lyric").addClass(' none-lyric');
-					$("#lyricOn").addClass(' none');
-				}
-				
-		        // 가사가 펼쳐져 있다면 접기
-		        if(!on){
-		        	on = true;
-					$('#lyric').removeClass('on');
-					$('#lyricOn').text('▽펼치기');
-				}
+//=========== 좋아요 ===========
+var id = '';
+var user_num = '';
+var infoType = '';
+var thumbupBtn = '';
+var isLogin = ${loginUserBean.userLogin};
+
+function getThumbup(){
+	thumbupBtn = document.querySelector('#thumbupBtn');
+	id = ${infoSongDto.song_id};
+	user_num = ${loginUserBean.user_num};
+	infoType = 'song';
+	
+	if(isLogin){
+		$.ajax({
+			url : '${root}getThumbup',
+			type : 'GET',
+			data : {
+				id: id,
+				user_num: user_num,
+				infoType: infoType
+			},
+			success: function(result){
+				var icon = '<img src="${root}images/thumbup/'
+					+	result + '"/>';
+				$('#thumbupBtn').html(icon)
 			},
 			error: function(){
 				alert('실패');
 			}
-		}); //ajax_END
-	});
-	
-	// 가수 길이에 따라 버튼 추가
-	var artist = "";
-	var artistList = JSON.parse('${artistListJson}');
-	for(var i = 0; i < artistList.length ; i++){
-		artist += artistList[i].artist_name;
-	}
-
-	if(artist.length > 35){
-		$('#artist').addClass('ellipsis');
-		
-		var dropdown = '<span class="btn-group dropright">'
-			+ '<button class="btn btn-outline-dark btn-sm dropdown-toggle" style="border: none" type="button" data-toggle="dropdown" aria-expanded="false">'
-			+ ''
-			+ '</button><div class="dropdown-menu">';
-		
-		for(var i = 0; i < artistList.length ; i++){
-			dropdown += '<a class="dropdown-item" '
-				+ 'href="${root}search/artist_info?artist_id='
-				+ artistList[i].artist_id + '" style="font-size: 14px">'
-				+ artistList[i].artist_name
-				+ '</a>';
-		}
-		
-		dropdown += '</div></span>';
-		$('#dropdown').html(dropdown);
+		});
+	} else {
+		var icon = '<img src="${root}images/thumbup/heart-regula.png"/>';
+		$('#thumbupBtn').html(icon)
 	}
 	
-	var id = '';
-	var user_num = '';
-	var infoType = '';
-	var thumbupBtn = '';
-	
-	$(document).ready(function(){
-		thumbupBtn = document.querySelector('#thumbupBtn');
-		id = thumbupBtn.getAttribute('song_id');
-		user_num = thumbupBtn.getAttribute('user_num');
-		infoType = thumbupBtn.getAttribute('infoType');
-		
-		if(user_num != 0){
+	thumbupBtn.addEventListener('click', function(){
+		if(!isLogin){
+			alert('로그인 후 이용해주세요.');
+			location.href='${root}user/login';
+		} else {
 			$.ajax({
-				url : '${root}getThumbup',
+				url : '${root}thumbup',
 				type : 'GET',
+				dataType : 'json',
 				data : {
 					id: id,
 					user_num: user_num,
@@ -305,42 +442,264 @@ request.setCharacterEncoding("utf-8");
 				},
 				success: function(result){
 					var icon = '<img src="${root}images/thumbup/'
-						+	result + '"/>';
-					$('#thumbupBtn').html(icon)
-				},
-				error: function(){
-					alert('실패');
+							+	result.icon + '"/>';
+					var thumbupCount = result.thumbupCount;
+					
+					$("#thumbupBtn").html(icon);
+					$("#thumbupCount").html(thumbupCount);
 				}
 			});
+		}
+	});
+};
+getThumbup();
+
+//============ 리뷰 ============
+var type_id = '';
+var flag = '';
+
+$(document).ready(function(){
+	
+	thumbupBtn = document.querySelector('#hiddenValue');
+	type_id = thumbupBtn.getAttribute('type_id');
+	flag = thumbupBtn.getAttribute('flag');
+		
+		$.ajax({
+			url: '${root}getFirstReview',
+			type: 'GET',
+			data: {
+				type_id: type_id,
+				flag: flag
+			},
+			success: function(result){
+				getReviewList(result);
+				
+				var index = parseInt(result.index, 10);
+				btnAddEvent(index);
+			}
+		});
+	});
+	
+	function getReviewList(result){
+		var review = "";
+		var reviewPageBtns = '';
+		
+		var reviewList = result.reviewList;
+		var loadPage = result.loadPage;
+		var page = parseInt(result.page, 10);
+		var index = parseInt(result.index, 10);
+		var maxView = parseInt(result.maxView, 10);
+		var maxPage = parseInt(result.maxPage, 10);
+		
+		for(var i = 0; i < reviewList.length; i++){
+			review += '<tr class="line">'
+					+ '<td class="top_bottom rank">' + (index+i) + '</td>'
+					+ '<td class="top_bottom rank">' + reviewList[i].user_name + '</td>'
+					+ '<td class="top_bottom">' + reviewList[i].review_content + '</td>'
+					+ '<td class="top_bottom rank">' + reviewList[i].review_point + '</td>'
+					+ '<td class="top_bottom rank">' + reviewList[i].review_date + '</td>'
+					+ '<td class="rank"><button type="button" class="declaration btn btn-outline-danger btn-sm reportBtn" '
+					+ 'review_num="' + reviewList[i].review_num + '" report_user_num="' + reviewList[i].user_num
+					+ '"> 신고 </button></td>'
+					+ '</tr>';
+		}
+		$("#review").html(review);
+		getPrePostBtn(page, maxPage, index, maxView);
+		getReviewBtn(loadPage, index, maxView);
+	};
+	
+	function getPrePostBtn(page, maxPage, index, maxView){
+		
+		var preBtn = '<div class="btn-group mr-2" role="group" aria-label="First group">';
+		
+		if(page <= 10){
+			preBtn += '<button type="button" class="btn btn-secondary disabled">10개</button>';
 		} else {
-			var icon = '<img src="${root}images/thumbup/heart-regula.png"/>';
-			$('#thumbupBtn').html(icon)
+			preBtn += '<button type="button" class="btn btn-secondary pageBtn" '
+					+ 'index="' + (index - (maxView * 10)) + '">10개</button>';
 		}
 		
-		thumbupBtn.addEventListener('click', function(){
-			if(user_num == 0){
-				alert('로그인 후 이용해주세요.');
-				location.href='${root}user/login';
-			} else {
-				$.ajax({
-					url : '${root}thumbup',
-					type : 'GET',
-					dataType : 'json',
-					data : {
-						id: id,
-						user_num: user_num,
-						infoType: infoType
-					},
-					success: function(result){
-						var icon = '<img src="${root}images/thumbup/'
-								+	result.icon + '"/>';
-						var thumbupCount = result.thumbupCount;
-						
-						$("#thumbupBtn").html(icon);
-						$("#thumbupCount").html(thumbupCount);
-					}
-				});
+		if(page <= 1){
+			preBtn += '<button type="button" class="btn btn-secondary disabled">이전페이지</button>';
+		}else {
+			preBtn += '<button type="button" class="btn btn-secondary pageBtn" '
+					+ 'index="' + (index - maxView) + '">이전페이지</button>';
+		}
+		
+		preBtn += '</div>';
+		$('#preBtn').html(preBtn);
+		
+		var postBtn = '<div class="btn-group mr-2" role="group" aria-label="Third group">';
+		
+		if(page >= maxPage){
+			postBtn += '<button type="button" class="btn btn-secondary disabled">다음페이지</button>';
+		}else{
+			postBtn += '<button type="button" class="btn btn-secondary pageBtn" '
+					+	'index="' + (index + maxView) + '">다음페이지</button>\n';
+		}
+		
+		if(page + 10 > maxPage){
+			postBtn += '<button type="button" class="btn btn-secondary disabled">10개</button>';
+		}else{
+			postBtn += '<button type="button" class="btn btn-secondary pageBtn" '
+					+	'index="' + (index + (maxView * 10)) + '">10개</button>';
+		}
+		postBtn += '</div>';
+		
+		$('#postBtn').html(postBtn);
+	};
+	
+	function getReviewBtn(loadPage, index, maxView){
+		
+		var reviewPageBtn = '<div class="btn-group mr-2" role="group" aria-label="Second group">';
+		
+		for(var i = 0; i < loadPage.length; i++){
+			var btnPage = parseInt(loadPage[i], 10);
+			reviewPageBtn += '<button type="button" class="btn btn-secondary pageBtn" '
+						+ 'index="' + ((btnPage - 1) * maxView + 1) + '">'
+						+ btnPage + '</button>';
+		}
+		reviewPageBtn += '</div>';
+		
+		$('#reviewPageBtn').html(reviewPageBtn);
+	};
+	
+	function btnAddEvent(index){
+		
+		var pageBtns = document.querySelectorAll('.pageBtn');
+		
+		pageBtns.forEach(pageBtn => {
+			pageBtn.addEventListener('click', clickHandler);
+			var btnIndex = pageBtn.getAttribute('index');
+			if(index == btnIndex){
+				pageBtn.classList.add('disabled');
 			}
+		})
+		
+		var reportBtns = document.querySelectorAll('.reportBtn');
+		
+		reportBtns.forEach(reportBtn => {
+			reportBtn.addEventListener('click', clickReport);
+		})
+	};
+	
+	// 리뷰 페이지 버튼 클릭
+	function clickHandler(){
+		this.removeEventListener('click', clickHandler);
+		var index = this.getAttribute('index');
+		
+		$.ajax({
+			url: '${root}getPageReview',
+			type: 'GET',
+			data: {
+				index: index,
+				type_id: type_id,
+				flag: flag
+			},
+			success: function(result){
+				getReviewList(result);
+				btnAddEvent(index);
+			}
+		});
+	};
+	
+	// 리뷰 신고 버튼 클릭
+	function clickReport(){
+		this.removeEventListener('click', clickReport);
+		var review_num = this.getAttribute('review_num');
+		var report_user_num = this.getAttribute('report_user_num');
+		var user_num = ${loginUserBean.user_num};
+		var isLogin = ${loginUserBean.userLogin};
+		
+		if(isLogin){
+			$.ajax({
+				url: '${root}reviewReport',
+				type: 'POST',
+				data: {
+					review_num: review_num,
+					report_user_num: report_user_num,
+					user_num: user_num
+				},
+				success: function(result){
+					if(result == 'true'){
+						alert('신고가 완료되었습니다.');
+						location.reload();
+					} else {
+						alert('이미 신고 한 리뷰 입니다.');
+						location.reload();
+					}
+				}
+			})
+		} else {
+			alert('로그인이 필요한 서비스 입니다.');
+			location.href='${root}user/login';
+		}
+	}
+//================ 리뷰 등록 수정 ===================
+	$(document).ready(function(){
+		var review_num = $('#review_num').val();
+		var submitBtn = '<button type="submit" class="btn btn-success" >';
+		if(review_num == 0 || !isLogin){
+			submitBtn += '리뷰 등록';
+		} else {
+			submitBtn += '리뷰 수정' + '</button><button type="button" class="btn btn-danger" id="deleteReview">'
+						+ '리뷰 삭제';
+		}
+		submitBtn += '</button>';
+		$('#submitBtn').html(submitBtn);
+		
+		var review_point = ${userReviewDto.review_point};
+		var reviewRadios = document.querySelectorAll('.review_point');
+		reviewRadios.forEach(radio => {
+			var radioVal = radio.getAttribute('value');
+			if(radioVal == review_point){
+				radio.checked = true;
+			}
+		})
+		
+		document.getElementById('userReviewDto').onsubmit = function() {
+		    var yourCondition = true; // 상황에 따른 조건
+		    if (!isLogin) {
+		    	this.method = 'POST';
+		        this.action = '${root}user/login';
+		        alert('로그인이 필요한 서비스입니다.');
+		    } else if(review_num == 0){
+		    	this.method = 'POST';
+		        this.action = '${root}search/insertReview';
+		    } else {
+		    	this.method = 'POST';
+		    	this.action = '${root}search/rewriteReview';
+		    }
+		};
+		
+		$('#deleteReview').on('click',function(){
+			$.ajax({
+				url: '${root}reviewDelete',
+				type: 'POST',
+				data: {
+					flag: flag,
+					type_id: type_id,
+					user_num: user_num,
+					review_num: review_num
+				},
+				success: function(result){
+					
+					if(result == 'true'){
+						alert('삭제를 완료했습니다.');
+						location.reload();
+					} else {
+						alert('삭제에 실패하였습니다.');
+					}
+				},
+				error: function(response){
+					console.log(response);
+					console.log('flag : ' + flag);
+					console.log('type_id : ' + type_id);
+					console.log('user_num : ' + user_num);
+					console.log('user_num : ' + ${loginUserBean.user_num});
+					console.log('review_num : ' + review_num);
+				}
+			});
 		});
 	});
 </script>

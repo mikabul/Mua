@@ -89,9 +89,9 @@
 
 </style>
 <body>
-	<!-- 상단 메뉴 부분 -->
-	<c:import url="/WEB-INF/views/include/top_menu.jsp" />
-	<!-- 중단 부분 -->
+	<header>
+		<c:import url="/WEB-INF/views/admin/include/top.jsp" />
+	</header>
 	<section style="position: relative; height: 2000px; width: 100%;">
 	<!-- 나중에 수정필요 insert -> search -->
 		<form action="${root }admin/crol/search/main" method="get">

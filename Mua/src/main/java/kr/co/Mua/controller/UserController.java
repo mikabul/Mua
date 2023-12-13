@@ -3,6 +3,7 @@ package kr.co.Mua.controller;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import org.jsoup.Connection.Method;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.Mua.bean.UserBean;
@@ -31,6 +33,13 @@ public class UserController {
 	
 	@GetMapping("/login")
 	public String login(@ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean, @RequestParam(value = "fail", defaultValue = "false") boolean fail, Model model) 
+	{
+		model.addAttribute("fail",fail);
+		return "user/login";		
+	}
+	
+	@PostMapping("/login")
+	public String postlogin(@ModelAttribute("tempLoginUserBean") UserBean tempLoginUserBean, @RequestParam(value = "fail", defaultValue = "false") boolean fail, Model model) 
 	{
 		model.addAttribute("fail",fail);
 		return "user/login";		
@@ -89,9 +98,8 @@ public class UserController {
 	@PostMapping("/modify_pro")
 	public String modify_pro(
 			@Valid @ModelAttribute("modifyUserBean") UserBean modifyUserBean , BindingResult result ) {
-		
 		if(result.hasErrors()) {
-			return "user/modify";
+			return "user/modify_fail";
 		}
 		
 		userService.modifyUserInfo(modifyUserBean);

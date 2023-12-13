@@ -66,22 +66,71 @@
 				<div class="row justify-content-center">
 					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 						<div class="btn-group mr-2" role="group" aria-label="First group">
-							<button type="button" class="btn btn-secondary">10개</button>
-							<button type="button" class="btn btn-secondary">이전페이지</button>
-						</div>
-						<div class="btn-group mr-2" role="group" aria-label="Second group">
-							<c:set var="pageIndex" value="${maxView}" />
-							<c:forEach var="item" items="${loadPage}">
-								<button type="button" class="btn btn-secondary"
-									onclick="location.href='${root}search/main?type=${type}&index=${pageIndex * (item - 1) + 1}&maxView=${maxView}&str=${str}'">
-										${item}
-							</button>
-							</c:forEach>
-						</div>
-						<div class="btn-group" role="group" aria-label="Third group">
-							<button type="button" class="btn btn-secondary">다음페이지</button>
-							<button type="button" class="btn btn-secondary">10개</button>
-						</div>
+			            	<c:choose>
+			            		<c:when test="${page - 10 < 1}">
+			            			<button type="button" class="btn btn-secondary disabled">10개</button>
+			            		</c:when>
+			            		<c:otherwise>
+			            			<button type="button" class="btn btn-secondary"
+			            				onclick="location.href='${root}search/main?type=${type}&index=${index - (10 * maxView)}&maxView=${maxView}&str=${str}'">
+			            			10개
+			            			</button>
+			            		</c:otherwise>
+			            	</c:choose>
+			            	<c:choose>
+			            		<c:when test="${page - 1 < 1}">
+			            			<button type="button" class="btn btn-secondary disabled">이전페이지</button>
+			            		</c:when>
+			            		<c:otherwise>
+			            			<button type="button" class="btn btn-secondary"
+			            				onclick="location.href='${root}search/main?type=${type}&index=${index - maxView}&maxView=${maxView}&str=${str}'">
+			            			이전페이지
+			            			</button>
+			            		</c:otherwise>
+			            	</c:choose>
+			            </div>
+			            <div class="btn-group mr-2" role="group" aria-label="Second group">
+			                <c:set var="pageIndex" value="${maxView}" />
+			                <c:forEach var="item" items="${loadPage}">
+			                	<c:choose>
+			                		<c:when test="${item == page}">
+			                			<button type="button" class="btn btn-secondary disabled">
+						               		${item}
+						               	</button>
+			                		</c:when>
+			                		<c:otherwise>
+					                	<button type="button" class="btn btn-secondary"
+						               	onclick="location.href='${root}search/main?type=${type}&index=${pageIndex * (item - 1) + 1}&maxView=${maxView}&str=${str}'">
+						               		${item}
+						               	</button>
+			                		</c:otherwise>
+			                	</c:choose>
+			                </c:forEach>
+			            </div>
+			            <div class="btn-group" role="group" aria-label="Third group">
+			            	<c:choose>
+			            		<c:when test="${page + 1 > maxPage}">
+			            			<button type="button" class="btn btn-secondary disabled">이전페이지</button>
+			            		</c:when>
+			            		<c:otherwise>
+			            			<button type="button" class="btn btn-secondary"
+			            				onclick="location.href='${root}search/main?type=${type}&index=${index + maxView}&maxView=${maxView}&str=${str}'">
+			            			다음페이지
+			            			</button>
+			            		</c:otherwise>
+			            	</c:choose>
+			                <c:choose>
+			            		<c:when test="${page + 10 > maxPage}">
+			            			<button type="button" class="btn btn-secondary disabled">10개</button>
+			            		</c:when>
+			            		<c:otherwise>
+			            			<button type="button" class="btn btn-secondary"
+			            				onclick="location.href='${root}search/main?type=${type}&index=${index + (10 * maxView)}&maxView=${maxView}&str=${str}'">
+			            			10개
+			            			</button>
+			            		</c:otherwise>
+			            	</c:choose>
+			            </div>
 					</div>
 				</div>
 			</div>

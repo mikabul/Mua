@@ -24,6 +24,8 @@ public class AcceptAdminInterceptor implements HandlerInterceptor{
 			
 			response.sendRedirect(contextPath + "/NotAccept");
 			return false;
+		} else {
+			request.setAttribute("loginAdminDto", loginAdminDto);
 		}
 		
 		return true;

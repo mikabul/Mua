@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,8 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SearchResultDto;
 import kr.co.Mua.bean.SongDto;
+import kr.co.Mua.bean.UserBean;
 import kr.co.Mua.service.SearchService;
 
 @Controller
@@ -25,6 +31,9 @@ public class SearchController {
 	
 	@Autowired
 	private SearchService searchService;
+	
+	@Resource(name="loginUserBean")
+	private UserBean loginUserBean;
 	
 	private boolean isGetData;
 	
@@ -76,6 +85,8 @@ public class SearchController {
 		model.addAttribute("index", index);
 		model.addAttribute("maxView", maxView);
 		model.addAttribute("loadPage", loadPage);
+		model.addAttribute("maxPage", maxPage);
+		model.addAttribute("page", page);
 		model.addAttribute("str", str);
 		
 		switch (type) {
@@ -97,7 +108,8 @@ public class SearchController {
 	}
 	
 	@GetMapping("/song_info")
-	public String song_info(@RequestParam("song_id") int song_id, Model model) {
+	public String song_info(@ModelAttribute("userReviewDto") ReviewDto userReviewDto,
+							@RequestParam("song_id") int song_id, Model model) {
 		
 		SongDto infoSongDto = searchService.getSong_info(song_id);
 		ArrayList<ArtistDto> artistList = searchService.getBriefArtist(song_id);
@@ -129,9 +141,7 @@ public class SearchController {
 						songList.add(tempSongDto);
 					}
 				}
-				
 			}
-			
 		}
 		
 		// 스크립트에서 이용하기위해 JSON으로 변환
@@ -149,11 +159,38 @@ public class SearchController {
 		model.addAttribute("songList", songList);
 		model.addAttribute("song_id", song_id);
 		
+		System.out.println("song_id : " + song_id);
+		System.out.println("user_num : " + loginUserBean.getUser_num());
+		
+		// 리뷰
+		ReviewDto tempReviewDto = searchService.getUserReview("song", song_id, loginUserBean.getUser_num());
+		if(tempReviewDto != null) {
+			userReviewDto.setReview_num(tempReviewDto.getReview_num());
+			userReviewDto.setType_id(tempReviewDto.getType_id());
+			userReviewDto.setUser_num(tempReviewDto.getUser_num());
+			userReviewDto.setUser_name(tempReviewDto.getUser_name());
+			userReviewDto.setFlag(tempReviewDto.getFlag());
+			userReviewDto.setReview_content(tempReviewDto.getReview_content());
+			userReviewDto.setReview_date(tempReviewDto.getReview_date());
+			userReviewDto.setReview_point(tempReviewDto.getReview_point());
+			userReviewDto.setSuggestion(tempReviewDto.getSuggestion());
+		}
+		
+		// 최근 본 노래
+		if(loginUserBean.isUserLogin()) {
+			if(searchService.getViewed_song(song_id, loginUserBean.getUser_num()) == null){
+				searchService.insertViewed_song(song_id, loginUserBean.getUser_num());
+			} else {
+				searchService.updateViewed_song(song_id, loginUserBean.getUser_num());
+			}
+		}
+		
 		return "/search/song_info";
 	}
 	
 	@GetMapping("/artist_info")
-	public String artist_info(@RequestParam("artist_id") int artist_id, Model model) {
+	public String artist_info(@ModelAttribute("userReviewDto") ReviewDto userReviewDto,
+							@RequestParam("artist_id") int artist_id, Model model) {
 		
 		ArtistDto artistDto = searchService.getArtist_info(artist_id);
 		ArrayList<AlbumDto> albumList = searchService.getArtist_album_info(artist_id);
@@ -161,11 +198,25 @@ public class SearchController {
 		model.addAttribute("artistDto", artistDto);
 		model.addAttribute("albumList", albumList);
 		
+		// 리뷰
+		ReviewDto tempReviewDto = searchService.getUserReview("artist", artist_id, loginUserBean.getUser_num());
+		if(tempReviewDto != null) {
+			userReviewDto.setReview_num(tempReviewDto.getReview_num());
+			userReviewDto.setType_id(tempReviewDto.getType_id());
+			userReviewDto.setUser_num(tempReviewDto.getUser_num());
+			userReviewDto.setUser_name(tempReviewDto.getUser_name());
+			userReviewDto.setFlag(tempReviewDto.getFlag());
+			userReviewDto.setReview_content(tempReviewDto.getReview_content());
+			userReviewDto.setReview_date(tempReviewDto.getReview_date());
+			userReviewDto.setReview_point(tempReviewDto.getReview_point());
+			userReviewDto.setSuggestion(tempReviewDto.getSuggestion());
+		}
 		return "/search/artist_info";
 	}
 	
 	@GetMapping("/album_info")
-	public String album_info(@RequestParam("album_id") int album_id, Model model) {
+	public String album_info(@ModelAttribute("userReviewDto") ReviewDto userReviewDto,
+							@RequestParam("album_id") int album_id, Model model) {
 		
 		int index = 1;
 		int maxView = 10;
@@ -231,6 +282,52 @@ public class SearchController {
 		model.addAttribute("maxView", maxView);
 		model.addAttribute("loadPage", loadPage);
 		
+		// 리뷰
+		ReviewDto tempReviewDto = searchService.getUserReview("album", album_id, loginUserBean.getUser_num());
+		if(tempReviewDto != null) {
+			userReviewDto.setReview_num(tempReviewDto.getReview_num());
+			userReviewDto.setType_id(tempReviewDto.getType_id());
+			userReviewDto.setUser_num(tempReviewDto.getUser_num());
+			userReviewDto.setUser_name(tempReviewDto.getUser_name());
+			userReviewDto.setFlag(tempReviewDto.getFlag());
+			userReviewDto.setReview_content(tempReviewDto.getReview_content());
+			userReviewDto.setReview_date(tempReviewDto.getReview_date());
+			userReviewDto.setReview_point(tempReviewDto.getReview_point());
+			userReviewDto.setSuggestion(tempReviewDto.getSuggestion());
+		}
 		return "/search/album_info";
+	}
+	
+	@PostMapping("/insertReview")
+	public String insertReview(@ModelAttribute("userRrviewDto") ReviewDto userReviewDto) {
+		System.out.println("POST들어옴");
+		searchService.insertUserReview(userReviewDto);
+		
+		switch(userReviewDto.getFlag()) {
+		case "song":
+			return "redirect:/search/song_info?song_id=" + userReviewDto.getType_id();
+		case "artist":
+			return "redirect:/search/artist_info?artist_id=" + userReviewDto.getType_id();
+		case "album":
+			return "redirect:/search/album_info?album_id=" + userReviewDto.getType_id();
+		default:
+			return"redirect:/main";
+		}
+	}
+	
+	@PostMapping("rewriteReview")
+	public String rewriteReview(@ModelAttribute("userRrviewDto") ReviewDto userReviewDto) {
+		searchService.rewriteUserReview(userReviewDto);
+		
+		switch(userReviewDto.getFlag()) {
+		case "song":
+			return "redirect:/search/song_info?song_id=" + userReviewDto.getType_id();
+		case "artist":
+			return "redirect:/search/artist_info?artist_id=" + userReviewDto.getType_id();
+		case "album":
+			return "redirect:/search/album_info?album_id=" + userReviewDto.getType_id();
+		default:
+			return"redirect:/main";
+		}
 	}
 }

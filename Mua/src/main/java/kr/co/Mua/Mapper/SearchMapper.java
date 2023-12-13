@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SongDto;
+import kr.co.Mua.bean.ViewedSongDto;
 
 public interface SearchMapper {
 
@@ -103,6 +106,21 @@ public interface SearchMapper {
 			+ "where rn between #{arg2} and #{arg3}")
 	public ArrayList<SongDto> getSearch_song(String str, String replaceStr, int index, int endView);
 	
+	// 노래를 클릭해 들어갈시 최근 본 노래 테이블에 등록
+	@Insert("insert into viewed_song values(#{arg1}, #{arg0}, sysdate)")
+	public void insertViewed_song(int song_id, int user_num);
+	
+	// 최근 본 노래테이블에 정보가 존재하는지
+	@Select("select user_num, song_id, to_char(viewed_date, 'yyyy-MM-dd HH24:mi:ss') as viewed_date "
+			+ "from viewed_song "
+			+ "where song_id=#{arg0} and user_num=#{arg1}")
+	public ViewedSongDto getViewed_song(int song_id, int user_num);
+	
+	// 최근 본 노래 테이블에 존재할시 업데이트
+	@Update("update viewed_song set viewed_date=sysdate "
+			+ "where song_id=#{arg0} and user_num=#{arg1}")
+	public void updateViewed_song(int song_id, int user_num);
+	
 	// 문자열을 입력 받아 아티스트를 검색 - 페이징
 	@Select("select * from ( "
 			+ "select artist.artist_id, artist_name, artist_thumbnail, artist_type, "
@@ -146,7 +164,7 @@ public interface SearchMapper {
 	
 	// 좋아요
 	@Insert("insert into thumbup_${arg2} "
-			+ "values(#{arg1}, #{arg0})")
+			+ "values(#{arg1}, #{arg0}, sysdate)")
 	public void thumbup(int id, int user_num, String infoType);
 	
 	// 좋아요 취소
@@ -158,4 +176,55 @@ public interface SearchMapper {
 	@Select("select count(*) from thumbup_${arg1} "
 			+ "where ${arg1}_id=#{arg0}")
 	public int getThumbup(int id, String infoType);
+	
+	//============== 리뷰 ================
+	// 리뷰의 정보를 가져옴
+	@Select("select * from( "
+			+ "select rv.review_num, rv.user_num, us.user_name, rv.type_id, rv.review_point, rv.review_content, "
+			+ "to_char(rv.review_date, 'yyyy.MM.dd HH:mm') as review_date, rv.suggestion, rv.flag, "
+			+ "row_number() over (order by rv.review_num desc) as rn "
+			+ "from review rv "
+			+ "Inner join user_info us on us.user_num = rv.user_num "
+			+ "where flag=#{arg0} and type_id=#{arg1}) "
+			+ "where rn between #{arg2} and #{arg3}")
+	public ArrayList<ReviewDto> getReview(String flag, int id, int index, int endIndex);
+	
+	// 리뷰의 최대 갯수를 가져옴
+	@Select("select count(*) from review "
+			+ "where flag=#{arg0} and type_id=#{arg1}")
+	public int getReviewCount(String flag, int id);
+	
+	// 사용자 본인의 리뷰를 가져옴
+	@Select("select * from review "
+			+ "where flag=#{arg0} and type_id=#{arg1} "
+			+ "and user_num=#{arg2}")
+	public ReviewDto getUserReview(String flag, int type_id, int user_num);
+	
+	// 리뷰 작성
+	@Insert("insert into review values(\r\n"
+			+ "review_seq.nextval, #{user_num}, #{type_id}, #{review_point}, #{review_content}, sysdate, 0, #{flag})")
+	public void insertUserReview(ReviewDto userReview);
+	
+	// 리뷰 수정
+	@Update("update review set review_point=#{review_point}, "
+			+ "review_content=#{review_content}, review_date=sysdate "
+			+ "where flag=#{flag} and type_id=#{type_id} and user_num=#{user_num}")
+	public void rewriteUserReview(ReviewDto userReview);
+	
+	// 리뷰 삭제
+	@Delete("delete review where flag=#{arg0} "
+			+ "and type_id=#{arg1} and user_num=#{arg2} "
+			+ "and review_num=${arg3}")
+	public void deleteUserReview(String flag, int type_id, int user_num, int review_num);
+	
+	// 리뷰 신고 전 확인
+	@Select("select report_num from review_report "
+			+ "where user_num=#{arg0} and review_num=#{arg1}")
+	public Integer checkReport(int user_num, int review_num);
+	
+	// 리뷰 신고
+	@Insert("insert into review_report "
+			+ "values(report_seq.nextval, #{arg0}, "
+			+ "#{arg1}, #{arg2}, sysdate)")
+	public void reviewReport(int review_num, int report_user_num, int user_num);
 }

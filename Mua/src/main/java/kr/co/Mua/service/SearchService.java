@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SearchResultDto;
 import kr.co.Mua.bean.SongDto;
+import kr.co.Mua.bean.ViewedSongDto;
 import kr.co.Mua.dao.SearchDao;
 
 @Service
@@ -58,6 +60,18 @@ public class SearchService {
 		}
 		
 		return searchResultList;
+	}
+	
+	public void insertViewed_song(int song_id, int user_num) {
+		searchDAO.insertViewed_song(song_id, user_num);
+	}
+	
+	public ViewedSongDto getViewed_song(int song_id, int user_num) {
+		return searchDAO.getViewed_song(song_id, user_num);
+	}
+	
+	public void updateViewed_song(int song_id, int user_num) {
+		searchDAO.updateViewed_song(song_id, user_num);
 	}
 	
 	// 아티스트 검색
@@ -147,6 +161,7 @@ public class SearchService {
 		return searchDAO.getAlbum_Song_MaxIndex(album_id);
 	}
 	
+	//================ 좋아요 ==================
 	public int getUserThumbup(int id, int user_num, String infoType) {
 		return searchDAO.getUserThumbup(id, user_num, infoType);
 	}
@@ -161,6 +176,41 @@ public class SearchService {
 	
 	public int getThumbup(int id, String infoType) {
 		return searchDAO.getThumbup(id, infoType);
+	}
+	
+	//=============== 리뷰 ===============
+	public ArrayList<ReviewDto> getReview(String flag, int id, int index, int endIndex) {
+		return searchDAO.getReview(flag, id, index, endIndex);
+	}
+	
+	public int getReviewCount(String flag, int id) {
+		return searchDAO.getReviewCount(flag, id);
+	}
+	
+	public ReviewDto getUserReview(String flag, int type_id, int user_num) {
+		return searchDAO.getUserReview(flag, type_id, user_num);
+	}
+	
+	public void insertUserReview(ReviewDto userReview) {
+		searchDAO.insertUserReview(userReview);
+	}
+	
+	public void rewriteUserReview(ReviewDto userReview) {
+		searchDAO.rewriteUserReview(userReview);
+	}
+	
+	public void deleteUserReview(String flag, int type_id, int user_num, int review_num) {
+		searchDAO.deleteUserReview(flag, type_id, user_num, review_num);
+	}
+	
+	public Boolean checkReport(int review_num, int report_user_num, int user_num) {
+		
+		if(searchDAO.checkReport(user_num, review_num) != null) {
+			return false;
+		} else {
+			searchDAO.reviewReport(review_num, report_user_num, user_num);
+			return true;
+		}
 	}
 	
 }

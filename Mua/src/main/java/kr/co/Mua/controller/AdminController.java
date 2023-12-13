@@ -46,5 +46,14 @@ public class AdminController {
 		return "/admin/main";
 	}
 	
+	@RequestMapping(value="/logout")
+	public String logout() {
+		loginAdminDto.setAdmin_num(0);
+		loginAdminDto.setAdmin_id("");
+		loginAdminDto.setLoginState(false);
+		
+		return "redirect:/main";
+	}
+	
 	
 }

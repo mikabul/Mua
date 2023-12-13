@@ -5,9 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Mua</title>
 </head>
 <body>
+
+	<header>
+		<c:import url="/WEB-INF/views/admin/include/top.jsp" />
+	</header>
+	
 	<div>
 		<table style="margin: auto; text-align: center;">
 			<tr>
