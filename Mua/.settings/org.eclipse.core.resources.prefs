@@ -1,10 +1,2 @@
 eclipse.preferences.version=1
-encoding//src/main/java/kr/co/Mua/Mapper/UserMapper.java=UTF-8
-encoding//src/main/java/kr/co/Mua/config/ServletAppContext.java=UTF-8
-encoding//src/main/java/kr/co/Mua/config/SpringConfigClass.java=UTF-8
-encoding//src/main/java/kr/co/Mua/controller/RestApiController.java=UTF-8
-encoding//src/main/java/kr/co/Mua/service/UserService.java=UTF-8
-encoding//src/main/java/kr/co/Mua/validator/UserValidator.java=UTF-8
-encoding//src/main/webapp/WEB-INF/views/include/top_menu.jsp=UTF-8
-encoding//src/main/webapp/resources/style/main.css=UTF-8
 encoding/<project>=UTF-8
