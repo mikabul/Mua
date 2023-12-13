@@ -52,6 +52,11 @@ public class RestApiController {
 		
 	}
 	
+	@GetMapping("/user/getHello")
+	public String hello() {
+		return "user/login";
+	}
+	
 	//이메일 중복체크
 	@GetMapping("/user/checkUserEmailExit/{user_email}")
 	public String checkUserEmailExit(@PathVariable String user_email) {

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SongDto;
 
 public interface SearchMapper {
@@ -158,4 +159,20 @@ public interface SearchMapper {
 	@Select("select count(*) from thumbup_${arg1} "
 			+ "where ${arg1}_id=#{arg0}")
 	public int getThumbup(int id, String infoType);
+	
+	//============== 리뷰 ================
+    // 리뷰의 정보를 가져옴
+    @Select("select * from( "
+            + "select review_num, user_num, type_id, review_point, review_content, "
+            + "review_date, suggestion, flag, "
+            + "row_number() over (order by review_num) as rn "
+            + "from review "
+            + "where flag=#{arg0} and type_id=#{arg1} ) "
+            + "where rn between #{arg2} and #{arg3}")
+    public ReviewDto getReview(String flag, int id, int index, int endIndex);
+
+    // 리뷰의 최대 갯수를 가져옴
+    @Select("select count(*) from review "
+            + "where flag=#{arg0} and type_id=#{arg1}")
+    public int getReviewCount(String flag, int id);
 }

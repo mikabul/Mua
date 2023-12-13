@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SearchResultDto;
 import kr.co.Mua.bean.SongDto;
 import kr.co.Mua.dao.SearchDao;
@@ -162,4 +163,12 @@ public class SearchService {
 	public int getThumbup(int id, String infoType) {
 		return searchDAO.getThumbup(id, infoType);
 	}
+	
+	public ReviewDto getReview(String flag, int id, int index, int endIndex) {
+        return searchDAO.getReview(flag, id, index, endIndex);
+    }
+
+    public int getReviewCount(String flag, int id) {
+        return searchDAO.getReviewCount(flag, id);
+    }
 }

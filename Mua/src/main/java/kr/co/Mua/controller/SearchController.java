@@ -233,4 +233,6 @@ public class SearchController {
 		
 		return "/search/album_info";
 	}
+	
+	
 }

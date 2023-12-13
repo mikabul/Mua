@@ -45,6 +45,7 @@ import kr.co.Mua.service.ChartService;
 @ComponentScan("kr.co.Mua.dao")
 @ComponentScan("kr.co.Mua.service")
 @ComponentScan("kr.co.Mua.controller")
+@ComponentScan("kr.co.Mua.Social")
 @PropertySource("/WEB-INF/properties/db.properties")
 public class ServletAppContext implements WebMvcConfigurer{
 	

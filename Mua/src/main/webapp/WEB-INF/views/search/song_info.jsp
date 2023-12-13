@@ -110,7 +110,12 @@ request.setCharacterEncoding("utf-8");
 			</div>
 		</div>
 		<!-- 리뷰 -->
-		
+        <div class="container">
+            <div id="review">
+            </div>
+            <div id="reviewPageBtn">
+            </div>
+        </div>
 	</section>
 
 	<c:import url="/WEB-INF/views/include/bottom.jsp" />

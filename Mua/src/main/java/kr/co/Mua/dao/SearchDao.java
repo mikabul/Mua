@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.Mua.Mapper.SearchMapper;
 import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SongDto;
 
 @Repository
@@ -87,4 +88,12 @@ public class SearchDao {
 	public int getThumbup(int id, String infoType) {
 		return searchMapper.getThumbup(id, infoType);
 	}
+	
+	public ReviewDto getReview(String flag, int id, int index, int endIndex) {
+        return searchMapper.getReview(flag, id, index, endIndex);
+    }
+
+    public int getReviewCount(String flag, int id) {
+        return searchMapper.getReviewCount(flag, id);
+    }
 }
