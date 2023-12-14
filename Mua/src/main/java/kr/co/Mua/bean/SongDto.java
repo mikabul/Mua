@@ -15,6 +15,7 @@ public class SongDto {
 	private String artist_name;
 	private String album_name;
 	private int song_thumbup;
+	private String lyric;
 	
 	// --------기본 생성자--------
 	public SongDto() {
@@ -124,6 +125,12 @@ public class SongDto {
 
 	public void setSong_thumbup(int song_thumbup) {
 		this.song_thumbup = song_thumbup;
+	}
+	public String getLyric() {
+		return lyric;
+	}
+	public void setLyric(String lyric) {
+		this.lyric = lyric;
 	}
 
 }

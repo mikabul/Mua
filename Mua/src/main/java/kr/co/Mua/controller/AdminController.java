@@ -30,8 +30,6 @@ public class AdminController {
 
 	@RequestMapping(value = "/login_pro")
 	public String login_pro(@ModelAttribute("tempAdminDto") AdminDto tempAdminDto) {
-		System.out.println(tempAdminDto.getAdmin_id());
-		System.out.println(tempAdminDto.getAdmin_pw());
 
 		if (!adminService.getLogin(tempAdminDto)) {
 			return "/admin/login_fail";

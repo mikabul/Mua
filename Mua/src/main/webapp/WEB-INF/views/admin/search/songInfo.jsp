@@ -23,8 +23,7 @@
 		<c:import url="/WEB-INF/views/admin/include/top.jsp" />
 	</header>
 	<section style="width: 70%;margin: 30px 15%">
-		<form:form modelAttribute="modifySongDto"
-			action="${root}admin/search/modifySong">
+		<form:form modelAttribute="modifySongDto" action="${root}admin/search/modifySong">
 			<div class="text-center">
 				<strong>변경 불가</strong>
 			</div>
@@ -69,14 +68,28 @@
 				<form:errors path="release_date"></form:errors>
 			</div>
 			<div class="form-group">
-				<form:label path="lyrics" >가사 파일 이름</form:label>
-				<form:input path="lyrics" class="form-control" />
-				<form:errors path="lyrics"></form:errors>
-			</div>
-			<div class="form-group">
 				<form:label path="song_thumbnail" >썸네일 파일 이름</form:label>
 				<form:input path="song_thumbnail" class="form-control" />
 				<form:errors path="song_thumbnail"></form:errors>
+			</div>
+			<div class="form-group">
+						<form:label path="lyrics" >가사 파일 이름(가사를 파일로 넣을때만 사용)</form:label>
+				<div class="row">
+					<div class="col">
+						<form:input path="lyrics" class="form-control" readonly="true"/>
+						<form:errors path="lyrics"></form:errors>
+					</div>
+					<div class="col-2">
+						<button type="button" class="btn btn-outline-danger" id="activeBtn">수정하기</button>
+					</div>
+				</div>
+			</div>
+			<div class="form-group row justify-content-center">
+				<div class="col">
+					<form:label path="lyric">가사</form:label>
+					<form:textarea path="lyric" class="form-control" 
+						placeholder="변경사항이 없을시 비워두세요." rows="10"/>
+				</div>
 			</div>
 			<div class="text-center">
 				<form:button class="btn btn-outline-success">수정</form:button>
@@ -85,4 +98,26 @@
 		</form:form>
 	</section>
 </body>
+<script>
+	var inputChange = true;
+	
+	$('#activeBtn').on('click', function(){
+			var lyric = document.getElementById('lyric');
+			var lyrics = document.getElementById('lyrics');
+		
+		if(inputChange){
+			lyrics.removeAttribute('readonly');
+			lyric.value = '';
+			lyric.readOnly = 'true';
+			$('#activeBtn').html('취소하기');
+			inputChange = false;
+		} else {
+			lyrics.readOnly = 'true';
+			lyrics.value = '${modifySongDto.lyrics}';
+			lyric.removeAttribute('readonly');
+			$('#activeBtn').html('수정하기');
+			inputChange = true;
+		}
+	});
+</script>
 </html>

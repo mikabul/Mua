@@ -72,7 +72,8 @@
 						</form>
 					</div>
 				</div>
-				<button class="btn btn-success" onclick="${root}admin/review_report">신고 : 리뷰 관리</button>
+				<button type="button" class="btn btn-success" 
+				onclick="location.href='${root}admin/review_report'">신고 : 리뷰 관리</button>
 			</div>
 		</div>
 	</section>

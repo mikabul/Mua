@@ -1,10 +1,18 @@
 package kr.co.Mua.service;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import kr.co.Mua.bean.AdminDto;
@@ -16,7 +24,11 @@ import kr.co.Mua.bean.UserBean;
 import kr.co.Mua.dao.AdminDao;
 
 @Service
+@PropertySource("/WEB-INF/properties/option.properties")
 public class AdminService {
+	
+	@Value("${resources.path}")
+	private String path;
 
 	@Autowired
 	private AdminDao adminDao;
@@ -26,7 +38,6 @@ public class AdminService {
 	
 	public boolean getLogin(AdminDto tempAdminDto) {
 		AdminDto adminDto = adminDao.getLogin(tempAdminDto);
-		System.out.println(adminDto);
 		if(adminDto == null) {
 			return false;
 		} else {
@@ -48,7 +59,33 @@ public class AdminService {
 	}
 	
 	public void updateSong(SongDto songDto) {
-		adminDao.updateSong(songDto);
+		if(songDto.getLyric() == null || songDto.getLyric().isEmpty()) {
+			adminDao.updateSong(songDto);
+		} else {
+			
+			String fileName = System.currentTimeMillis() + "_" + songDto.getSong_id() + ".txt";
+			songDto.setLyrics(fileName);
+			
+			String str = "<div>" + songDto.getLyric() + "</div>";
+			str = str.replaceAll("\n", "<br>");
+			try {
+
+				FileOutputStream fos = new FileOutputStream(path + "lyric/" + fileName);
+				OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+				BufferedWriter bw = new BufferedWriter(osw);
+				
+				bw.write(str);
+				bw.close();
+				osw.close();
+				fos.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			adminDao.updateSong(songDto);
+		}
+		
 	}
 	
 	//========== 아티스트 ===========
