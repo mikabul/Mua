@@ -11,12 +11,14 @@ public interface ChartMapper {
 			+ "trim(REGEXP_SUBSTR(artist_name,'[0-1a-zA-Z가-힣.-_, ]+'))=#{arg1}) "
 			+ "and album_id in (select album_id from album where album_name=#{arg2})")
 	public Integer chartSongMatch(String song_name, String artist_name, String album_name);
-
+	
+	// song_id 와 아티스트이름이 일치해야 값을 반환
 	@Select("select artist_id from song_artist "
 			+ "where song_id=#{arg0} and artist_id in (select artist_id from artist "
 			+ "where artist_name=#{arg1} or trim(REGEXP_SUBSTR(artist_name,'[0-1a-zA-Z가-힣.-_, ]+'))=#{arg1})")
 	public Integer chartArtistmatch(int song_id, String artist_name);
 	
+	// song_id 가 일치하면 값을 반환
 	@Select("select album_id from album where album_id=(select album_id from song where song_id=#{song_id})")
 	public Integer chartAlbumMatch(int song_id);
 	

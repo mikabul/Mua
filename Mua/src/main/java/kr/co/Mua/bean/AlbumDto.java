@@ -10,6 +10,8 @@ public class AlbumDto {
 	private String album_agency;
 	private String album_thumbnail;
 	
+	private String artist_name;
+	
 	//----------기본 생성자-------------
 	public AlbumDto() {
 		album_id = 0;
@@ -63,6 +65,14 @@ public class AlbumDto {
 	}
 	public void setAlbum_thumbnail(String album_thumbnail) {
 		this.album_thumbnail = album_thumbnail;
+	}
+
+	public String getArtist_name() {
+		return artist_name;
+	}
+
+	public void setArtist_name(String artist_name) {
+		this.artist_name = artist_name;
 	}
 
 }

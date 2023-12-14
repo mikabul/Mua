@@ -38,7 +38,7 @@
 		</nav>
 	</div>
 	<!-- 추가 메뉴(삼선 버튼) -->
-	<div class="collapse" id="collapseExample" style="margin-top: 10px;">
+	<div class="collapse" id="collapseExample" style="margin-top: 0.1px;">
 		<div class="card card-body">
 			<ul class="nav nav-pills nav-fill" style="width: 100%;">
 				<!-- 페이지 연결 -->

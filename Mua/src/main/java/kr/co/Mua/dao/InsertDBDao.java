@@ -35,6 +35,10 @@ public class InsertDBDao {
 	public Integer album_artist_match(int album_id, int artist_id) {
 		return insertDBMapper.album_artist_match(album_id, artist_id);
 	}
+	// 데이터베이스에 멤버가 있는지
+	public Integer member_match(int artist_id, String member_name) {
+		return insertDBMapper.member_match(artist_id, member_name);
+	}
 	
 	//================= 저장 ==================
 	// 데이터베이스에 노래 저장
@@ -57,7 +61,10 @@ public class InsertDBDao {
 	public void insert_album_artist(int album_id, int artist_id) {
 		insertDBMapper.insert_album_artist(album_id, artist_id);
 	}
-	
+	// 데이터베이스 아티스트 멤버 연결
+	public void insert_member(int artist_id, String name) {
+		insertDBMapper.insert_member(artist_id, name);
+	}
 	
 	//================ 썸네일 ===============
 	public void insert_song_thumbnail(int song_id, String song_thumbnail) {

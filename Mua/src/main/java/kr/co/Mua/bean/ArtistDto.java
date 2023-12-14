@@ -8,6 +8,10 @@ public class ArtistDto {
 	private String artist_type;
 	private String artist_thumbnail;
 	private String artist_agency;
+	private String artist_nation;
+	
+	private int artist_thumbup;
+	private String member;
 	
 	//------------기본 생성자------------
 	public ArtistDto() {
@@ -17,6 +21,7 @@ public class ArtistDto {
 		artist_type = "-";
 		artist_thumbnail = "-";
 		artist_agency = "-";
+		artist_nation = "-";
 	}
 	
 	//-----------get, set------------
@@ -55,6 +60,30 @@ public class ArtistDto {
 	}
 	public void setArtist_agency(String artist_agency) {
 		this.artist_agency = artist_agency;
+	}
+
+	public String getArtist_nation() {
+		return artist_nation;
+	}
+
+	public void setArtist_nation(String artist_nation) {
+		this.artist_nation = artist_nation;
+	}
+
+	public int getArtist_thumbup() {
+		return artist_thumbup;
+	}
+
+	public void setArtist_thumbup(int artist_thumbup) {
+		this.artist_thumbup = artist_thumbup;
+	}
+
+	public String getMember() {
+		return member;
+	}
+
+	public void setMember(String member) {
+		this.member = member;
 	}
 
 }

@@ -92,7 +92,7 @@
 						</ul>
 						<div class="tab-content" id="pills-tabContent">
 							<div class="tab-pane fade show active" id="pills-kor-ballad" role="tabpanel"
-								aria-labelledby="pills-kor-ballad-tab">발라드 차트
+								aria-labelledby="pills-kor-ballad-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -230,7 +230,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-kor-dance" role="tabpanel"
-								aria-labelledby="pills-kor-dance-tab">댄스 차트
+								aria-labelledby="pills-kor-dance-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -368,7 +368,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-kor-rap" role="tabpanel"
-								aria-labelledby="pills-kor-rap-tab">랩/힙합 차트
+								aria-labelledby="pills-kor-rap-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -506,7 +506,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-kor-rnb" role="tabpanel"
-								aria-labelledby="pills-kor-rnb-tab">R&B 차트
+								aria-labelledby="pills-kor-rnb-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -644,7 +644,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-kor-indi" role="tabpanel"
-								aria-labelledby="pills-kor-indi-tab">인디 차트
+								aria-labelledby="pills-kor-indi-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -782,7 +782,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-kor-rock" role="tabpanel"
-								aria-labelledby="pills-kor-rock-tab">록/메탈 차트
+								aria-labelledby="pills-kor-rock-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -920,7 +920,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-kor-trot" role="tabpanel"
-								aria-labelledby="pills-kor-trot-tab">트로트 차트
+								aria-labelledby="pills-kor-trot-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -1058,7 +1058,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-kor-folk" role="tabpanel"
-								aria-labelledby="pills-kor-folk-tab">포크 차트
+								aria-labelledby="pills-kor-folk-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -1233,7 +1233,7 @@
 						</ul>
 						<div class="tab-content" id="pills-tabContent">
 							<div class="tab-pane fade show active" id="pills-pop"
-								role="tabpanel" aria-labelledby="pills-pop-tab">POP 차트
+								role="tabpanel" aria-labelledby="pills-pop-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -1371,7 +1371,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-elec" role="tabpanel"
-								aria-labelledby="pills-elec-tab">일렉트로니카 차트
+								aria-labelledby="pills-elec-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -1509,7 +1509,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-pop-rap" role="tabpanel"
-								aria-labelledby="pills-pop-rap-tab">랩/힙합 차트
+								aria-labelledby="pills-pop-rap-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -1647,7 +1647,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-pop-rnb" role="tabpanel"
-								aria-labelledby="pills-pop-rnb-tab">R&B 차트
+								aria-labelledby="pills-pop-rnb-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -1785,7 +1785,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-pop-rock" role="tabpanel"
-								aria-labelledby="pills-pop-rock-tab">록/메탈 차트
+								aria-labelledby="pills-pop-rock-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -1923,7 +1923,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-pop-fork" role="tabpanel"
-								aria-labelledby="pills-pop-fork-tab">포크/블루스 차트
+								aria-labelledby="pills-pop-fork-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -2099,7 +2099,7 @@
 						</ul>
 						<div class="tab-content" id="pills-tabContent">
 							<div class="tab-pane fade show active" id="pills-ost"
-								role="tabpanel" aria-labelledby="pills-ost-tab">OST 차트
+								role="tabpanel" aria-labelledby="pills-ost-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -2237,7 +2237,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-classic" role="tabpanel"
-								aria-labelledby="pills-classic-tab">클래식 차트
+								aria-labelledby="pills-classic-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -2375,7 +2375,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-jazz" role="tabpanel"
-								aria-labelledby="pills-jazz-tab">재즈 차트
+								aria-labelledby="pills-jazz-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -2513,7 +2513,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-jpop" role="tabpanel"
-								aria-labelledby="pills-jpop-tab">JPOP 차트
+								aria-labelledby="pills-jpop-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -2651,7 +2651,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-ccm" role="tabpanel"
-								aria-labelledby="pills-ccm-tab">CCM 차트
+								aria-labelledby="pills-ccm-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->
@@ -2789,7 +2789,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="pills-traditional" role="tabpanel"
-								aria-labelledby="pills-traditional-tab">국악 차트
+								aria-labelledby="pills-traditional-tab">
 								<table style="margin-left: auto; margin-right: auto;">
 									<colgroup>
 										<!-- 순위 -->

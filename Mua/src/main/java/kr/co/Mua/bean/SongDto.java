@@ -10,9 +10,11 @@ public class SongDto {
 	private int views;
 	private String song_thumbnail;
 	private int album_id;
+	private String song_nation;
 
 	private String artist_name;
 	private String album_name;
+	private int song_thumbup;
 	
 	// --------기본 생성자--------
 	public SongDto() {
@@ -24,6 +26,7 @@ public class SongDto {
 		views = 0;
 		song_thumbnail = "-";
 		album_id = 0;
+		song_nation = "-";
 	}
 
 	// -----------get, set-----------
@@ -105,6 +108,22 @@ public class SongDto {
 
 	public void setArtist_name(String artist_name) {
 		this.artist_name = artist_name;
+	}
+
+	public String getSong_nation() {
+		return song_nation;
+	}
+
+	public void setSong_nation(String song_nation) {
+		this.song_nation = song_nation;
+	}
+
+	public int getSong_thumbup() {
+		return song_thumbup;
+	}
+
+	public void setSong_thumbup(int song_thumbup) {
+		this.song_thumbup = song_thumbup;
 	}
 
 }
