@@ -22,30 +22,34 @@ public class GenreChartInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
-		
-		HttpSession session = request.getSession();
-        String requestURI = request.getRequestURI();
+	        throws Exception {
 
-        // 세션에서 해당 페이지의 방문 횟수 가져오기
-        Integer visitCount = (Integer) session.getAttribute(requestURI);
+	    HttpSession session = request.getSession();
+	    String requestURI = request.getRequestURI();
 
-        // 방문 횟수 증가시키기
-        if (visitCount == null) {
-            visitCount = 1;
-        } else {
-            visitCount++;
-        }
-
-        // 증가된 방문 횟수를 세션에 다시 저장 (해당 페이지의 URI를 키로 사용)
-        session.setAttribute(requestURI, visitCount);
-
-		if (!hasDataLoaded) {
+	    if (!hasDataLoaded) {
 	        loadGenreData(request);
 	        hasDataLoaded = true;
 	    }
-		return true;
+
+	    // 세션에서 해당 페이지의 visitCount를 가져옴
+	    Integer visitCount = (Integer) session.getAttribute(requestURI);
+
+	    // visitCount가 null인 경우, 초기값으로 설정 (첫 방문)
+	    if (visitCount == null) {
+	        visitCount = 0;
+	    }
+
+	    // visitCount를 1 증가시킴
+	    visitCount++;
+
+	    // 세션에 업데이트된 visitCount 값을 저장
+	    session.setAttribute(requestURI, visitCount);
+	    System.out.println("Visited page: " + requestURI + ", Visit count: " + visitCount);
+
+	    return true;
 	}
+
 
 	private void loadGenreData(HttpServletRequest request) {
 		Map<String, String> genreMap = new HashMap<>();

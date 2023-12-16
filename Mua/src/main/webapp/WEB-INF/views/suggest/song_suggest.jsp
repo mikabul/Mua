@@ -98,7 +98,7 @@
 					<div class="top">최근 좋아한 가수</div>
 					<div class="bottom">
 						<div class="name">${recentArtistName}</div>
-						<div class="date">2022.6.18</div>
+						<div class="date">${ArtistThumbupDate}</div>
 					</div>
 				</div>
 
@@ -106,14 +106,14 @@
 					<div class="top">내가 가장 좋아하는 장르</div>
 					<div class="bottom">
 						<div class="name">${genreName}</div>
-						<div class="date">좋아요 7곡</div>
+						<div class="date">총 ${mostGenreCount}곡</div>
 					</div>
 				</div>
 				<div class="card_container">
 					<div class="top">내가 즐겨듣는 노래의 국적</div>
 					<div class="bottom">
 						<div class="name">${nationName}</div>
-						<div class="date">좋아요 8곡</div>
+						<div class="date">총 ${mostNationCount}곡</div>
 					</div>
 				</div>
 			</div>
@@ -145,31 +145,28 @@
 						<div class="date"></div>
 					</div>
 				</div>
-					
-		</div>
+			</div>
 	</div>
 
 	<script>
-		function suggestDifferent(condition) {
-			// condition 값에 따라 다른 가수, 다른 장르, 다른 국적을 요청하는 컨트롤러에 값을 전달합니다.
-			$.ajax({
-				type : 'GET',
-				url : '/suggest/suggestDifferent',
-				data : {
-					condition : condition
-				},
-				success : function(data) {
-					// 컨트롤러로부터 받은 응답을 이용하여 페이지에 새로운 추천 노래 정보를 업데이트합니다.
-					// 예를 들어, 받은 데이터를 이용하여 새로운 가수, 장르, 국적에 대한 노래 정보를 업데이트합니다.
-				},
-				error : function(error) {
-					console.log('Error:', error);
-				}
-			});
-		}
+    function redirectToSongInfo(songId) {
+        window.location.href = "${root}search/song_info?song_id=" + songId;
+    }
+
+    function suggestDifferent(condition) {
+        var songId;
+        if (condition === 'artist') {
+            songId = ${anotherArtistSongId};
+        } else if (condition === 'genre') {
+            songId = ${anotherGenreSongId};
+        } else if (condition === 'nation') {
+            songId = ${anotherNationSongId};
+        }
+        redirectToSongInfo(songId);
+    }
 	</script>
 
-	<!-- bottom -->
+		<!-- bottom -->
 	<c:import url="/WEB-INF/views/include/bottom.jsp" />
 </body>
 </html>

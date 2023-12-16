@@ -17,7 +17,7 @@ public interface UserMapper {
 	String checkUserEmailExit(String user_email);
 	
 	//유저 회원가입
-	@Insert("insert into user_info values(user_seq.nextval, #{user_id},#{user_pw},#{user_email},#{user_tel},#{user_address},#{user_name},#{user_birthday},sysdate)")
+	@Insert("insert into user_info values(user_seq.nextval, #{user_id},#{user_pw},#{user_email},#{user_tel},#{user_address},#{user_name},#{user_birthday},sysdate, '-')")
 	void addUserInfo(UserBean RegisterUserBean);
 	
 	@Select("select user_name, user_num from user_info where user_id = #{user_id} and user_pw = #{user_pw}")
