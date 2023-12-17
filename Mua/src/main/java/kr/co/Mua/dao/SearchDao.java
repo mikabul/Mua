@@ -135,4 +135,5 @@ public class SearchDao {
 	public void reviewReport(int review_num, int report_user_num, int user_num) {
 		searchMapper.reviewReport(review_num, report_user_num, user_num);
 	}
+	
 }

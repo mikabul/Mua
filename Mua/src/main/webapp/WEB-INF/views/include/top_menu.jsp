@@ -5,7 +5,8 @@
 <script src="${root}script/top_menu.js"></script>
 <c:set var='user_num' />
 <link rel="styleSheet" href="${root }style/top_menu.css">
-<div style="position: fixed; width: 100%; height: 90px; z-index: 100; background-color: white; top: 0px;">
+</style>
+<div style="position: fixed; width: 100%; height: 90px; z-index: 100; background-color: #d4f0f0; top: 0px;">
 	<div>
 		<nav class="nav nav-pills nav-fill" style="align-items: center">
 			<!-- 삼선 버튼 -->

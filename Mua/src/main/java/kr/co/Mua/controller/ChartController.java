@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 
 import kr.co.Mua.bean.ChartDto;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,7 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 public class ChartController {
 
     @GetMapping("/top100")
-    public String top100() {
+    public String top100(Model model) {
+    	
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy년MM월dd일HH시");
+		Calendar cal = Calendar.getInstance();
+		String now = sdf.format(cal.getTime());
+		
+		model.addAttribute("now", now);
+    	
         return "/chart/top100";
     }
 
@@ -29,10 +38,7 @@ public class ChartController {
     //장르 페이지
     @GetMapping("/genre")
     public String genre(HttpServletRequest request, Model model) {
-        // 세션에 저장된 데이터를 가져옴
-        Map<String, ArrayList<ChartDto>> genreDataMap = (Map<String, ArrayList<ChartDto>>) request.getSession().getAttribute("genreDataMap");
-        // 가져온 데이터를 모델에 담아서 뷰로 전달
-        model.addAttribute("genreDataMap", genreDataMap);
+    	
         // 해당하는 뷰 페이지 반환
         return "/chart/genre";
     }

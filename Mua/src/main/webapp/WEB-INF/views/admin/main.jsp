@@ -37,6 +37,7 @@
 							<input type="text" class="form-control" name="song_id" placeholder="아이디 입력..." required="required"/>
 							<button type="submit" class="btn btn-success">노래 아이디 검색</button>
 						</form>
+						<a class="dropdown-item" href="${root}admin/search/emptyNation">국가 정보</a>
 					</div>
 				</div>
 				<div class="btn-group">

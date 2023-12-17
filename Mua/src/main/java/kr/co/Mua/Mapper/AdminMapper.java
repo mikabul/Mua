@@ -38,6 +38,24 @@ public interface AdminMapper {
 	@Select("select * from song where song_id=#{song_id}")
 	public SongDto getSearchSongId(int song_id);
 	
+	// 국가정보가 없는 노래
+	@Select("select * from( "
+			+ "select s.song_id, s.song_name, s.song_thumbnail, a.album_id, a.album_name, "
+			+ "s.release_date, "
+			+ "row_number() over (order by s.song_name) as rn "
+			+ "from song s "
+			+ "inner join album a on s.album_id=a.album_id "
+			+ "left join thumbup_song t on s.song_id=t.song_id "
+			+ "where s.song_nation='-' "
+			+ "order by rn) "
+			+ "where rn between #{arg0} and #{arg1}")
+	public ArrayList<SongDto> getEmptySongNation(int index, int maxIndex);
+	
+	// 국가정보가 없는 노래의 최대 검색 갯수를 가져옴
+	@Select("select count(*) from song "
+			+ "where song_nation='-'")
+	public int getEmptySongNationMaxIndex();
+	
 	//---------- 업데이트 ------------
 	// 이름, 장르, 발매일, 가사파일이름, 썸네일파일이름, 국내(해외)
 	@Update("update song set song_name=#{song_name}, song_genre=#{song_genre}, "

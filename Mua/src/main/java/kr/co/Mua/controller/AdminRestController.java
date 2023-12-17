@@ -58,6 +58,33 @@ public class AdminRestController {
 		return jsonString;
 	}
 	
+
+	@RequestMapping(value="/ajaxEmptySongNation")
+	@ResponseBody
+	public String ajaxEmptySongNation(@RequestParam(value="index", defaultValue = "1") int index,
+							@RequestParam(value="endIndex", defaultValue = "20") int endIndex) {
+		
+		String jsonString = "";
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		ArrayList<SongDto> songList = adminService.getEmptySongNation(index, endIndex);
+		getLoadPage(index, endIndex);
+		
+		map.put("songList", songList);
+		map.put("loadPage", loadPage);
+		map.put("maxView", maxView);
+		map.put("page", page);
+		
+		try {
+			jsonString = objectMapper.writeValueAsString(map);
+		} catch (Exception e) {
+			System.out.println("AdminAjaxSong 문제 발생");
+			System.out.println(e);
+		}
+		return jsonString;
+	}
+	
 	@RequestMapping(value="/artist")
 	@ResponseBody
 	public String ajaxArtist(@RequestParam("str") String str,
@@ -114,6 +141,42 @@ public class AdminRestController {
 	
 	private void getLoadPage(int index, int endIndex, String str, String type) {
 		maxIndex = adminService.getMaxIndex(str, type);
+		maxPage = maxIndex / maxView + 1;
+		page = index / maxView;
+		
+		if(maxIndex % 20 == 0) {
+			maxPage -= 1;
+		}
+		
+		if(maxPage <= 10) { // 최대 페이지 10개이하
+			loadPage = new int[maxPage];
+			for(int i = 1; i <= maxPage; i++) {
+				loadPage[i - 1] = i;
+			}
+		} else { // 최대 페이지 10개 초과
+			loadPage = new int[10];
+			if(page < 6) { // 6페이지 미만
+				for(int i = 1; i <= 10; i++) {
+					loadPage[i - 1] = i;
+				}
+			} else if(page + 6 > maxPage) { // 최대페이지의 -5
+				int j = 9;
+				for(int i = maxPage; i > maxPage - 10; i-- ) {
+					loadPage[j] = i;
+					j--;
+				}
+			} else {
+				int j = 0;
+				for(int i = page; i <= 10; i++) {
+					loadPage[j] = i;
+					j++;
+				}
+			}
+		}
+	}
+	// nation 전용
+	private void getLoadPage(int index, int endIndex) {
+		maxIndex = adminService.getEmptySongNationMaxIndex();
 		maxPage = maxIndex / maxView + 1;
 		page = index / maxView;
 		

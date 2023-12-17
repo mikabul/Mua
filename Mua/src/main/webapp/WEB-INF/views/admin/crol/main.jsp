@@ -17,106 +17,135 @@
 <link rel="styleSheet" href="${root}/style/searchBar.css">
 </head>
 <style>
-.items-consertrec {
-	position: relative;
-	top: 700px;
-	width: 100%;
-	height: 800px;
-}
-
-.consertrec {
-	height: 500px;
-	width: 90%;
-	margin: 5%;
-}
-
-#carouselExampleIndicators {
-	height: 100%;
-	width: 100%;
-}
-
-.carousel-inner {
-	height: 100%;
-	width: 100%;
-}
-
-.consert-img {
-	position: absolute;
-	width: 1207.8px;
-	height: 500px;
-}
-
-.d-block w-100 {
-	width: 300px;
-	height: 300px;
-	object-fit: cover;
-}
-
-.items-songrec-songchart {
-	position: relative;
-	top: 500px;
-	width: 100%;
-	height: 500px;
-}
-
-.songrec {
-	float: left;
-	height: 500px;
-	width: 40%;
-	margin: 5%;
-}
-
-.song-img-top {
-	width: 300px;
-	height: 300px;
-	object-fit: cover;
-}
-
-.songchart {
-	float: left;
-	height: 420px;
-	width: 40%;
-	margin: 5%;
-	overflow-x: hidden;
-	   overflow-y: auto;
-}
-
-.flex_items {
-	height: 80px;
-	display: flex;
-	align-items: center;
-}
 
 </style>
 <body>
 	<header>
 		<c:import url="/WEB-INF/views/admin/include/top.jsp" />
 	</header>
-	<section style="position: relative; height: 2000px; width: 100%;">
-	<!-- 나중에 수정필요 insert -> search -->
-		<form action="${root }admin/crol/search/main" method="get">
-			<div class="form-row align-items-center search_form">
-				<div class="col-auto my-1">
-					<select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
-						name="search_where">
-						<option value="frm_searchSong" selected>노래</option>
-						<option value="frm_searchArtist">가수</option>
-						<option value="frm_searchAlbum">앨범</option>
-					</select>
+	<section style="margin-top: 150px;">
+		<div class="container">
+			<form action="${root }admin/crol/search/main" method="get">
+				<div class="form-row justify-content-center">
+					<div class="col-auto">
+						<select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="search_where">
+							<option value="frm_searchSong" selected>노래</option>
+							<option value="frm_searchArtist">가수</option>
+							<option value="frm_searchAlbum">앨범</option>
+						</select>
+					</div>
+					<input type="text" class="form-control col-4"
+						name="search_value">
+					<div class="col-auto">
+						<button type="submit" class="btn btn-primary">&nbsp;검색&nbsp;</button>
+					</div>
 				</div>
-				<input type="text" class="form-control search_bar"
-					name="search_value">
-				<div class="col-auto my-1">
-					<button type="submit" class="btn btn-primary">&nbsp;검색&nbsp;</button>
+			</form>
+		</div>
+		<div class="container" style="margin-top: 70px;">
+			<div class="text-center">
+				<strong>장르별</strong>
+			</div>
+			<div style="border: 1px solid #DDDEDF; margin-top: 10px">
+				<div class="container" style="margin-top: 30px;">
+					<div class="text-center">
+						<strong>K-POP</strong>
+						<hr>
+					</div>
+				</div>
+				<div class="container">
+					<div class="col-group">
+						<div class="row">
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN0100'">발라드</button>
+							</div>	
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN0200'">댄스</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN0300'">랩</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN0400'">R&B</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN0500'">인디</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN0600'">락</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN0700'">트로트</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN0800'">포크</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container" style="margin-top: 30px;">
+					<div class="text-center">
+						<strong>POP</strong>
+						<hr>
+					</div>
+				</div>
+				<div class="container">
+					<div class="col=group">
+						<div class="row">
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN0900'">팝</button>
+							</div>	
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN1000'">락</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN1100'">일렉</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN1200'">랩</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN1300'">R&B</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN1400'">포크</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container" style="margin-top: 30px;">
+					<div class="text-center">
+						<strong>그 외 장르</strong>
+						<hr>
+					</div>
+				</div>
+				<div class="container" style="margin-bottom: 30px;">
+					<div class="col=group">
+						<div class="row">
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN1500'">ost</button>
+							</div>	
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN1600'">클래식</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN1700'">재즈</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN1900'">J-POP</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN2100'">ccm</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-success btn-block" onclick="location.href='${root}admin/crol/genre?genreCode=GN2400'">국악</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-		</form>
-		<div style="position: absolute; top: 50%;">
-			<button onclick="location.href='${root}admin/crol/test'">테스트</button>
 		</div>
 	</section>
 
-	<!-- 하단 부분 -->
-	<c:import url="/WEB-INF/views/include/bottom.jsp" />
 </body>
 </html>

@@ -37,7 +37,6 @@ import kr.co.Mua.interceptor.AcceptAdminInterceptor;
 import kr.co.Mua.interceptor.ChartInterceptor;
 import kr.co.Mua.interceptor.CheckLoginInterceptor;
 import kr.co.Mua.interceptor.NewChartInterceptor;
-import kr.co.Mua.interceptor.GenreChartInterceptor;
 import kr.co.Mua.service.ChartService;
 
 @Configuration
@@ -125,9 +124,6 @@ public class ServletAppContext implements WebMvcConfigurer{
 		InterceptorRegistration reg4 = registry.addInterceptor(newchartInterceptor);
 		reg4.addPathPatterns("/chart/newchart");
 
-		GenreChartInterceptor genrechartInterceptor = new GenreChartInterceptor(chartService);
-		InterceptorRegistration reg5 = registry.addInterceptor(genrechartInterceptor);
-		reg5.addPathPatterns("/chart/genre");
 	}
 	
 	@Bean

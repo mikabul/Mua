@@ -32,6 +32,14 @@ public class AdminDao {
 		return adminMapper.getSearchSongId(song_id);
 	}
 	
+	public ArrayList<SongDto> getEmptySongNation(int index, int maxIndex){
+		return adminMapper.getEmptySongNation(index, maxIndex);
+	}
+	
+	public int getEmptySongNationMaxIndex() {
+		return adminMapper.getEmptySongNationMaxIndex();
+	}
+	
 	public void updateSong(SongDto songDto) {
 		adminMapper.updateSong(songDto);
 	}

@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var='root' value='${pageContext.request.contextPath}/' />
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <footer style="position: stickey; bottom: 0%; width: 100%;">
 	<div class="container-fluid bg-dark text-white"
 		style="margin-top: 50px; padding-top: 30px; padding-bottom: 30px; width: 100%;">

@@ -53,8 +53,8 @@
 							<th scope="col"><span class="none">노래 썸네일</span></th>
 							<th scope="col"><span class="none">빈공간</span></th>
 							<th scope="col">노래</th>
-							<th scope="col"><span class="none">빈공간</span></th>
 							<th scope="col"><span class="none">아티스트 썸네일</span></th>
+							<th scope="col"><span class="none">빈공간</span></th>
 							<th scope="col">아티스트</th>
 							<th scope="col">앨범</th>
 							<th scope="col">좋아요</th>
@@ -101,8 +101,7 @@
 								<!-- 아티스트 썸네일 -->
 								<td class="top_bottom">
 									<!-- 캐러셀 -->
-									<div id="carouselExampleSlidesOnly" class="carousel slide"
-										data-ride="carousel">
+									<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
 										<div class="carousel-inner">
 											<div class="carousel-item active">
 												<a href="${root}search/artist_info?artist_id=${item.artistList[0].artist_id}" title="${item.artistList[0].artist_name} - 아티스트정보">

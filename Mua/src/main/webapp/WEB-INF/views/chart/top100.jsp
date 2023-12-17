@@ -22,7 +22,7 @@
 
 	<c:import url="/WEB-INF/views/include/top_menu.jsp" />
 	
-	<section style="margin-top: 130px;">
+	<section style="margin-top: 230px;">
 	<table style="margin-left: auto; margin-right: auto;">
 		<colgroup>
 			<!-- 순위 -->
