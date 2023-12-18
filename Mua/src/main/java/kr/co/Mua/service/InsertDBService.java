@@ -107,11 +107,9 @@ public class InsertDBService {
 		while (it.hasNext()) {
 
 			ArtistDto artistDTO = it.next();
-			System.out.println(artistDTO.getArtist_name());
 			if (insertDBDao.artist_match(artistDTO) == null) {
 				// 데이터 베이스에 저장후 아티스트 번호를 가져옴
 				insertDBDao.insert_artist(artistDTO);
-				System.out.println(insertDBDao.artist_match(artistDTO) == null);
 				temp_artist_id = insertDBDao.artist_match(artistDTO).getArtist_id();
 				// 썸네일 저장
 				insertDBDao.insert_artist_thumbnail(temp_artist_id, thumbnailSave(temp_artist_id, "artist", count));
@@ -137,11 +135,9 @@ public class InsertDBService {
 				}
 			}
 			count++;
-			System.out.println(artistList.size() + "개 중 " + count + "개 완료");
 
 		}
 		if(++sleepCount % 10 == 0) {
-			System.out.println("쉬는 시간");
 			try {
 				Thread.sleep(5000);
 			} catch (Exception e) {
@@ -318,7 +314,6 @@ public class InsertDBService {
 					tempArtsitDTO.setArtist_nation(nation[i]);
 					
 					// 멤버
-					System.out.println("그룹 ? " + tempArtsitDTO.getArtist_type().trim().equals("그룹"));
 					if(tempArtsitDTO.getArtist_type().trim().equals("그룹")) {
 						Elements memberElements = elements.select("div.wrap_atistname a");
 						member = new String[memberElements.size()];

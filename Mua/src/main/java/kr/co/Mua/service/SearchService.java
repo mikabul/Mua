@@ -203,6 +203,10 @@ public class SearchService {
 		searchDAO.deleteUserReview(flag, type_id, user_num, review_num);
 	}
 	
+	public void deleteReport(int review_num) {
+		searchDAO.deleteReport(review_num);
+	}
+	
 	public Boolean checkReport(int review_num, int report_user_num, int user_num) {
 		
 		if(searchDAO.checkReport(user_num, review_num) != null) {

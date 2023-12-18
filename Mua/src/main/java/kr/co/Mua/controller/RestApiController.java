@@ -113,7 +113,6 @@ public class RestApiController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(lyric);
 		return lyric;
 	}
 	
@@ -145,8 +144,6 @@ public class RestApiController {
 	        jsonString = "";
 	    }
 	    
-	    System.out.println("user_num : " + loginUserBean.getUser_num());
-	    System.out.println("song_id : " + song_id);
 	    // 최근 본 노래
 	    if(loginUserBean.isUserLogin()) {
 			if(searchService.getViewed_song(song_id, loginUserBean.getUser_num()) == null){
@@ -365,12 +362,10 @@ public class RestApiController {
 												@RequestParam("user_num") int user_num,
 												@RequestParam("type_id") int type_id,
 												@RequestParam("review_num") int review_num) {
-		System.out.println("flag" + flag);
-		System.out.println("user_num" + user_num);
-		System.out.println("type_id" + type_id);
-		System.out.println("review_num" + review_num);
+		
 		searchService.deleteUserReview(flag, type_id, user_num, review_num);
 		if(searchService.getUserReview(flag, type_id, user_num) == null) {
+			searchService.deleteReport(review_num);
 			return "true";
 		}else {
 			return "false";

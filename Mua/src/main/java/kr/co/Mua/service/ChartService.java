@@ -65,7 +65,6 @@ public class ChartService {
 		Document searchResult;
 
 		try {
-			int count = 0;
 			// HTML전문 가져오기
 			searchResult = Jsoup.connect(urlSearch + now).get();
 			// 차트를 이루는 tbody내부의 tr을 전부 불러옴
@@ -73,7 +72,6 @@ public class ChartService {
 			// tr을 하나씩 가져옴
 			for (Element trElement : trElements) {
 				
-				System.out.println("몇 번쨰? " + ++count);
 				// ==================이름======================
 				int tempSongId = 0;
 				
@@ -99,16 +97,13 @@ public class ChartService {
 				// 앨범 이름
 				Elements albumElements = trElement.select("td:nth-child(7)");
 				tempAlbumName = albumElements.text();
-				System.out.println("tempSongName : " +  tempSongName);
-				System.out.println("tempArtistName : " + tempArtistName[0]);
-				System.out.println("tempAlbumName : " + tempAlbumName);
 				try {
 					songDto = chartDAO.chartSongMatch_fast(tempSongName, tempArtistName[0], tempAlbumName);
 				} catch (Exception e) {
 					System.out.println(e);
 					songDto = null;
 				}
-				System.out.println(songDto==null?"비었다":"안비었다");
+				
 				// 노래가 존재하지 않는다면 등록후 다시 불러옴
 				if(songDto == null) {
 					songMatch(tempSongId);
@@ -243,7 +238,6 @@ public class ChartService {
 			
 			searchResultDto.setSongDto(tempSongDto);
 			searchResultDto.setArtistList(artistList);
-			System.out.println(artistList.size());
 			
 			resultList.add(searchResultDto);
 			
@@ -256,7 +250,6 @@ public class ChartService {
 	private void songMatch(int tempSongID) {
 		
 		String urlSong = "https://www.melon.com/song/detail.htm?songId=";
-		System.out.println("자세히비교");
 		//============= 비교할 노래 정보 =================
 		try {
 			Document docSong = Jsoup.connect(urlSong + tempSongID).get();
@@ -328,7 +321,7 @@ public class ChartService {
 		// 아티스트의 정보의 배열을 temp에 추가
 		temp.setArtist_id(tempArtistId);
 		temp.setArtist_name(tempArtistName);
-		temp.setArtist_thumbnail(tempArtistName);
+		temp.setArtist_thumbnail(tempArtistThumbnail);
 		
 		// 앨범의 정보를 temp에 추가
 		temp.setAlbum_id(albumDto.getAlbum_id());

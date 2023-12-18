@@ -39,7 +39,6 @@ public class AdminModifyValidator implements Validator {
 			String lyrics = songDto.getLyrics();
 			String song_thumbnail = songDto.getSong_thumbnail();
 			
-			System.out.println("song_name : " + song_name.length());
 			// song_name
 			if (song_name == null || song_name.isEmpty()) {
 				errors.rejectValue("song_name", "sNameEmpty");

@@ -179,8 +179,8 @@ public class AdminService {
 		return adminDao.getReviewReport();
 	}
 	
-	public void deleteUserReview(String flag, int type_id, int user_num, int review_num) {
-		adminDao.deleteUserReview(flag, type_id, user_num, review_num);
+	public void deleteUserReview(int review_num) {
+		adminDao.deleteUserReview(review_num);
 	}
 	
 	public void deleteReport(int report_num) {
@@ -248,7 +248,6 @@ public class AdminService {
 	private void songMatch(int tempSongID) {
 
 		String urlSong = "https://www.melon.com/song/detail.htm?songId=";
-		System.out.println("자세히비교");
 		// ============= 비교할 노래 정보 =================
 		try {
 			Document docSong = Jsoup.connect(urlSong + tempSongID).get();

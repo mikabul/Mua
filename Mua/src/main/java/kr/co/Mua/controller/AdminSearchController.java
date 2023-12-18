@@ -1,9 +1,12 @@
 package kr.co.Mua.controller;
 
+import java.util.ArrayList;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SongDto;
 import kr.co.Mua.service.AdminService;
 import kr.co.Mua.validator.AdminModifyValidator;
@@ -38,6 +42,38 @@ public class AdminSearchController {
 	@RequestMapping(value="/albumName")
 	public String albumName() {
 		return "/admin/search/albumName";
+	}
+	
+	@RequestMapping(value="/emptyNation")
+	public String emptyNation() {
+		return "/admin/search/emptyNation";
+	}
+	
+	@RequestMapping(value = "/review_report")
+	public String review_report(Model model) {
+		
+		ArrayList<ReviewDto> reviewList = adminService.getReviewReport();
+		model.addAttribute("reviewList", reviewList);
+		
+		return "/admin/search/review_report";
+	}
+	
+	@RequestMapping(value = "/deleteReview")
+	public String deleteReview(@RequestParam("report_num") int report_num,
+								@RequestParam("review_num") int review_num) {
+		
+		adminService.deleteUserReview( review_num);
+		adminService.deleteReport(report_num);
+		
+		return "/admin/search/review_report";
+	}
+	
+	@RequestMapping(value = "/passReview")
+	public String passReview(@RequestParam("report_num") int report_num) {
+		
+		adminService.deleteReport(report_num);
+		
+		return "/admin/search/review_report";
 	}
 	
 	//============ 정보 ===========

@@ -93,8 +93,8 @@ public class AdminDao {
 		return adminMapper.getReviewReport();
 	}
 	
-	public void deleteUserReview(String flag, int type_id, int user_num, int review_num) {
-		adminMapper.deleteUserReview(flag, type_id, user_num, review_num);
+	public void deleteUserReview(int review_num) {
+		adminMapper.deleteUserReview(review_num);
 	}
 	
 	public void deleteReport(int report_num) {

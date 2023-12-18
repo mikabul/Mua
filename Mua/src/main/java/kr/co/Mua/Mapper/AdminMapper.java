@@ -148,10 +148,8 @@ public interface AdminMapper {
 	public ArrayList<ReviewDto> getReviewReport();
 	
 	// 리뷰 삭제
-	@Delete("delete review where flag=#{arg0} "
-			+ "and type_id=#{arg1} and user_num=#{arg2} "
-			+ "and review_num=${arg3}")
-	public void deleteUserReview(String flag, int type_id, int user_num, int review_num);
+	@Delete("delete review where review_num=${arg1}")
+	public void deleteUserReview(int review_num);
 	
 	// 문제가 없는 리뷰
 	@Delete("delete review_report where report_num=#{report_num}")

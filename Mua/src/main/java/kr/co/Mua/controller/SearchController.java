@@ -211,7 +211,8 @@ public class SearchController {
 			userReviewDto.setUser_num(tempReviewDto.getUser_num());
 			userReviewDto.setUser_name(tempReviewDto.getUser_name());
 			userReviewDto.setFlag(tempReviewDto.getFlag());
-			userReviewDto.setReview_content(tempReviewDto.getReview_content());
+			
+			userReviewDto.setReview_content(tempReviewDto.getReview_content().replace("<br>", ""));
 			userReviewDto.setReview_date(tempReviewDto.getReview_date());
 			userReviewDto.setReview_point(tempReviewDto.getReview_point());
 			userReviewDto.setSuggestion(tempReviewDto.getSuggestion());
@@ -309,7 +310,22 @@ public class SearchController {
 	
 	@PostMapping("/insertReview")
 	public String insertReview(@ModelAttribute("userRrviewDto") ReviewDto userReviewDto) {
-		System.out.println("POST�뱾�뼱�샂");
+		
+		String review_content = userReviewDto.getReview_content();
+		int subIndex = 50;
+		
+		if(review_content.length() > subIndex) {
+			String subString = "";
+			for(int i = 0; i < review_content.length(); i += subIndex) {
+				try {
+					subString += review_content.substring(i, i + subIndex) + "<br>";
+				} catch (Exception e) {
+					subString += review_content.substring(i);
+				}
+			}
+			review_content = subString;
+		}
+		userReviewDto.setReview_content(review_content);
 		searchService.insertUserReview(userReviewDto);
 		
 		switch(userReviewDto.getFlag()) {
@@ -326,6 +342,22 @@ public class SearchController {
 	
 	@PostMapping("rewriteReview")
 	public String rewriteReview(@ModelAttribute("userRrviewDto") ReviewDto userReviewDto) {
+		
+		String review_content = userReviewDto.getReview_content();
+		int subIndex = 50;
+		
+		if(review_content.length() > subIndex) {
+			String subString = "";
+			for(int i = 0; i < review_content.length(); i += subIndex) {
+				try {
+					subString += review_content.substring(i, i + subIndex) + "<br>";
+				} catch (Exception e) {
+					subString += review_content.substring(i);
+				}
+			}
+			review_content = subString;
+		}
+		userReviewDto.setReview_content(review_content);
 		searchService.rewriteUserReview(userReviewDto);
 		
 		switch(userReviewDto.getFlag()) {

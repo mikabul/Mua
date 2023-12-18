@@ -128,6 +128,10 @@ public class SearchDao {
 		searchMapper.deleteUserReview(flag, type_id, user_num, review_num);
 	}
 	
+	public void deleteReport(int review_num) {
+		searchMapper.deleteReport(review_num);
+	}
+	
 	public Integer checkReport(int user_num, int review_num) {
 		return searchMapper.checkReport(user_num, review_num);
 	}

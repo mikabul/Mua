@@ -35,7 +35,7 @@
 						<div class="dropdown-divider"></div>
 						<form action="${root}admin/search/songInfo" method="POST">
 							<input type="text" class="form-control" name="song_id" placeholder="아이디 입력..." required="required"/>
-							<button type="submit" class="btn btn-success">노래 아이디 검색</button>
+							<button type="submit" class="btn btn-success" style="margin: 3px 0px; width: 100%;">노래 아이디 검색</button>
 						</form>
 						<a class="dropdown-item" href="${root}admin/search/emptyNation">국가 정보</a>
 					</div>
@@ -45,9 +45,9 @@
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="${root}admin/search/artistName">아티스트 이름 검색</a>
 						<div class="dropdown-divider"></div>
-						<form action="${root}admin/search/artistInfo" method="POST">
+						<form action="${root}admin/search/artistInfo" method="POST" class="text-center">
 							<input type="text" class="form-control" name="artist_id" placeholder="아이디 입력..." required="required"/>
-							<button type="submit" class="btn btn-success">아티스트 아이디 검색</button>
+							<button type="submit" class="btn btn-success" style="margin: 3px 0px; width: 100%;">아티스트 아이디 검색</button>
 						</form>
 					</div>
 				</div>
@@ -58,7 +58,7 @@
 						<div class="dropdown-divider"></div>
 						<form action="${root}admin/search/albumInfo" method="POST">
 							<input type="text" class="form-control" name="album_id" placeholder="아이디 입력..." required="required"/>
-							<button type="submit" class="btn btn-success">앨범 아이디 검색</button>
+							<button type="submit" class="btn btn-success" style="margin: 3px 0px; width: 100%;">앨범 아이디 검색</button>
 						</form>
 					</div>
 				</div>
@@ -69,12 +69,12 @@
 						<div class="dropdown-divider"></div>
 						<form action="${root}admin/search/userInfo" method="POST">
 							<input type="text" class="form-control" name="user_num" placeholder="아이디 입력..." required="required"/>
-							<button type="submit" class="btn btn-success">유저 번호 검색</button>
+							<button type="submit" class="btn btn-success" style="margin: 3px 0px; width: 100%;">유저 번호 검색</button>
 						</form>
 					</div>
 				</div>
 				<button type="button" class="btn btn-success" 
-				onclick="location.href='${root}admin/review_report'">신고 : 리뷰 관리</button>
+				onclick="location.href='${root}admin/search/review_report'">신고 : 리뷰 관리</button>
 			</div>
 		</div>
 	</section>

@@ -210,6 +210,10 @@ public interface SearchMapper {
 			+ "where flag=#{flag} and type_id=#{type_id} and user_num=#{user_num}")
 	public void rewriteUserReview(ReviewDto userReview);
 	
+	@Select("select report_num, report_num from review_report "
+			+ "where review_num = #{review_num}")
+	public ReviewDto isReport(int review_num);
+	
 	// 리뷰 삭제
 	@Delete("delete review where flag=#{arg0} "
 			+ "and type_id=#{arg1} and user_num=#{arg2} "
@@ -220,6 +224,10 @@ public interface SearchMapper {
 	@Select("select report_num from review_report "
 			+ "where user_num=#{arg0} and review_num=#{arg1}")
 	public Integer checkReport(int user_num, int review_num);
+	
+	// 신고 삭제
+	@Delete("delete review_report where review_num = #{review_num}")
+	public void deleteReport(int review_num);
 	
 	// 리뷰 신고
 	@Insert("insert into review_report "

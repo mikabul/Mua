@@ -22,8 +22,12 @@
 
 	<c:import url="/WEB-INF/views/include/top_menu.jsp" />
 	
-	<section style="margin-top: 230px;">
-	<table style="margin-left: auto; margin-right: auto;">
+	<section style="margin-top: 150px;">
+	<div class="text-center" style="font-size: 30px;">
+		<strong>${now}</strong>
+	</div>
+	
+	<table style="margin-left: auto; margin-right: auto; margin-top: 20px;">
 		<colgroup>
 			<!-- 순위 -->
 			<col style="width: 62px"/>

@@ -192,7 +192,7 @@ request.setCharacterEncoding("utf-8");
 					</fieldset>
 				</div>
 				<div class="form-group row justify-content-center">
-					<div style="width: 470px;">
+					<div class="col-sm-10">
 						<form:textarea path="review_content" class="form-control" 
 						placeholder="내용을 입력해주세요..." required="true" rows="4"/>
 						<div id="submitBtn" class="text-center" style="margin-top: 13px;"></div>
@@ -273,12 +273,8 @@ $('div.other_song').on('dblclick', function(event){
 			{
 				method: 'GET'
 			})
-	.then(response => {
-		if(response.ok){
-			return response.json();
-		}
-	})
-    .then(data => {
+    .then(response => {
+        if (response.ok) {
             // 성공 시 현재 URL 가져오기
             const currentUrl = window.location.href;
 
@@ -364,7 +360,9 @@ $('div.other_song').on('dblclick', function(event){
 				$('#lyric').removeClass('on');
 				$('#lyricOn').text('▽펼치기');
 			}
-        
+        } else {
+            throw new Error('네트워크 응답이 문제가 있습니다.');
+        }
     })
     .catch(error => {
         console.error('Fetch 작업에 문제가 있습니다:', error);
@@ -621,7 +619,7 @@ $(document).ready(function(){
 		this.removeEventListener('click', clickHandler);
 		var index = this.getAttribute('index');
 		
-		fetch('${root}getPageReview?index=' + index + '&type_id=' + type_id + '&flag=' + flag, {
+		fetch('${root}getPageReview?index=${index}&type_id=${type_id}&flag=${flag}', {
 		    method: 'GET'
 		})
 		    .then(response => {
@@ -650,23 +648,39 @@ $(document).ready(function(){
 		var isLogin = ${loginUserBean.userLogin};
 		
 		if(isLogin){
-			
+			var url = `${root}reviewReport`;
+
+			// 요청에 담을 데이터
+			var data = {
+			    review_num: review_num,
+			    report_user_num: report_user_num,
+			    user_num: user_num
+			};
+
+			// Fetch 요청 설정
+			var options = {
+			    method: 'POST',
+			    headers: {
+			        'Content-Type': 'application/json' // 데이터를 JSON 형식으로 전송한다고 가정합니다
+			    },
+			    body: JSON.stringify(data)
+			};
+
 			// Fetch 요청 보내기
-			fetch('${root}reviewReport?review_num=' + review_num + '&report_user_num=' + report_user_num +'&user_num=' + user_num, {
-				method: 'POST'
-			})
-				.then(response => {
+			fetch(url, options)
+			    .then(response => {
 			        if (response.ok) {
-			            return response.text(); // 혹은 response.json() 등으로 데이터를 추출할 수 있습니다.
+			            return response.json();
 			        }
 			        throw new Error('네트워크 응답이 문제가 있습니다.');
 			    })
-				.then(result => {
-			    	console.log('result : ' + result);
-			        if (result == 'true') {
+			    .then(result => {
+			        if (result === 'true') {
 			            alert('신고가 완료되었습니다.');
+			            location.reload();
 			        } else {
 			            alert('이미 신고된 리뷰입니다.');
+			            location.reload();
 			        }
 			    })
 			    .catch(error => {
@@ -716,8 +730,14 @@ $(document).ready(function(){
 		};
 		
 		$('#deleteReview').on('click',function(){
-			fetch('${root}reviewDelete?flag=' + flag + '&type_id=' + type_id + '&user_num=' + user_num + '&review_num=' + review_num, {
-				  method: 'POST'
+			fetch('${root}reviewDelete', {
+				  method: 'POST',
+				  data:({
+				    flag: flag,
+				    type_id: type_id,
+				    user_num: user_num,
+				    review_num: review_num
+				  })
 				})
 				  .then(response => {
 				    if (response.ok) {
@@ -727,7 +747,12 @@ $(document).ready(function(){
 				    }
 				  })
 				  .then(result => {
-						location.reload();
+				    if (result === 'true') {
+				      alert('삭제를 완료했습니다.');
+				      location.reload();
+				    } else {
+				      alert('삭제에 실패하였습니다.');
+				    }
 				  })
 				  .catch(error => {
 				    console.error('There was a problem with the fetch operation:', error);
