@@ -1,21 +1,23 @@
 package kr.co.Mua.Mapper;
 
+import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.SongDto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Select;
 
 public interface SuggestMapper {
 	
-    @Select("SELECT A.ARTIST_NAME " +
-            "FROM ARTIST A " +
-            "INNER JOIN (SELECT ARTIST_ID " +
-                        "FROM THUMBUP_ARTIST " +
-                        "WHERE USER_NUM = #{userNum} " +
-                        "ORDER BY THUMBUP_DATE DESC " +
-                        "FETCH FIRST ROW ONLY) T ON A.ARTIST_ID = T.ARTIST_ID")
-    public String getMostRecentArtistName(int userNum);
+    @Select("select artist_name, to_char(thumbup_date, 'yyyy-mm-dd hh24:mm') as thumbup_date"
+    		+ " from artist ar"
+    		+ " inner join user_info u on u.user_num=${userNum}"
+    		+ " inner join thumbup_artist ta on ta.user_num=u.user_num"
+    		+ " where ta.artist_id=ar.artist_id"
+    		+ " order by thumbup_date desc")
+    public List<ArtistDto> getRecentArtistInfo(int userNum);
+    
     
     @Select("SELECT most_common_genre " +
             "FROM ( " +
@@ -87,16 +89,11 @@ public interface SuggestMapper {
     public String getSongNation(int song_id);
     
     @Select("SELECT a.artist_name "
-    		+ "FROM artist a "
-    		+ "INNER JOIN song_artist sa ON a.artist_id = sa.artist_id "
-    		+ "WHERE sa.song_id = #{song_id} ")
-    public String getArtistName(int song_id);
-    
-    @Select("SELECT ta.thumbup_date "
-    		+ "FROM artist a "
-    		+ "LEFT JOIN thumbup_artist ta ON a.artist_id = ta.artist_id "
-    		+ "WHERE a.artist_name = #{artist_name} ")
-    public Date getArtistThumbupDate(String artist_name);
+    	    + "FROM artist a "
+    	    + "INNER JOIN song_artist sa ON a.artist_id = sa.artist_id "
+    	    + "WHERE sa.song_id = #{song_id}")
+    public List<String> getArtistNames(int song_id);
+
 
 }
 

@@ -1,6 +1,8 @@
 package kr.co.Mua.bean;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -42,6 +44,12 @@ public class UserBean {
 	private String authCode2;
 	
 	private String user_pw2;
+	
+	private int top100Count;
+	private int newchartCount;
+	private int genreCount;
+
+	
 	
 	public UserBean() {
 		this.userIdExit = false;
@@ -154,8 +162,33 @@ public class UserBean {
 	public void setAuthCode2(String authCode2) {
 		this.authCode2 = authCode2;
 	}
+
+	public int getTop100Count() {
+		return top100Count;
+	}
+
+	public void setTop100Count(int top100Count) {
+		this.top100Count = top100Count;
+	}
+
+	public int getNewchartCount() {
+		return newchartCount;
+	}
+
+	public void setNewchartCount(int newchartCount) {
+		this.newchartCount = newchartCount;
+	}
+
+	public int getGenreCount() {
+		return genreCount;
+	}
+
+	public void setGenreCount(int genreCount) {
+		this.genreCount = genreCount;
+	}
+
 	
-	
+
 	
 	
 }

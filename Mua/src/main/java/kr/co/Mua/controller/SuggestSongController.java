@@ -2,10 +2,12 @@ package kr.co.Mua.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Date;
 
 import javax.servlet.http.HttpSession;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.Mua.dao.SuggestDao;
 import kr.co.Mua.service.ChartService;
+import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.ChartDto;
 import kr.co.Mua.bean.SongDto;
 import kr.co.Mua.bean.UserBean;
@@ -31,6 +34,9 @@ public class SuggestSongController {
 
 	@Autowired
 	private ChartService chartService; // ChartService 주입
+	
+	@Resource(name = "loginUserBean")
+	private UserBean loginUserBean;
 	
 	// 각각의 조건을 검사하는 메서드 추가
 	private int findMatchingSongId(ArrayList<ChartDto> chartList, String nationName, String genreName, String artistName) {
@@ -69,6 +75,7 @@ public class SuggestSongController {
 	            }
 	        }
 	    }
+        System.out.println(matchedSongId);
 	    return matchedSongId;
 	}
 
@@ -106,7 +113,7 @@ public class SuggestSongController {
 
         int anotherArtistSongId = 0;
         
-        String artistName = suggestDAO.getArtistName(matchedSongId);
+        List<String> artistName = suggestDAO.getArtistNames(matchedSongId);
         
         boolean isNationMatch_aA = false;
         boolean isGenreMatch_aA = false;
@@ -124,11 +131,15 @@ public class SuggestSongController {
                 }
                 if (artistName != null) {
                     boolean isArtistFound = false;
-                    for (String artist : chartItem.getArtist_name()) {
-                        if (artistName.equals(artist)) {
-                            isArtistFound = true;
-                            break;
+                    List<String> songArtists = suggestDAO.getArtistNames(chartItem.getSong_id());
+                    if (songArtists != null) {
+                    	for (String artist : songArtists) {
+                            if (artistName.contains(artist)) {
+                                isArtistFound = true;
+                                break;
+                            }
                         }
+
                     }
                     if (isArtistFound) {
                         isMatched = false;
@@ -190,8 +201,10 @@ public class SuggestSongController {
 
 
 
-
-
+	// 두 문자열 중 하나가 다른 문자열에 완전히 포함되는지 확인하는 메서드
+	public static boolean checkForDuplicates(String str1, String str2) {
+		return str1.contains(str2) || str2.contains(str1);
+	}
     
     private int anotherGenre(ArrayList<ChartDto> chartList, String nationName, String artistName, int matchedSongId) {
 
@@ -205,24 +218,31 @@ public class SuggestSongController {
 
 	    for (ChartDto chartItem : chartList) {
 	        if (chartItem.getSong_thumbup() == 0) {
-	            // 넘어온 조건 중 하나라도 null 또는 비어있다면 다음 chartItem으로 넘어감
-	            if (nationName != null && !isNationMatch && nationName.equals(suggestDAO.getSongNation(chartItem.getSong_id()))) {
-	            	anotherGenreSongId = chartItem.getSong_id();
-	                isNationMatch = true;
-	            }
-	            if (genreName != null && !isGenreMatch && !genreName.equals(suggestDAO.getSongGenre(chartItem.getSong_id()))) {
-	            	anotherGenreSongId = chartItem.getSong_id();
-	                isGenreMatch = true;
-	            }
-	            if (artistName != null) {
-	                for (String artist : chartItem.getArtist_name()) {
-	                    if (!isArtistMatch && artistName.equals(artist)) {
-	                    	anotherGenreSongId = chartItem.getSong_id();
-	                        isArtistMatch = true;
-	                        break; // 만족하는 아티스트를 찾으면 반복문 종료
-	                    }
-	                }
-	            }
+
+	        	// 두 문자열 중 하나가 다른 문자열에 완전히 포함되는지 확인
+	            boolean containsDuplicate = checkForDuplicates(genreName, suggestDAO.getSongGenre(chartItem.getSong_id()));
+	            
+				if (nationName != null && !isNationMatch
+						&& nationName.equals(suggestDAO.getSongNation(chartItem.getSong_id()))) {
+					anotherGenreSongId = chartItem.getSong_id();
+					isNationMatch = true;
+				}
+				// 넘어온 조건 중 하나라도 null 또는 비어있다면 다음 chartItem으로 넘어감
+				if (genreName != null && !isGenreMatch
+						&& !containsDuplicate) {
+					anotherGenreSongId = chartItem.getSong_id();
+					isGenreMatch = true;
+				}
+
+				if (artistName != null) {
+					for (String artist : chartItem.getArtist_name()) {
+						if (!isArtistMatch && artistName.equals(artist)) {
+							anotherGenreSongId = chartItem.getSong_id();
+							isArtistMatch = true;
+							break; // 만족하는 아티스트를 찾으면 반복문 종료
+						}
+					}
+				}
 
 	            // 모든 조건을 만족하면 반복문 종료
 	            if ((nationName == null || isNationMatch) && (genreName == null || isGenreMatch) && (artistName == null || isArtistMatch)) {
@@ -238,17 +258,19 @@ public class SuggestSongController {
     public String showSongSuggestPage(Model model, HttpSession session, HttpServletRequest request) {
         int userNum = 0; // 기본값 설정 또는 예외 처리
 
-        UserBean loginUserBean = (UserBean) session.getAttribute("loginUserBean");
-
         if (loginUserBean != null) {
             userNum = loginUserBean.getUser_num();
             System.out.println(userNum);
         } else {
-            userNum = 1;
+            userNum = 0;
+            System.out.println(userNum);
         }
+        
+        List<ArtistDto> artistInfo = suggestDAO.getMostRecentArtistInfo(userNum);
 
-        String artistName = suggestDAO.getMostRecentArtistName(userNum);
-        Date ArtistThumbupDate = suggestDAO.getArtistThumbupDate(artistName);
+        System.out.println(artistInfo.get(0).getArtist_thumbup_date());
+        String artistName = artistInfo.get(0).getArtist_name();
+        String ArtistThumbupDate = artistInfo.get(0).getArtist_thumbup_date();
         
         String genreName = suggestDAO.getMostGenreName(userNum);
         int mostGenreCount = suggestDAO.getMostGenreCount(userNum);
@@ -261,9 +283,9 @@ public class SuggestSongController {
         ArrayList<ChartDto> top100chart = chartService.getChart();
         Map<String, ArrayList<ChartDto>> genreDataMap = (Map<String, ArrayList<ChartDto>>) session.getAttribute("genreDataMap");
                 
-        Integer top100Count = (Integer) request.getSession().getAttribute("/Mua/chart/top100");
-        Integer newchartCount = (Integer) request.getSession().getAttribute("/Mua/chart/newchart");
-        Integer genreCount = (Integer) request.getSession().getAttribute("/Mua/chart/genre");
+        int top100Count = loginUserBean.getTop100Count();
+        int newchartCount = loginUserBean.getNewchartCount();
+        int genreCount = loginUserBean.getGenreCount();
         
         Integer maxCount = Math.max(Math.max(top100Count, newchartCount), genreCount);
         
@@ -272,7 +294,7 @@ public class SuggestSongController {
         int anotherGenreSongId = 0;
         int anotherNationSongId = 0;
 
-        if (top100Count != null && newchartCount != null && genreCount != null) {
+        if (top100Count != 0 && newchartCount != 0 && genreCount != 0) {
             if (maxCount.equals(top100Count)) {
             	
                 suggestSongId = findMatchingSongId(top100chart, nationName, genreName, artistName);
@@ -295,7 +317,7 @@ public class SuggestSongController {
                 anotherNationSongId = findMatchingSongIdFromGenreDataMap(genreDataMap, nationName, genreName, artistName, "nation");
             }
             
-		} else if (top100Count != null && newchartCount != null) {
+		} else if (top100Count != 0 && newchartCount != 0) {
 			if (maxCount.equals(top100Count)) {
 
 				suggestSongId = findMatchingSongId(top100chart, nationName, genreName, artistName);
@@ -311,7 +333,7 @@ public class SuggestSongController {
 				anotherNationSongId = anotherNation(newchart, suggestSongId);
 
 			}
-		} else if (newchartCount != null && genreCount != null) {
+		} else if (newchartCount != 0 && genreCount != 0) {
 			if (maxCount.equals(newchartCount)) {
 
 				suggestSongId = findMatchingSongId(newchart, nationName, genreName, artistName);
@@ -330,7 +352,7 @@ public class SuggestSongController {
 				anotherNationSongId = findMatchingSongIdFromGenreDataMap(genreDataMap, nationName, genreName,
 						artistName, "nation");
 			}
-        } else if (top100Count != null && genreCount != null) {
+        } else if (top100Count != 0 && genreCount != 0) {
         	if (maxCount.equals(top100Count)) {
 
 				suggestSongId = findMatchingSongId(top100chart, nationName, genreName, artistName);
@@ -349,17 +371,17 @@ public class SuggestSongController {
 				anotherNationSongId = findMatchingSongIdFromGenreDataMap(genreDataMap, nationName, genreName,
 						artistName, "nation");
 			}
-        } else if (top100Count != null) {
+        } else if (top100Count != 0) {
         	suggestSongId = findMatchingSongId(top100chart, nationName, genreName, artistName);
 			anotherArtistSongId = anotherArtist(top100chart, nationName, genreName, suggestSongId);
 			anotherGenreSongId = anotherGenre(top100chart, nationName, artistName, suggestSongId);
 			anotherNationSongId = anotherNation(top100chart, suggestSongId);
-        } else if (newchartCount != null) {
+        } else if (newchartCount != 0) {
         	suggestSongId = findMatchingSongId(newchart, nationName, genreName, artistName);
 			anotherArtistSongId = anotherArtist(newchart, nationName, genreName, suggestSongId);
 			anotherGenreSongId = anotherGenre(newchart, nationName, artistName, suggestSongId);
 			anotherNationSongId = anotherNation(newchart, suggestSongId);
-        } else if (genreCount != null) {
+        } else if (genreCount != 0) {
         	suggestSongId = findMatchingSongIdFromGenreDataMap(genreDataMap, nationName, genreName, artistName,
 					"default");
 			anotherArtistSongId = findMatchingSongIdFromGenreDataMap(genreDataMap, nationName, genreName,

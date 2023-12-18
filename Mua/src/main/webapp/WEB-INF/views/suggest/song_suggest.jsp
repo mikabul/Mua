@@ -32,7 +32,6 @@
 <link rel="stylesheet" href="${root}style/suggest.css">
 <link rel="stylesheet" href="${root}style/container.css">
 
-
 <script>
 	
 </script>
@@ -51,11 +50,16 @@
 					<div class="top">최근 많이 본 차트</div>
 					<div class="bottom">
 						<div class="name">
+							
+						
 							<%-- 방문 횟수를 표시할 부분 --%>
+							<c:set var="top100Count" value="${loginUserBean.top100Count}" />
+							<c:set var="newchartCount" value="${loginUserBean.newchartCount}" />
+							<c:set var="genreCount" value="${loginUserBean.genreCount}" />
 							<%
-							Integer top100Count = (Integer) session.getAttribute("/Mua/chart/top100");
-							Integer newchartCount = (Integer) session.getAttribute("/Mua/chart/newchart");
-							Integer genreCount = (Integer) session.getAttribute("/Mua/chart/genre");
+							Integer top100Count = ((Integer)pageContext.getAttribute("top100Count")).intValue();
+							Integer newchartCount = ((Integer)pageContext.getAttribute("newchartCount")).intValue();
+						    Integer genreCount = ((Integer)pageContext.getAttribute("genreCount")).intValue();
 
 							String mostVisitedPage = "";
 							int maxCount = 0;

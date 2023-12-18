@@ -39,6 +39,7 @@ import kr.co.Mua.interceptor.ChartInterceptor;
 import kr.co.Mua.interceptor.CheckLoginInterceptor;
 import kr.co.Mua.interceptor.GenreChartInterceptor;
 import kr.co.Mua.interceptor.NewChartInterceptor;
+import kr.co.Mua.interceptor.Top100ChartInterceptor;
 import kr.co.Mua.service.ChartService;
 
 @Configuration
@@ -113,7 +114,7 @@ public class ServletAppContext implements WebMvcConfigurer{
 		
 		ChartInterceptor chartInterceptor = new ChartInterceptor(chartService);
 		InterceptorRegistration reg2 = registry.addInterceptor(chartInterceptor);
-		reg2.addPathPatterns("/main", "/chart/top100");
+		reg2.addPathPatterns("/main");
 		
 		AcceptAdminInterceptor acceptAdminInterceptor = new AcceptAdminInterceptor(loginAdminDto);
 		InterceptorRegistration reg3 = registry.addInterceptor(acceptAdminInterceptor);
@@ -127,6 +128,10 @@ public class ServletAppContext implements WebMvcConfigurer{
 		GenreChartInterceptor genrechartInterceptor = new GenreChartInterceptor(chartService);
 		InterceptorRegistration reg5 = registry.addInterceptor(genrechartInterceptor);
 		reg5.addPathPatterns("/chart/genre");
+		
+		Top100ChartInterceptor top100chartInterceptor = new Top100ChartInterceptor(chartService);
+		InterceptorRegistration reg6 = registry.addInterceptor(top100chartInterceptor);
+		reg2.addPathPatterns("/chart/top100");
 	}
 	
 	@Bean

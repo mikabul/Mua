@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import kr.co.Mua.bean.ChartDto;
+import kr.co.Mua.bean.UserBean;
 import kr.co.Mua.service.ChartService;
 
 public class GenreChartInterceptor implements HandlerInterceptor {
@@ -19,33 +21,18 @@ public class GenreChartInterceptor implements HandlerInterceptor {
 	public GenreChartInterceptor(ChartService chartService) {
 		this.chartService = chartService;
 	}
+	
+	@Resource(name = "loginUserBean")
+	private UserBean loginUserBean;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 	        throws Exception {
 
-	    HttpSession session = request.getSession();
-	    String requestURI = request.getRequestURI();
-
 	    if (!hasDataLoaded) {
 	        loadGenreData(request);
 	        hasDataLoaded = true;
 	    }
-
-	    // 세션에서 해당 페이지의 visitCount를 가져옴
-	    Integer visitCount = (Integer) session.getAttribute(requestURI);
-
-	    // visitCount가 null인 경우, 초기값으로 설정 (첫 방문)
-	    if (visitCount == null) {
-	        visitCount = 0;
-	    }
-
-	    // visitCount를 1 증가시킴
-	    visitCount++;
-
-	    // 세션에 업데이트된 visitCount 값을 저장
-	    session.setAttribute(requestURI, visitCount);
-	    System.out.println("Visited page: " + requestURI + ", Visit count: " + visitCount);
 
 	    return true;
 	}
@@ -97,5 +84,6 @@ public class GenreChartInterceptor implements HandlerInterceptor {
 		}
 
 		request.getSession().setAttribute("genreDataMap", genreDataMap);
+		
 	}
 }

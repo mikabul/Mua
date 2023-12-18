@@ -1,11 +1,13 @@
 package kr.co.Mua.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.Mua.Mapper.SuggestMapper;
+import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.SongDto;
 
 @Repository
@@ -14,8 +16,8 @@ public class SuggestDao {
 	@Autowired
 	private SuggestMapper suggestMapper;
 
-    public String getMostRecentArtistName(int userNum) {
-		return suggestMapper.getMostRecentArtistName(userNum);
+    public List<ArtistDto> getMostRecentArtistInfo(int userNum) {
+    	return suggestMapper.getRecentArtistInfo(userNum);
 	}
     
     public String getMostGenreName(int userNum) {
@@ -46,12 +48,8 @@ public class SuggestDao {
     	return suggestMapper.getSongNation(song_id);
     }
     
-    public Date getArtistThumbupDate(String artist_name) {
-    	return suggestMapper.getArtistThumbupDate(artist_name);
-    }
-    
-    public String getArtistName(int song_id) {
-    	return suggestMapper.getArtistName(song_id);
+    public List<String> getArtistNames(int song_id) {
+    	return suggestMapper.getArtistNames(song_id);
     }
 
     
