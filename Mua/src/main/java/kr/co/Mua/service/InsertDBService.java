@@ -110,6 +110,7 @@ public class InsertDBService {
 			if (insertDBDao.artist_match(artistDTO) == null) {
 				// 데이터 베이스에 저장후 아티스트 번호를 가져옴
 				insertDBDao.insert_artist(artistDTO);
+				System.out.println(insertDBDao.artist_match(artistDTO) == null);
 				temp_artist_id = insertDBDao.artist_match(artistDTO).getArtist_id();
 				// 썸네일 저장
 				insertDBDao.insert_artist_thumbnail(temp_artist_id, thumbnailSave(temp_artist_id, "artist", count));
@@ -138,6 +139,14 @@ public class InsertDBService {
 
 		}
 		if(++sleepCount % 10 == 0) {
+			try {
+				Thread.sleep(5000);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(++sleepCount % 10 == 0) {
+			System.out.println("쉬는 시간");
 			try {
 				Thread.sleep(5000);
 			} catch (Exception e) {

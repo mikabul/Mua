@@ -29,7 +29,7 @@
 					<img src="${root }images/song.jpg" class="song-img-top" alt="...">
 					<div class="card-body">
 						<h5 class="card-title">노래 추천</h5>
-						<a href="#" class="btn btn-primary">추천 페이지 이동</a>
+						<a href="${root }suggest/song_suggest" class="btn btn-primary">추천 페이지 이동</a>
 					</div>
 				</div>
 			</div>

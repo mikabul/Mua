@@ -1,5 +1,8 @@
 package kr.co.Mua.bean;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ArtistDto {
 
 	private int artist_id;
@@ -11,7 +14,9 @@ public class ArtistDto {
 	private String artist_nation;
 	
 	private int artist_thumbup;
+	private String thumbup_date;
 	private String member;
+	
 	
 	//------------기본 생성자------------
 	public ArtistDto() {
@@ -86,4 +91,12 @@ public class ArtistDto {
 		this.member = member;
 	}
 
+	public String getArtist_thumbup_date() {
+		return thumbup_date;
+	}
+
+	public void setArtist_thumbup_date(String thumbup_date) {
+		this.thumbup_date = thumbup_date;
+	}
+	
 }

@@ -25,11 +25,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
+<<<<<<< HEAD
 import kr.co.Mua.bean.ReviewDto;
+=======
+>>>>>>> refs/remotes/origin/이규순
 import kr.co.Mua.bean.SearchResultDto;
 import kr.co.Mua.bean.SongDto;
+<<<<<<< HEAD
 import kr.co.Mua.bean.UserBean;
 import kr.co.Mua.service.ChartService;
+=======
+>>>>>>> refs/remotes/origin/이규순
 import kr.co.Mua.service.MailSendService;
 import kr.co.Mua.service.SearchService;
 import kr.co.Mua.service.UserService;
@@ -73,6 +79,24 @@ public class RestApiController {
 		return check+"";
 		
 	}
+	//이메일 중복체크
+	@GetMapping("/user/checkUserEmailExit/{user_email}")
+	public String checkUserEmailExit(@PathVariable String user_email) {
+		
+		boolean check = userService.checkUserEmailExit(user_email);
+		
+		return check+"";
+		
+	}
+	
+	// 이메일 중복체크후 인증요청 발송
+	@GetMapping("/user/checkCertificationCode/{user_email}")
+	public String mailCheck(@PathVariable String user_email) {
+		System.out.println("이메일 인증 요청 들어옴.");
+		System.out.println("이메일 인증 이메일 : "+user_email);
+		return mailService.joinEmail(user_email);
+	}
+	
 	//이메일 중복체크
 	@GetMapping("/user/checkUserEmailExit/{user_email}")
 	public String checkUserEmailExit(@PathVariable String user_email) {

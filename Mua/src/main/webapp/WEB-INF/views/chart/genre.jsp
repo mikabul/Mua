@@ -18,6 +18,7 @@
 <link rel="styleSheet" href="${root}style/any_main.css">
 </head>
 <body>
+<<<<<<< HEAD
 	<header>
 		<c:import url="/WEB-INF/views/include/top_menu.jsp" />	
 	</header>
@@ -111,6 +112,7 @@
 						<button class="nav-link sTabs" id="traditional-tab" data-toggle="tab" data-target="#rock" type="button" role="tab" aria-controls="국악" aria-selected="false">국악</button>
 					</li>
 				</ul>
+
 			</div>
 		</div>
 		

@@ -53,6 +53,4 @@ public class AdminController {
 		return "redirect:/main";
 	}
 	
-	
-	
 }

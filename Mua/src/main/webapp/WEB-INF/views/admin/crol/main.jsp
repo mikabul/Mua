@@ -16,9 +16,6 @@
 <link rel="styleSheet" href="${root}/style/main.css">
 <link rel="styleSheet" href="${root}/style/searchBar.css">
 </head>
-<style>
-
-</style>
 <body>
 	<header>
 		<c:import url="/WEB-INF/views/admin/include/top.jsp" />
@@ -146,6 +143,5 @@
 			</div>
 		</div>
 	</section>
-
 </body>
 </html>

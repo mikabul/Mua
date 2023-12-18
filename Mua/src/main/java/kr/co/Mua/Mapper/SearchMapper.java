@@ -1,6 +1,7 @@
 package kr.co.Mua.Mapper;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -15,7 +16,7 @@ import kr.co.Mua.bean.ViewedSongDto;
 
 public interface SearchMapper {
 
-	// song_id를 이용하여 노래의 정보를 불러옴
+	// 노래의 정보와 앨범 name, id를 가져옴
 	@Select("select s.song_id, s.song_name, s.song_genre, s.release_date, s.lyrics, "
 			+ "s.song_thumbnail, a.album_id, a.album_name, count(t.song_id) as song_thumbup "
 			+ "from song s "

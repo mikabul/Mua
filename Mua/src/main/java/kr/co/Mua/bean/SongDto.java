@@ -126,6 +126,7 @@ public class SongDto {
 	public void setSong_thumbup(int song_thumbup) {
 		this.song_thumbup = song_thumbup;
 	}
+	
 	public String getLyric() {
 		return lyric;
 	}
