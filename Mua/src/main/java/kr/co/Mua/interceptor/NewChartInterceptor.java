@@ -29,6 +29,7 @@ public class NewChartInterceptor implements HandlerInterceptor {
     	ArrayList<ChartDto> newchart = chartService.getNewChart();
 		request.setAttribute("newchart", newchart);
 		
+
 		return true;
     }
 

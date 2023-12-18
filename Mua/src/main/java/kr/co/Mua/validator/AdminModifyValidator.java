@@ -38,6 +38,7 @@ public class AdminModifyValidator implements Validator {
 			release_date = songDto.getRelease_date();
 			String lyrics = songDto.getLyrics();
 			String song_thumbnail = songDto.getSong_thumbnail();
+
 			
 			// song_name
 			if (song_name == null || song_name.isEmpty()) {

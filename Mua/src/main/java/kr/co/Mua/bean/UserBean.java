@@ -3,15 +3,21 @@ package kr.co.Mua.bean;
 import java.util.Date;
 
 import javax.validation.constraints.Email;
+<<<<<<< HEAD
+=======
+import javax.validation.constraints.NotEmpty;
+>>>>>>> refs/heads/main
 import javax.validation.constraints.Pattern;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class UserBean {
 	
 	private int user_num;
-	
-	@Pattern(regexp = "[a-zA-Z0-9]*")
+
+	@Pattern(regexp = "[a-zA-Z0-9!@#$%^&*()_+=\\-`~.]*")
 	private String user_id;
 	
 	@Pattern(regexp = "[a-zA-Z0-9!@#$%^&*()_+=\\-`~]*")
@@ -180,6 +186,5 @@ public class UserBean {
 	public void setGenreCount(int genreCount) {
 		this.genreCount = genreCount;
 	}
-
 	
 }

@@ -66,6 +66,23 @@ public class UserController {
 		return "user/register";
 	}
 	
+	@GetMapping("/modifyPassword")
+	public String modifyPassword(@ModelAttribute("modifyPasswordBean") UserBean modifyPasswordBean) {
+		
+		return "user/modifyPassword";
+	}
+	
+	@PostMapping("/modifyPassword_pro")
+	public String modifyPassword_pro(@Valid @ModelAttribute("modifyPasswordBean") UserBean modifyPasswordBean, BindingResult result) {
+		if(result.hasErrors()) {
+			return "user/modify_fail2";
+		}
+		System.out.println(modifyPasswordBean.getUser_pw());
+		userService.ModifyUserPassword(modifyPasswordBean.getUser_pw(),modifyPasswordBean.getUser_email());
+		
+		return "user/modify_success2";
+	}
+	
 	@PostMapping("/register_pro")
 	public String register_pro(@Valid @ModelAttribute("registerUserBean") UserBean RegisterUserBean, BindingResult result) {
 		
@@ -87,8 +104,8 @@ public class UserController {
 		return "user/info";
 	}
 	
-	@GetMapping("/modify")
-	public String modify(@ModelAttribute("modifyUserBean") UserBean modifyUserBean) {
+	@PostMapping("/modify")
+	public String modify(@ModelAttribute("modifyUserBean") UserBean modifyUserBean, BindingResult result) {
 		
 		modifyUserBean = userService.getModifyUserInfo(modifyUserBean);
 		
@@ -102,7 +119,7 @@ public class UserController {
 			return "user/modify_fail";
 		}
 		
-		userService.modifyUserInfo(modifyUserBean);
+		userService.modifyUserInfo2(modifyUserBean);
 		
 		return "user/modify_success";
 	}

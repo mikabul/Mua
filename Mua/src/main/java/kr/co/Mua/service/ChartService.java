@@ -328,6 +328,7 @@ public class ChartService {
 		temp.setAlbum_name(albumDto.getAlbum_name());
 		
 		chart.add(temp);
+
 	}
 
 }

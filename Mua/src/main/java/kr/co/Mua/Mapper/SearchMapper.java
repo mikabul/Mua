@@ -235,5 +235,5 @@ public interface SearchMapper {
 			+ "values(report_seq.nextval, #{arg0}, "
 			+ "#{arg1}, #{arg2}, sysdate)")
 	public void reviewReport(int review_num, int report_user_num, int user_num);
-	
+
 }

@@ -86,5 +86,5 @@ public interface ChartMapper {
 
 	@Select("select count(*) from song " + "where song_genre like #{replaceSTabValue}")
 	public int getOtherGenreSongMaxIndex(String replaceSTabValue);
-	
+
 }

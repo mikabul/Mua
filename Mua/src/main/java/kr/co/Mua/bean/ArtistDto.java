@@ -98,5 +98,4 @@ public class ArtistDto {
 	public void setArtist_thumbup_date(String thumbup_date) {
 		this.thumbup_date = thumbup_date;
 	}
-	
 }

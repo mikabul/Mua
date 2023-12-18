@@ -2,6 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="root" value="${pageContext.request.contextPath}/" />
 <script>
-	alert("인증번호를 다시 확인해주세요.")
-	history.go(-1)
+	alert("정보가 수정되었습니다.")
+	location.href="${root}/user/login"
 </script>

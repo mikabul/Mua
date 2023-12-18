@@ -6,7 +6,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <%
 request.setCharacterEncoding("utf-8");
 %>
@@ -158,9 +162,12 @@ request.setCharacterEncoding("utf-8");
 <link rel="stylesheet" href="../style/register.css" />
 </head>
 <body>
-	<div class="wrapper">
-		<form:form action="${root }user/register_pro" method="post"
-			modelAttribute="registerUserBean">
+	<!-- 상단 메뉴 부분 -->
+	<c:import url="/WEB-INF/views/include/top_menu.jsp" />
+	
+	
+	<div class="wrapper" style="margin-top:100px;">
+		<form:form action="${root }user/register_pro" method="post" modelAttribute="registerUserBean">
 			<form:hidden path="userIdExit" />
 			<form:hidden path="userEmailExit" />
 			<form:hidden path="authCode1"/>
@@ -168,9 +175,7 @@ request.setCharacterEncoding("utf-8");
 
 			<div class="input-box">
 				<form:input path="user_name" placeholder="User Name" />
-				<div class="error-wrapper">
 					<form:errors path="user_name" class="error-box" />
-				</div>
 				<i class='bx bx-edit-alt'></i>
 			</div>
 
@@ -178,9 +183,7 @@ request.setCharacterEncoding("utf-8");
 				<form:input path="user_id" placeholder="User Id"
 					onkeypress="resetUserIdExist()" />
 				<button type="button" class="idbtn" onclick="checkUserIDExist()">Duplicate</button>
-				<div class="error-wrapperID">
 					<form:errors path="user_id" class="error-boxID" />
-				</div>
 				<i class='bx bxs-user'></i>
 			</div>
 
@@ -189,28 +192,23 @@ request.setCharacterEncoding("utf-8");
 					onkeypress="resetUserEmailExit()"/>
 				<button type="button" class="emailbtn"
 					onclick="checkUserEmailExit()">Duplicate</button>
-				<div class="error-wrapperID">
+
 					<form:errors path="user_email" class="error-boxID" />
-				</div>
 				<i class='bx bx-envelope'></i>
 			</div>
 			
-			<div class="input-box">
+			<div class="input-box" style="margin-bottom:20px;">
 				<form:input path = "authCode2" type = "text" placeholder="Certification Code"/>
-				<div class="error-wrapperID">
 					<form:errors path = "authCode2" class ="error-box"/>
-				</div>
 				<i class='bx bx-envelope'></i>
 			</div>
 			
 			<div class="checkOutGrade"
-				style="margin-bottom: -50px; margin-left: 10px">보안 등급 :</div>
+				style="margin-bottom: -30px; margin-left: 10px">보안 등급 :</div>
 			<div class="input-box">
 				<form:input path="user_pw" placeholder="Password"
 					oninput="checkPasswordSecGrade(); checkPasswordEquals();" />
-				<div class="error-wrapper">
 					<form:errors path="user_pw" class="error-box" />
-				</div>
 				<i class='bx bxs-lock-alt'></i>
 			</div>
 
@@ -224,25 +222,20 @@ request.setCharacterEncoding("utf-8");
 
 			<div class="input-box">
 				<form:input path="user_tel" placeholder="User Tel" />
-				<div class="error-wrapper">
 					<form:errors path="user_tel" class="error-box" />
-				</div>
 				<i class='bx bxs-phone'></i>
 			</div>
 
 			<div class="input-box">
 				<form:input path="user_address" placeholder="User Address" />
-				<div class="error-wrapper">
 					<form:errors path="user_address" class="error-box" />
-				</div>
 				<i class='bx bx-home'></i>
 			</div>
 			<div class="input-box-date">
-				<form:input path="user_birthday" type="date" />
-				<div class="error-wrapper">
+				<form:input path="user_birthday" type="date" placeholder = "User Birthday"/>
 					<form:errors path="user_birthday" class="error-box" />
-				</div>
 			</div>
+			
 			<div class="form-group">
 				<div class="text-right">
 					<form:button type="submit" class="btn">Register</form:button>
@@ -252,9 +245,3 @@ request.setCharacterEncoding("utf-8");
 	</div>
 </body>
 </html>
-
-
-
-
-
-

@@ -20,7 +20,7 @@ public class MailSendService {
 	public void makeRandomNumber() {
 		Random r = new Random();
 		int checkNum = r.nextInt(888888)+111111;
-		System.out.println("占쏙옙占쏙옙占쏙옙호 : "+checkNum);
+		System.out.println("인증번호 : "+checkNum);
 		authNumber = checkNum;
 	}
 	
@@ -28,11 +28,22 @@ public class MailSendService {
 		makeRandomNumber();
 		String setFrom = "dma0501011@gmail.com";
 		String toMail = email;
-		String title = "Mua �씤利앸쾲�샇 �슂泥�.";
+		String title = "Mua 회원가입 인증번호.";
 		String content = 
-				"�븘�옒�쓽 鍮꾨�踰덊샇瑜� �엯�젰�빐二쇱떆湲� 諛붾엻�땲�떎."+ 
-			    "�씤利앸쾲�샇�뒗 " + authNumber + "�엯�땲�떎.";
+				"저희 사이트에 방문해주셔서 감사합니다 아래 인증코드를 입력해주세요."+ 
+			    "인증번호 : " + authNumber + "입니다.";
 		mailSend(setFrom,toMail,title,content);
+		return Integer.toString(authNumber);
+	}
+	
+	public String modifyEmail(String email) {
+		makeRandomNumber();
+		String setFrom = "dma0501011@gmail.com";
+		String toMail = email;
+		String title = "Mua 회원정보 수정 인증번호";
+		String content = "아래 인증코드를 입력해주세요."+
+						"인증번호 : " + authNumber + "입니다.";
+		mailSend(setFrom, toMail, title, content);
 		return Integer.toString(authNumber);
 	}
 	

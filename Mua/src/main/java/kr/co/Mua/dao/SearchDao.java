@@ -127,7 +127,6 @@ public class SearchDao {
 	public void deleteUserReview(String flag, int type_id, int user_num, int review_num) {
 		searchMapper.deleteUserReview(flag, type_id, user_num, review_num);
 	}
-	
 	public void deleteReport(int review_num) {
 		searchMapper.deleteReport(review_num);
 	}
@@ -139,5 +138,5 @@ public class SearchDao {
 	public void reviewReport(int review_num, int report_user_num, int user_num) {
 		searchMapper.reviewReport(review_num, report_user_num, user_num);
 	}
-	
+
 }

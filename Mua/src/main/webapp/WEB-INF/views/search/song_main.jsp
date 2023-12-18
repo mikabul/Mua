@@ -102,6 +102,7 @@
 								<td class="top_bottom">
 									<!-- 캐러셀 -->
 									<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+
 										<div class="carousel-inner">
 											<div class="carousel-item active">
 												<a href="${root}search/artist_info?artist_id=${item.artistList[0].artist_id}" title="${item.artistList[0].artist_name} - 아티스트정보">

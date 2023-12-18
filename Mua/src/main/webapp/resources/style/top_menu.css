@@ -1,6 +1,8 @@
 @import
 	url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo&display=swap')
 	;
+	
+
 
 .navbar_font {
 	font-family: 'Gowun Dodum', sans-serif;
@@ -36,6 +38,12 @@
 	width: 100%;
 	z-index: 100;
 	color: white;
+}
+
+.teamName{
+	color: black;
+    font-weight: bold;
+    font-size: 30px;
 }
 
 .nav_under {
