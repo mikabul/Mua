@@ -1,11 +1,14 @@
 package kr.co.Mua.config;
 
+import java.util.Properties;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
@@ -21,15 +26,26 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.Mua.Mapper.AdminMapper;
+import kr.co.Mua.Mapper.ChartMapper;
+import kr.co.Mua.Mapper.InsertDBMapper;
+import kr.co.Mua.Mapper.SearchMapper;
 import kr.co.Mua.Mapper.UserMapper;
+import kr.co.Mua.bean.AdminDto;
 import kr.co.Mua.bean.UserBean;
+import kr.co.Mua.interceptor.AcceptAdminInterceptor;
+import kr.co.Mua.interceptor.ChartInterceptor;
 import kr.co.Mua.interceptor.CheckLoginInterceptor;
+import kr.co.Mua.interceptor.NewChartInterceptor;
+import kr.co.Mua.interceptor.GenreChartInterceptor;
+import kr.co.Mua.service.ChartService;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan("kr.co.Mua.dao")
 @ComponentScan("kr.co.Mua.service")
 @ComponentScan("kr.co.Mua.controller")
+@ComponentScan("kr.co.Mua.Social")
 @PropertySource("/WEB-INF/properties/db.properties")
 public class ServletAppContext implements WebMvcConfigurer{
 	
@@ -44,6 +60,12 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Resource(name = "loginUserBean")
 	private UserBean loginUserBean;
+	
+	@Resource(name = "loginAdminDto")
+	private AdminDto loginAdminDto;
+	
+	@Autowired
+	private ChartService chartService;
 	
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -85,9 +107,27 @@ public class ServletAppContext implements WebMvcConfigurer{
 		WebMvcConfigurer.super.addInterceptors(registry);
 		
 		CheckLoginInterceptor checkLoginInterceptor = new CheckLoginInterceptor(loginUserBean);
-		
 		InterceptorRegistration reg1 = registry.addInterceptor(checkLoginInterceptor);
 		reg1.addPathPatterns("/**");
+		reg1.excludePathPatterns("/admin/**");
+		
+		ChartInterceptor chartInterceptor = new ChartInterceptor(chartService);
+		InterceptorRegistration reg2 = registry.addInterceptor(chartInterceptor);
+		reg2.addPathPatterns("/main", "/chart/top100");
+		
+		//============ 어드민 잘못된 접근 ============
+		AcceptAdminInterceptor acceptAdminInterceptor = new AcceptAdminInterceptor(loginAdminDto);
+		InterceptorRegistration reg3 = registry.addInterceptor(acceptAdminInterceptor);
+		reg3.addPathPatterns("/admin/**");
+		reg3.excludePathPatterns("/admin/login", "/admin/login_pro", "/admin/login_fail");
+		
+		NewChartInterceptor newchartInterceptor = new NewChartInterceptor(chartService);
+		InterceptorRegistration reg4 = registry.addInterceptor(newchartInterceptor);
+		reg4.addPathPatterns("/chart/newchart");
+
+		GenreChartInterceptor genrechartInterceptor = new GenreChartInterceptor(chartService);
+		InterceptorRegistration reg5 = registry.addInterceptor(genrechartInterceptor);
+		reg5.addPathPatterns("/chart/genre");
 	}
 	
 	@Bean
@@ -107,7 +147,58 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Bean
 	public StandardServletMultipartResolver multipartResolver() {
-		return new StandardServletMultipartResolver(); //��ü �����Ͽ� ��ȯ
+		return new StandardServletMultipartResolver(); //占쏙옙체 占쏙옙占쏙옙占싹울옙 占쏙옙환
 	}
 	
+	@Bean
+	public MapperFactoryBean<InsertDBMapper> getInsertDBMapper(SqlSessionFactory factory){
+		MapperFactoryBean<InsertDBMapper> factoryBean = new MapperFactoryBean<InsertDBMapper>(InsertDBMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<ChartMapper> getChartMapper(SqlSessionFactory factory){
+		MapperFactoryBean<ChartMapper> factoryBean = new MapperFactoryBean<ChartMapper>(ChartMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<SearchMapper> getSearchMapper(SqlSessionFactory factory){
+		MapperFactoryBean<SearchMapper> factoryBean = new MapperFactoryBean<SearchMapper>(SearchMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<AdminMapper> getAdminMapper(SqlSessionFactory factory){
+		MapperFactoryBean<AdminMapper> factoryBean = new MapperFactoryBean<AdminMapper>(AdminMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+    @Bean("mailSender")
+    public JavaMailSender javaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("dma0501011@gmail.com");
+        mailSender.setPassword("rrcz edmq hlci qrgl");
+        mailSender.setDefaultEncoding("UTF-8");
+        mailSender.setJavaMailProperties(getMailProperties());
+
+        return mailSender;
+    }
+	
+    private Properties getMailProperties() {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", true);
+        properties.put("mail.smtp.starttls.enable", true);
+        properties.put("mail.smtp.starttls.required", true);
+        properties.put("mail.smtp.connectiontimeout", 5000);
+        properties.put("mail.smtp.timeout", 5000);
+        properties.put("mail.smtp.writetimeout", 5000);
+
+        return properties;
+    }
 }

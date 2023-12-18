@@ -14,20 +14,20 @@ body {
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
-	background: url('../images/background.jpeg') no-repeat;
+	background: url('../images/background.jpg') no-repeat;
 	background-size: cover;
 	background-position: center;
 }
 
 .wrapper {
-	width: 420px;
-	background: transparent;
-	border: 2px solid rgba(255, 255, 255, .2);
-	backdrop-filter: blur(20px);
-	box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-	color: #fff;
-	border-radius: 10px;
-	padding: 30px 40px;
+    width: 420px;
+    background: #5067ac30;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    color: #303080;
+    border-radius: 10px;
+    padding: 30px 40px;
 }
 
 .wrapper h1 {
@@ -45,18 +45,17 @@ body {
 .input-box input {
 	width: 100%;
 	height: 100%;
-	background: transparent;
 	border: none;
 	outline: none;
 	border: 2px solid rgba(255, 255, 255, .2);
 	border-radius: 40px;
 	font-size: 16px;
-	color: #fff;
+	color: #555;
 	padding: 20px 45px 20px 20px;
 }
 
 .input-box input::placeholder {
-	color: #fff;
+	color:#303080;
 }
 
 .input-box i {
@@ -65,6 +64,11 @@ body {
 	top: 50%;
 	transform: translateY(-50%);
 	font-size: 20px;
+}
+
+form>div>input {
+    box-shadow: 0 0 3px 3px #66666610;
+    background-color: #ffffff60;
 }
 
 .error-box {
@@ -85,6 +89,11 @@ body {
 }
 
 .remember-forgot a {
+	font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: -15px;
+    width: 100%;
+    text-align: center;
 	color: #fff;
 	text-decoration: none;
 }
@@ -134,4 +143,18 @@ body {
     color: #f00;
     margin-top: 5px;
     display: block;
+}
+
+.googleSignUp{
+	margin-bottom: -10px;
+}
+
+.googleSignUp button{
+    margin-top: 20px;
+    margin-left: 80px;
+    width: 165px;
+    border: none;
+    background: url(../images/googleLogin.png)no-repeat;
+    background-size: contain;
+    height: 37px;
 }
