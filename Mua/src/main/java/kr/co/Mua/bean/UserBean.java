@@ -3,13 +3,7 @@ package kr.co.Mua.bean;
 import java.util.Date;
 
 import javax.validation.constraints.Email;
-<<<<<<< HEAD
-=======
-import javax.validation.constraints.NotEmpty;
->>>>>>> refs/heads/main
 import javax.validation.constraints.Pattern;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import org.springframework.format.annotation.DateTimeFormat;
 

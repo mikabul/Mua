@@ -67,14 +67,14 @@ public interface ChartMapper {
 			+ "s.song_thumbnail, al.album_thumbnail, row_number() over (order by s.release_date, s.song_name) as rn "
 			+ "from song s " + "inner join album al on al.album_id=s.album_id "
 			+ "left join thumbup_song ts on ts.song_id=s.song_id "
-			+ "where s.song_genre like '%�븷�땲硫붿씠�뀡%' or s.song_genre like '%�뱶�씪留�%' "
-			+ "or s.song_genre like '%�쁺�솕%' or s.song_genre like '%裕ㅼ�而�%' " + "or s.song_genre like '%寃뚯엫%') "
+			+ "where s.song_genre like '%드라마%' or s.song_genre like '%영화%' "
+			+ "or s.song_genre like '%애니메이션%' or s.song_genre like '%게임%' " + "or s.song_genre like '%뮤지컬%') "
 			+ "where rn BETWEEN #{arg0} and #{arg1}")
 	public ArrayList<SongDto> getGenreSongOST(int index, int endIndex);
 
 	// OST�쟾�슜 寃��깋寃곌낵�쓽 理쒕�媛��닔瑜� 媛����샂
-	@Select("select count(*) from song " + "where song_genre like '%�븷�땲硫붿씠�뀡%' or song_genre like '%�뱶�씪留�%' "
-			+ "or song_genre like '%�쁺�솕%' or song_genre like '%裕ㅼ�而�%' " + "or song_genre like '%寃뚯엫%'")
+	@Select("select count(*) from song " + "where song_genre like '%드라마%' or song_genre like '%영화%' "
+			+ "or song_genre like '%애니메이션%' or song_genre like '%게임%' " + "or song_genre like '%뮤지컬%'")
 	public int getGenreSongOSTMaxIndex();
 
 	// 洹몄쇅
@@ -86,5 +86,5 @@ public interface ChartMapper {
 
 	@Select("select count(*) from song " + "where song_genre like #{replaceSTabValue}")
 	public int getOtherGenreSongMaxIndex(String replaceSTabValue);
-
+	
 }

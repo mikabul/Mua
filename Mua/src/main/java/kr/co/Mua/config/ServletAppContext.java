@@ -31,7 +31,6 @@ import kr.co.Mua.Mapper.ChartMapper;
 import kr.co.Mua.Mapper.InsertDBMapper;
 import kr.co.Mua.Mapper.SearchMapper;
 import kr.co.Mua.Mapper.SuggestMapper;
->>>>>>> refs/heads/main
 import kr.co.Mua.Mapper.UserMapper;
 import kr.co.Mua.bean.AdminDto;
 import kr.co.Mua.bean.UserBean;
@@ -39,7 +38,6 @@ import kr.co.Mua.interceptor.AcceptAdminInterceptor;
 import kr.co.Mua.interceptor.ChartInterceptor;
 import kr.co.Mua.interceptor.CheckLoginInterceptor;
 import kr.co.Mua.interceptor.NewChartInterceptor;
-import kr.co.Mua.interceptor.GenreChartInterceptor;
 import kr.co.Mua.service.ChartService;
 
 @Configuration
