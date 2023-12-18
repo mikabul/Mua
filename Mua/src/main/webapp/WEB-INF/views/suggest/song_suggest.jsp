@@ -47,7 +47,7 @@
 			<hr>
 			<div class="wrap">
 				<div class="card_container">
-					<div class="top">최근 많이 본 차트</div>
+					<div class="top">가장 많이 방문한 페이지</div>
 					<div class="bottom">
 						<div class="name">
 							
@@ -127,27 +127,19 @@
 
 			<h2>추천이 마음에 안드셨나요?</h2>
 			<hr>
-			<div class="wrap">
-				<div class="card_container" onclick="suggestDifferent('artist')">
-					<div class="top">다른 가수의 노래를 추천해주세요</div>
-					<div class="bottom">
-						<div class="name"></div>
-						<div class="date"></div>
-					</div>
+			
+			<div class="wrap" style="margin-right: 50px;">
+				<div class="button-wrap-another">
+					<a href="suggestDifferent('artist')" class="button">다른 가수의 노래는
+						어떠신가요?</a>
 				</div>
-				<div class="card_container" onclick="suggestDifferent('genre')">
-					<div class="top">다른 장르의 노래를 추천해주세요</div>
-					<div class="bottom">
-						<div class="name"></div>
-						<div class="date"></div>
-					</div>
+				<div class="button-wrap-another">
+					<a href="suggestDifferent('genre')" class="button">다른 장르의 노래는
+						어떠신가요?</a>
 				</div>
-				<div class="card_container" onclick="suggestDifferent('nation')">
-					<div class="top">다른 나라의 노래를 추천해주세요</div>
-					<div class="bottom">
-						<div class="name"></div>
-						<div class="date"></div>
-					</div>
+				<div class="button-wrap-another">
+					<a href="suggestDifferent('nation')" class="button">다른 나라의 노래는
+						어떠신가요?</a>
 				</div>
 			</div>
 	</div>
