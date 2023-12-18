@@ -25,7 +25,7 @@ public class ChartController {
 	private UserBean loginUserBean;
 	
     @GetMapping("/top100")
-    public String top100() {
+    public String top100(Model model) {
     	
     	 int visitCount = 0;
          

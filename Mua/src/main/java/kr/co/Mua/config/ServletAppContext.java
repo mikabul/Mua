@@ -37,13 +37,7 @@ import kr.co.Mua.bean.UserBean;
 import kr.co.Mua.interceptor.AcceptAdminInterceptor;
 import kr.co.Mua.interceptor.ChartInterceptor;
 import kr.co.Mua.interceptor.CheckLoginInterceptor;
-<<<<<<< HEAD
 import kr.co.Mua.interceptor.NewChartInterceptor;
-=======
-import kr.co.Mua.interceptor.GenreChartInterceptor;
-import kr.co.Mua.interceptor.NewChartInterceptor;
-import kr.co.Mua.interceptor.Top100ChartInterceptor;
->>>>>>> refs/remotes/origin/이규순
 import kr.co.Mua.service.ChartService;
 
 @Configuration
@@ -119,12 +113,7 @@ public class ServletAppContext implements WebMvcConfigurer{
 		
 		ChartInterceptor chartInterceptor = new ChartInterceptor(chartService);
 		InterceptorRegistration reg2 = registry.addInterceptor(chartInterceptor);
-		reg2.addPathPatterns("/main");
-		
-		AcceptAdminInterceptor acceptAdminInterceptor = new AcceptAdminInterceptor(loginAdminDto);
-		InterceptorRegistration reg3 = registry.addInterceptor(acceptAdminInterceptor);
-		reg3.addPathPatterns("/admin/**");
-		reg3.excludePathPatterns("/admin/login", "/admin/login_pro", "/admin/login_fail");
+		reg2.addPathPatterns("/main", "/chart/top100");
 		
 		//============ 어드민 잘못된 접근 ============
 		AcceptAdminInterceptor acceptAdminInterceptor = new AcceptAdminInterceptor(loginAdminDto);
@@ -135,10 +124,6 @@ public class ServletAppContext implements WebMvcConfigurer{
 		NewChartInterceptor newchartInterceptor = new NewChartInterceptor(chartService);
 		InterceptorRegistration reg4 = registry.addInterceptor(newchartInterceptor);
 		reg4.addPathPatterns("/chart/newchart");
-		
-		Top100ChartInterceptor top100chartInterceptor = new Top100ChartInterceptor(chartService);
-		InterceptorRegistration reg6 = registry.addInterceptor(top100chartInterceptor);
-		reg2.addPathPatterns("/chart/top100");
 	}
 	
 	@Bean

@@ -148,16 +148,6 @@ public class SearchController {
 			}
 		}
 		
-		// �뒪�겕由쏀듃�뿉�꽌 �씠�슜�븯湲곗쐞�빐 JSON�쑝濡� 蹂��솚
-		ObjectMapper objectMapper = new ObjectMapper();
-		
-		try {
-			String artistListJson = objectMapper.writeValueAsString(artistList);
-			model.addAttribute("artistListJson", artistListJson);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		// 스크립트에서 이용하기위해 JSON으로 변환
 		ObjectMapper objectMapper = new ObjectMapper();
 		
