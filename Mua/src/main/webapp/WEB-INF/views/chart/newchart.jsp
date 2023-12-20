@@ -28,21 +28,10 @@
 			<div class="page_header">
 				<h2 class="title">최신곡</h2>
 				<hr>
-				<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-					<li class="nav-item" role="presentation">
-						<button class="nav-link active" id="pills-kor-tab"
-							data-toggle="pill" data-target="#pills-kor" type="button"
-							role="tab" aria-controls="pills-kor" aria-selected="true">국내</button>
-					</li>
-					<li class="nav-item" role="presentation">
-						<button class="nav-link" id="pills-foreign-tab" data-toggle="pill"
-							data-target="#pills-foreign" type="button" role="tab"
-							aria-controls="pills-foreign" aria-selected="false">해외</button>
-					</li>
-				</ul>
+
 				<div class="tab-content" id="pills-tabContent">
 					<div class="tab-pane fade show active" id="pills-kor"
-						role="tabpanel" aria-labelledby="pills-kor-tab">국내 차트
+						role="tabpanel" aria-labelledby="pills-kor-tab">
 						<table style="margin-left: auto; margin-right: auto;">
 							<colgroup>
 								<!-- 순위 -->

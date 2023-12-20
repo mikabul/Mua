@@ -192,9 +192,9 @@ request.setCharacterEncoding("utf-8");
 					</fieldset>
 				</div>
 				<div class="form-group row justify-content-center">
-					<div class="col-sm-10">
+					<div style="width: 470px;">
 						<form:textarea path="review_content" class="form-control" 
-						placeholder="내용을 입력해주세요..." required="true" rows="4"/>
+						placeholder="내용을 입력해주세요..." required="true" rows="4" wrap="on" />
 						<div id="submitBtn" class="text-center" style="margin-top: 13px;"></div>
 					</div>
 				</div>
@@ -202,7 +202,7 @@ request.setCharacterEncoding("utf-8");
 		</div>
 	</section>
 	<div class="none" id="hiddenValue" flag="song" type_id="${infoSongDto.song_id}"></div>
-
+	
 	<c:import url="/WEB-INF/views/include/bottom.jsp" />
 
 <script>
@@ -210,22 +210,30 @@ var on = true;
 // 가사를 불러옴
 if (${infoSongDto.lyrics != '-'}) {
 	
-	$.ajax({
-	    type: 'GET',
-	    url: "${root}getLyric",
-	    data: {
-	        file_name: '${infoSongDto.lyrics}'
-	    },
-	    success: function(res){
-	    	// 가사
-	    	var htmlLyric = '<div>';
-	    	
-	    	htmlLyric += '가사 <br><hr>';
-	    	htmlLyric += '</div>';
-	    	htmlLyric += res;
-	        $("#lyric").html(htmlLyric);
-	    }
-	});
+	fetch('${root}getLyric?file_name=${infoSongDto.lyrics}',
+			{
+				method: 'GET'
+			})
+    .then(response => {
+        if (response.ok) {
+            return response.text();
+        }
+        throw new Error('네트워크 응답이 문제가 있습니다.');
+    })
+    .then(res => {
+        // 가사 처리
+        let htmlLyric = '<div>';
+        htmlLyric += '가사 <br><hr>';
+        htmlLyric += '</div>';
+        htmlLyric += res;
+
+        // HTML 업데이트
+        document.getElementById('lyric').innerHTML = htmlLyric;
+    })
+    .catch(error => {
+        console.error('Fetch 작업에 문제가 있습니다:', error);
+        // 여기서 에러를 처리합니다
+    });
 
 } else{
 	$("#lyric").html('<div>가사가 존재하지 않습니다.</div>');
@@ -261,25 +269,26 @@ $('div.other_song').on('dblclick', function(event){
 	
 	var href = $(this).attr('href');
 	
-	$.ajax({
-		url: '${root}changeSong_info?song_id=' + href,
-		type: 'GET',
-		data:{
-			song_id: href
-		},
-		success: function(data){
-			
-			// 현재 URL 가져오기
-			var currentUrl = window.location.href;
+	fetch('${root}changeSong_info?song_id=' + href,
+			{
+				method: 'GET'
+			})
+	.then(response => {
+		if(response.ok){
+			return response.json();
+		}
+	})
+    .then(data => {
+            // 성공 시 현재 URL 가져오기
+            const currentUrl = window.location.href;
 
-			// URL에서 song_id 값 변경
-			var newSongId = href; // 변경할 ID
-			var updatedUrl = currentUrl.replace(/(song_id=)\d+/, '$1' + newSongId);
+            // URL에서 song_id 값 변경
+            const newSongId = href; // 변경할 ID
+            const updatedUrl = currentUrl.replace(/(song_id=)\d+/, '$1' + newSongId);
 
-			// URL 변경 (새로운 페이지 로드)
-			window.history.replaceState(null, null, updatedUrl);
-			
-			var thumbnail_name = data.infoSongDto.song_thumbnail;
+            // URL 변경 (새로운 페이지 로드)
+            window.history.replaceState(null, null, updatedUrl);
+            var thumbnail_name = data.infoSongDto.song_thumbnail;
 
 			$('#lyricOn').removeClass('none');
 			$("#lyric").removeClass('none-lyric');
@@ -355,12 +364,13 @@ $('div.other_song').on('dblclick', function(event){
 				$('#lyric').removeClass('on');
 				$('#lyricOn').text('▽펼치기');
 			}
-	        
-		},
-		error: function(){
-			alert('실패');
-		}
-	}); //ajax_END
+        
+    })
+    .catch(error => {
+        console.error('Fetch 작업에 문제가 있습니다:', error);
+        alert('실패');
+        // 여기서 에러를 처리합니다
+    });
 });
 
 // 가수 길이에 따라 버튼 추가
@@ -404,23 +414,28 @@ function getThumbup(){
 	infoType = 'song';
 	
 	if(isLogin){
-		$.ajax({
-			url : '${root}getThumbup',
-			type : 'GET',
-			data : {
-				id: id,
-				user_num: user_num,
-				infoType: infoType
-			},
-			success: function(result){
-				var icon = '<img src="${root}images/thumbup/'
-					+	result + '"/>';
-				$('#thumbupBtn').html(icon)
-			},
-			error: function(){
-				alert('실패');
-			}
-		});
+		fetch('${root}getThumbup?id=' + id + '&user_num=' + user_num + '&infoType=' + infoType,
+				{
+					method: 'GET'
+				})
+	    .then(response => {
+	        if (response.ok) {
+	            return response.text();
+	        }
+	        throw new Error('네트워크 응답이 문제가 있습니다.');
+	    })
+	    .then(result => {
+	        // 결과 처리
+	        const icon = '<img src="${root}images/thumbup/' + result +'"/>';
+
+	        // DOM 업데이트
+	        document.getElementById('thumbupBtn').innerHTML = icon;
+	    })
+	    .catch(error => {
+	        console.error('Fetch 작업에 문제가 있습니다:', error);
+	        alert('실패');
+	        // 여기서 에러를 처리합니다
+	    });
 	} else {
 		var icon = '<img src="${root}images/thumbup/heart-regula.png"/>';
 		$('#thumbupBtn').html(icon)
@@ -431,24 +446,32 @@ function getThumbup(){
 			alert('로그인 후 이용해주세요.');
 			location.href='${root}user/login';
 		} else {
-			$.ajax({
-				url : '${root}thumbup',
-				type : 'GET',
-				dataType : 'json',
-				data : {
-					id: id,
-					user_num: user_num,
-					infoType: infoType
-				},
-				success: function(result){
-					var icon = '<img src="${root}images/thumbup/'
-							+	result.icon + '"/>';
-					var thumbupCount = result.thumbupCount;
-					
-					$("#thumbupBtn").html(icon);
-					$("#thumbupCount").html(thumbupCount);
-				}
-			});
+			fetch('${root}thumbup?id=' + id + '&user_num=' + user_num + '&infoType=' + infoType, 
+					{
+				 		method: 'GET',
+				   		headers: {
+				        'Content-Type': 'application/json'
+				    	}
+					})
+		    .then(response => {
+		        if (response.ok) {
+		            return response.json();
+		        }
+		        throw new Error('네트워크 응답이 문제가 있습니다.');
+		    })
+		    .then(result => {
+		        // 결과 처리
+		        const icon = '<img src="${root}images/thumbup/' + result.icon + '"/>';
+		        const thumbupCount = result.thumbupCount;
+
+		        // DOM 업데이트
+		        document.getElementById('thumbupBtn').innerHTML = icon;
+		        document.getElementById('thumbupCount').innerHTML = thumbupCount;
+		    })
+		    .catch(error => {
+		        console.error('Fetch 작업에 문제가 있습니다:', error);
+		        // 여기서 에러를 처리합니다
+		    });
 		}
 	});
 };
@@ -463,22 +486,32 @@ $(document).ready(function(){
 	thumbupBtn = document.querySelector('#hiddenValue');
 	type_id = thumbupBtn.getAttribute('type_id');
 	flag = thumbupBtn.getAttribute('flag');
+	console.log('type_id : ' + type_id);
+	console.log('flag : ' + flag);
+	
 		
-		$.ajax({
-			url: '${root}getFirstReview',
-			type: 'GET',
-			data: {
-				type_id: type_id,
-				flag: flag
-			},
-			success: function(result){
-				getReviewList(result);
-				
-				var index = parseInt(result.index, 10);
-				btnAddEvent(index);
-			}
-		});
-	});
+	fetch('${root}getFirstReview?type_id=' + type_id + '&flag=' + flag, {
+		method: 'GET'
+	})
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error('네트워크 응답이 문제가 있습니다.');
+    })
+    .then(result => {
+        // 결과 처리 - getReviewList 함수 호출
+        getReviewList(result);
+
+        // 인덱스 추출 및 btnAddEvent 함수 호출
+        const index = parseInt(result.index, 10);
+        btnAddEvent(index);
+    })
+    .catch(error => {
+        console.error('Fetch 작업에 문제가 있습니다:', error);
+        // 여기서 에러를 처리합니다
+    });
+});
 	
 	function getReviewList(result){
 		var review = "";
@@ -588,19 +621,24 @@ $(document).ready(function(){
 		this.removeEventListener('click', clickHandler);
 		var index = this.getAttribute('index');
 		
-		$.ajax({
-			url: '${root}getPageReview',
-			type: 'GET',
-			data: {
-				index: index,
-				type_id: type_id,
-				flag: flag
-			},
-			success: function(result){
-				getReviewList(result);
-				btnAddEvent(index);
-			}
-		});
+		fetch('${root}getPageReview?index=' + index + '&type_id=' + type_id + '&flag=' + flag, {
+		    method: 'GET'
+		})
+		    .then(response => {
+		        if (response.ok) {
+		            return response.json();
+		        }
+		        throw new Error('네트워크 응답이 문제가 있습니다.');
+		    })
+		    .then(result => {
+		        // 결과 처리 - getReviewList과 btnAddEvent 함수 호출
+		        getReviewList(result);
+		        btnAddEvent(index);
+		    })
+		    .catch(error => {
+		        console.error('Fetch 작업에 문제가 있습니다:', error);
+		        // 여기서 에러를 처리합니다
+		    });
 	};
 	
 	// 리뷰 신고 버튼 클릭
@@ -612,24 +650,29 @@ $(document).ready(function(){
 		var isLogin = ${loginUserBean.userLogin};
 		
 		if(isLogin){
-			$.ajax({
-				url: '${root}reviewReport',
-				type: 'POST',
-				data: {
-					review_num: review_num,
-					report_user_num: report_user_num,
-					user_num: user_num
-				},
-				success: function(result){
-					if(result == 'true'){
-						alert('신고가 완료되었습니다.');
-						location.reload();
-					} else {
-						alert('이미 신고 한 리뷰 입니다.');
-						location.reload();
-					}
-				}
+			
+			// Fetch 요청 보내기
+			fetch('${root}reviewReport?review_num=' + review_num + '&report_user_num=' + report_user_num +'&user_num=' + user_num, {
+				method: 'POST'
 			})
+				.then(response => {
+			        if (response.ok) {
+			            return response.text(); // 혹은 response.json() 등으로 데이터를 추출할 수 있습니다.
+			        }
+			        throw new Error('네트워크 응답이 문제가 있습니다.');
+			    })
+				.then(result => {
+			    	console.log('result : ' + result);
+			        if (result == 'true') {
+			            alert('신고가 완료되었습니다.');
+			        } else {
+			            alert('이미 신고된 리뷰입니다.');
+			        }
+			    })
+			    .catch(error => {
+			        console.error('Fetch 작업에 문제가 있습니다:', error);
+			        // 여기서 에러를 처리합니다
+			    });
 		} else {
 			alert('로그인이 필요한 서비스 입니다.');
 			location.href='${root}user/login';
@@ -673,33 +716,27 @@ $(document).ready(function(){
 		};
 		
 		$('#deleteReview').on('click',function(){
-			$.ajax({
-				url: '${root}reviewDelete',
-				type: 'POST',
-				data: {
-					flag: flag,
-					type_id: type_id,
-					user_num: user_num,
-					review_num: review_num
-				},
-				success: function(result){
-					
-					if(result == 'true'){
-						alert('삭제를 완료했습니다.');
+			fetch('${root}reviewDelete?flag=' + flag + '&type_id=' + type_id + '&user_num=' + user_num + '&review_num=' + review_num, {
+				  method: 'POST'
+				})
+				  .then(response => {
+				    if (response.ok) {
+				      return response.json();
+				    } else {
+				      throw new Error('Network response was not ok.');
+				    }
+				  })
+				  .then(result => {
 						location.reload();
-					} else {
-						alert('삭제에 실패하였습니다.');
-					}
-				},
-				error: function(response){
-					console.log(response);
-					console.log('flag : ' + flag);
-					console.log('type_id : ' + type_id);
-					console.log('user_num : ' + user_num);
-					console.log('user_num : ' + ${loginUserBean.user_num});
-					console.log('review_num : ' + review_num);
-				}
-			});
+				  })
+				  .catch(error => {
+				    console.error('There was a problem with the fetch operation:', error);
+				    console.log('flag: ' + flag);
+				    console.log('type_id: ' + type_id);
+				    console.log('user_num: ' + user_num);
+				    console.log('user_num: ' + ${loginUserBean.user_num});
+				    console.log('review_num: ' + review_num);
+				  });
 		});
 	});
 </script>

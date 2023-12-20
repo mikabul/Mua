@@ -1,8 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var='root' value='${pageContext.request.contextPath}/' />
-<script src="${root}script/top_menu.js"></script>
 <c:set var='user_num' />
 <link rel="styleSheet" href="${root }style/top_menu.css">
 <div style="position: fixed; width: 100%; height: 90px; z-index: 100; background-color: #89a5ea; top: 0px;">

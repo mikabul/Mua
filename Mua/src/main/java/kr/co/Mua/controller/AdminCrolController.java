@@ -19,6 +19,7 @@ import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.SearchResultDto;
 import kr.co.Mua.bean.SongDto;
+import kr.co.Mua.service.AdminService;
 import kr.co.Mua.service.InsertDBService;
 
 @Controller
@@ -27,6 +28,9 @@ public class AdminCrolController {
 	
 	@Autowired
 	private InsertDBService insertDBService;
+	
+	@Autowired
+	private AdminService adminService;
 
 	@RequestMapping(value="/main")
 	public String admin_crol_main() {
@@ -113,20 +117,12 @@ public class AdminCrolController {
 		return "/admin/crol/search/complete";
 	}
 	
-	@RequestMapping(value="/test")
-	public String test() {
+	@RequestMapping(value="/genre")
+	public String genreChart(@RequestParam("genreCode") String genreCode) {
 		
-		String url = "https://www.melon.com/song/detail.htm?songId=1";
-		Document doc;
-		
-		try {
-			doc = Jsoup.connect(url).get();
-			System.out.println(doc);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		return "/admin/crol/main";
+		adminService.getGenreChart(genreCode);
+			
+		return "/admin/crol/success";
 	}
 	
 }

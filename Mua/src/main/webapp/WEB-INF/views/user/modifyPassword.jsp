@@ -80,11 +80,11 @@
 			
 			
 				<div class="input-box">
-					<form:input path="user_pw" type="text" placeholder="New Password"/>
+					<form:password path="user_pw" placeholder="New Password"/>
 					<form:errors path="user_pw"/>
 				</div>
 				<div class="input-box">
-					<form:input path="user_pw2" type="text" placeholder="Check Password"/>
+					<form:password path="user_pw2" placeholder="Check Password"/>
 					<form:errors path="user_pw2"/>
 				</div>
 				

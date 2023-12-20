@@ -21,11 +21,9 @@ public class UserDAO {
 	public String checkUserEmailExit(String user_email) {
 		return userMapper.checkUserEmailExit(user_email);
 	}
-	
 	public void modifyUserName(String user_name,int user_num) {
 		userMapper.modifyUserName(user_name, user_num);
 	}
-	
 	public void addUserInfo(UserBean RegisterUserBean) {
 		userMapper.addUserInfo(RegisterUserBean);
 	}

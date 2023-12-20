@@ -192,6 +192,7 @@ request.setCharacterEncoding("utf-8");
 					onkeypress="resetUserEmailExit()"/>
 				<button type="button" class="emailbtn"
 					onclick="checkUserEmailExit()">Duplicate</button>
+
 					<form:errors path="user_email" class="error-boxID" />
 				<i class='bx bx-envelope'></i>
 			</div>
@@ -205,14 +206,14 @@ request.setCharacterEncoding("utf-8");
 			<div class="checkOutGrade"
 				style="margin-bottom: -30px; margin-left: 10px">보안 등급 :</div>
 			<div class="input-box">
-				<form:input path="user_pw" placeholder="Password"
+				<form:input type="password" path="user_pw" placeholder="Password"
 					oninput="checkPasswordSecGrade(); checkPasswordEquals();" />
 					<form:errors path="user_pw" class="error-box" />
 				<i class='bx bxs-lock-alt'></i>
 			</div>
 
 			<div class="input-box">
-				<form:input path="user_pw2" placeholder="Password Check"  oninput="checkPasswordEquals()"/>
+				<form:input type="password" path="user_pw2" placeholder="Password Check"  oninput="checkPasswordEquals()"/>
 				<div class="checkPWEquals"
 					style="margin-bottom: -50px; margin-left: 10px" >비밀번호가 일치하지
 					않습니다.</div>
@@ -234,6 +235,7 @@ request.setCharacterEncoding("utf-8");
 				<form:input path="user_birthday" type="date" placeholder = "User Birthday"/>
 					<form:errors path="user_birthday" class="error-box" />
 			</div>
+			
 			<div class="form-group">
 				<div class="text-right">
 					<form:button type="submit" class="btn">Register</form:button>

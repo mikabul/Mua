@@ -23,6 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.co.Mua.bean.AlbumDto;
+import kr.co.Mua.bean.ArtistDto;
+import kr.co.Mua.bean.ReviewDto;
+import kr.co.Mua.bean.SearchResultDto;
+import kr.co.Mua.bean.SongDto;
+import kr.co.Mua.bean.UserBean;
+import kr.co.Mua.service.ChartService;
 import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.ReviewDto;
 import kr.co.Mua.bean.SearchResultDto;
@@ -47,8 +54,21 @@ public class RestApiController {
 	@Autowired
 	private MailSendService mailService;
 	
+	@Autowired
+	private ChartService chartService;
+	
 	@Resource(name="loginUserBean")
 	private UserBean loginUserBean;
+	
+	private ArrayList<SearchResultDto> resultList;
+	
+	int maxView = 20;
+	int maxIndex;
+	int maxPage;
+	int page;
+	int loadPage[];
+	int endView;
+	
 	//유저 중복체크
 	@GetMapping("/user/checkUserIdExist/{user_id}")
 	public String checkUserIdExit(@PathVariable String user_id) {
@@ -68,20 +88,20 @@ public class RestApiController {
 		
 	}
 	
+	//회원정보 수정용 이메일 인증코드 발송
+    @GetMapping("/user/modifyCertificationCode/{user_email}")
+    public String modifyMailCheck(@PathVariable String user_email) {
+        System.out.println("모디파이 인증 요청 들어옴");
+        System.out.println("모디파이 인증 이메일 : "+user_email);
+        return mailService.modifyEmail(user_email);
+    }
+	
 	// 이메일 중복체크후 인증요청 발송
 	@GetMapping("/user/checkCertificationCode/{user_email}")
 	public String mailCheck(@PathVariable String user_email) {
 		System.out.println("이메일 인증 요청 들어옴.");
 		System.out.println("이메일 인증 이메일 : "+user_email);
 		return mailService.joinEmail(user_email);
-	}
-	
-	//회원정보 수정용 이메일 인증코드 발송
-	@GetMapping("/user/modifyCertificationCode/{user_email}")
-	public String modifyMailCheck(@PathVariable String user_email) {
-		System.out.println("모디파이 인증 요청 들어옴");
-		System.out.println("모디파이 인증 이메일 : "+user_email);
-		return mailService.modifyEmail(user_email);
 	}
 	
 	@RequestMapping(value = "/getLyric", produces = "application/text; charset=UTF-8")
@@ -106,7 +126,6 @@ public class RestApiController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(lyric);
 		return lyric;
 	}
 	
@@ -138,8 +157,6 @@ public class RestApiController {
 	        jsonString = "";
 	    }
 	    
-	    System.out.println("user_num : " + loginUserBean.getUser_num());
-	    System.out.println("song_id : " + song_id);
 	    // 최근 본 노래
 	    if(loginUserBean.isUserLogin()) {
 			if(searchService.getViewed_song(song_id, loginUserBean.getUser_num()) == null){
@@ -358,12 +375,10 @@ public class RestApiController {
 												@RequestParam("user_num") int user_num,
 												@RequestParam("type_id") int type_id,
 												@RequestParam("review_num") int review_num) {
-		System.out.println("flag" + flag);
-		System.out.println("user_num" + user_num);
-		System.out.println("type_id" + type_id);
-		System.out.println("review_num" + review_num);
+		
 		searchService.deleteUserReview(flag, type_id, user_num, review_num);
 		if(searchService.getUserReview(flag, type_id, user_num) == null) {
+			searchService.deleteReport(review_num);
 			return "true";
 		}else {
 			return "false";
@@ -376,5 +391,89 @@ public class RestApiController {
 								@RequestParam("user_num") int user_num) {
 		
 		return searchService.checkReport(review_num, report_user_num, user_num) + "";
+	}
+	
+	// 장르별 노래
+	@RequestMapping(value="/genreSong", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String genreSong(@RequestParam("fTabValue") String fTabValue,
+							@RequestParam("sTabValue") String sTabValue,
+							@RequestParam("index") int index,
+							@RequestParam("endIndex") int endIndex) {
+		
+		String jsonString = "";
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		// 타입별 서비스 호출
+		if(fTabValue.equals("K-POP")) {
+			resultList = chartService.getGenreSong(sTabValue, "국내", index, endIndex);
+			maxIndex = chartService.getGenreSongMaxIndex(sTabValue, "국내");
+		} else if(fTabValue.equals("POP")) {
+			resultList = chartService.getGenreSong(sTabValue, "해외", index, endIndex);
+			maxIndex = chartService.getGenreSongMaxIndex(sTabValue, "해외");
+		} else if(fTabValue.equals("other")) {
+			if(sTabValue.equals("OST")) {
+				resultList = chartService.getGenreSongOST(index, endIndex);
+				maxIndex = chartService.getGenreSongOSTMaxIndex();
+			} else {
+				resultList = chartService.getOtherGenreSong(sTabValue, index, endIndex);
+				maxIndex = chartService.getOtherGenreSongMaxIndex(sTabValue);
+			}
+		} else {
+			return "error";
+		}
+		
+		getLoadPage(index, endIndex);
+		
+		map.put("resultList", resultList);
+		map.put("loadPage", loadPage);
+		map.put("maxView", maxView);
+		map.put("page", page);
+		
+		try {
+			jsonString = objectMapper.writeValueAsString(map);
+		} catch (Exception e) {
+			System.out.println("AdminAjaxAlbum 문제 발생");
+			System.out.println(e);
+		}
+		return jsonString;
+	}
+	
+	// 페이징
+	private void getLoadPage(int index, int endIndex) {
+		maxPage = maxIndex / maxView + 1;
+		page = index / maxView + 1;
+		
+		if(maxIndex % 20 == 0) {
+			maxPage -= 1;
+		}
+		
+		if(maxPage <= 10) { // 최대 페이지 10개이하
+			loadPage = new int[maxPage];
+			for(int i = 1; i <= maxPage; i++) {
+				loadPage[i - 1] = i;
+			}
+		} else { // 최대 페이지 10개 초과
+			loadPage = new int[10];
+			if(page <= 5) { // 6페이지 미만
+				for(int i = 1; i <= 10; i++) {
+					loadPage[i - 1] = i;
+				}
+			} else if(page + 5 > maxPage) { // 최대페이지의 -5
+				int j = 9;
+				for(int i = maxPage; i > maxPage - 10; i-- ) {
+					loadPage[j] = i;
+					j--;
+				}
+			} else {
+				int j = 0;
+				for(int i = 1; i <= 10; i++) {
+					loadPage[j] = i + (page - 5);
+					j++;
+				}
+			}
+		}
+
 	}
 }

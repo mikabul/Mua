@@ -254,9 +254,9 @@
 					</fieldset>
 				</div>
 				<div class="form-group row justify-content-center">
-					<div class="col-sm-10">
+					<div style="width: 470px;">
 						<form:textarea path="review_content" class="form-control" 
-						placeholder="내용을 입력해주세요..." required="true" rows="4"/>
+						placeholder="내용을 입력해주세요..." required="true" rows="4" wrap="on" />
 						<div id="submitBtn" class="text-center" style="margin-top: 13px;"></div>
 					</div>
 				</div>

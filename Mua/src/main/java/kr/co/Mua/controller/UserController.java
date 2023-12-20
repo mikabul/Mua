@@ -116,7 +116,6 @@ public class UserController {
 	public String modify_pro(
 			@Valid @ModelAttribute("modifyUserBean") UserBean modifyUserBean , BindingResult result ) {
 		if(result.hasErrors()) {
-			System.out.println(result);
 			return "user/modify_fail";
 		}
 		

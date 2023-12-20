@@ -1,7 +1,6 @@
 package kr.co.Mua.Mapper;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -39,6 +38,24 @@ public interface AdminMapper {
 	// song_id로 검색
 	@Select("select * from song where song_id=#{song_id}")
 	public SongDto getSearchSongId(int song_id);
+	
+	// 국가정보가 없는 노래
+	@Select("select * from( "
+			+ "select s.song_id, s.song_name, s.song_thumbnail, a.album_id, a.album_name, "
+			+ "s.release_date, "
+			+ "row_number() over (order by s.song_name) as rn "
+			+ "from song s "
+			+ "inner join album a on s.album_id=a.album_id "
+			+ "left join thumbup_song t on s.song_id=t.song_id "
+			+ "where s.song_nation='-' "
+			+ "order by rn) "
+			+ "where rn between #{arg0} and #{arg1}")
+	public ArrayList<SongDto> getEmptySongNation(int index, int maxIndex);
+	
+	// 국가정보가 없는 노래의 최대 검색 갯수를 가져옴
+	@Select("select count(*) from song "
+			+ "where song_nation='-'")
+	public int getEmptySongNationMaxIndex();
 	
 	//---------- 업데이트 ------------
 	// 이름, 장르, 발매일, 가사파일이름, 썸네일파일이름, 국내(해외)
@@ -101,36 +118,36 @@ public interface AdminMapper {
 	public void updateAlbum(AlbumDto albumDto);
 	
 	//============= 유저 =============
-	//유저 넘을 통한 유저 상세정보 가져옴
-	//이름 이메일 전화번호 생성일 번호
 	@Select("select user_name, user_email, user_tel, user_registdate, user_num from user_info where user_num = ${user_num}")
-	public UserBean getUserNum(int user_num);
+    public UserBean getUserNum(int user_num);
+
+	//�쑀�� 寃��깋 寃곌낵 媛��닔 媛��졇�샂
+    @Select("select count(*) from ${arg1} "
+            + "where lower(replace(user_name,' ','')) like lower(replace(#{arg0},' ',''))")
+    public int getUserMaxIndex(String searchedValue, String table_name);
+    
+    // �쑀���쓽 �젙蹂� 議고쉶 - user_num, user_id, user_name, user_registdate
+    @Select("select * from( "
+            + "select user_num, user_id, user_name, "
+            + "to_char(user_registdate, 'yyyy-mm-dd hh24:mi:ss') as user_registdate, "
+            + "row_number() over (order by instr(user_id, #{arg0}), user_num) as rn "
+            + "from user_info "
+            + "where lower(user_id) like lower(#{arg1})) "
+            + "where rn between #{arg2} and #{arg3}")
+    public ArrayList<UserBean> searchUserName(String str, String replaceStr, int index, int endView);
+
+    // �쑀���쓽 李⑤떒
+    @Insert("insert into notacceptuser values( #{arg0}, #{arg1}, sysdate, to_date(#{arg2}))")
+    public void insertNotAccepteUser(int user_num, int admin_num, String end_date);
+
+    // �쑀���쓽 李⑤떒 �빐�젣
+    @Delete("delete notacceptuser where user_num=#{user_num}")
+    public void deleteNotAccepteUser(int user_num);
+
+    // 李⑤떒 �쑀�� 遺덈윭�삤湲�
+    @Select("select user_num, start_date, end_date from notacceptuser where user_num = #{arg0}")
+    public notAcceptUserBean getBanishedUser(int user_num);
 	
-	//유저 검색 결과 갯수 가져옴
-	@Select("select count(*) from ${arg1} "
-			+ "where lower(replace(user_name,' ','')) like lower(replace(#{arg0},' ',''))")
-	public int getUserMaxIndex(String searchedValue, String table_name);
-	// 유저의 정보 조회 - user_num, user_id, user_name, user_registdate
-	@Select("select * from( "
-			+ "select user_num, user_id, user_name, "
-			+ "to_char(user_registdate, 'yyyy-mm-dd hh24:mi:ss') as user_registdate, "
-			+ "row_number() over (order by instr(user_id, #{arg0}), user_num) as rn "
-			+ "from user_info "
-			+ "where lower(user_id) like lower(#{arg1})) "
-			+ "where rn between #{arg2} and #{arg3}")
-	public ArrayList<UserBean> searchUserName(String str, String replaceStr, int index, int endView);
-	
-	// 유저의 차단
-	@Insert("insert into notacceptuser values( #{arg0}, #{arg1}, sysdate, to_date(#{arg2}))")
-	public void insertNotAccepteUser(int user_num, int admin_num, String end_date);
-	
-	// 유저의 차단 해제
-	@Delete("delete notacceptuser where user_num=#{user_num}")
-	public void deleteNotAccepteUser(int user_num);
-	
-	// 차단 유저 불러오기
-	@Select("select user_num, start_date, end_date from notacceptuser where user_num = #{arg0}")
-	public notAcceptUserBean getBanishedUser(int user_num);
 	//============== 리뷰 ===============
 	// 신고된 전체 리뷰
 	@Select("select us.user_num, us.user_id, us.user_name, "
@@ -144,10 +161,8 @@ public interface AdminMapper {
 	public ArrayList<ReviewDto> getReviewReport();
 	
 	// 리뷰 삭제
-	@Delete("delete review where flag=#{arg0} "
-			+ "and type_id=#{arg1} and user_num=#{arg2} "
-			+ "and review_num=${arg3}")
-	public void deleteUserReview(String flag, int type_id, int user_num, int review_num);
+	@Delete("delete review where review_num=${arg1}")
+	public void deleteUserReview(int review_num);
 	
 	// 문제가 없는 리뷰
 	@Delete("delete review_report where report_num=#{report_num}")

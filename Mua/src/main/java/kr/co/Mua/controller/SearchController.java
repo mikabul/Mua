@@ -115,6 +115,10 @@ public class SearchController {
 		ArrayList<ArtistDto> artistList = searchService.getBriefArtist(song_id);
 		List<SongDto> songList = new ArrayList<SongDto>();
 		
+		if(infoSongDto == null) {
+			return "/NotAccept";
+		}
+		
 		// �븘�떚�뒪�듃�쓽 �븘�씠�뵒瑜� �넻�빐
 		Iterator<ArtistDto> artistListIt = artistList.iterator();
 		while(artistListIt.hasNext()) {
@@ -144,7 +148,7 @@ public class SearchController {
 			}
 		}
 		
-		// �뒪�겕由쏀듃�뿉�꽌 �씠�슜�븯湲곗쐞�빐 JSON�쑝濡� 蹂��솚
+		// 스크립트에서 이용하기위해 JSON으로 변환
 		ObjectMapper objectMapper = new ObjectMapper();
 		
 		try {
@@ -159,10 +163,7 @@ public class SearchController {
 		model.addAttribute("songList", songList);
 		model.addAttribute("song_id", song_id);
 		
-		System.out.println("song_id : " + song_id);
-		System.out.println("user_num : " + loginUserBean.getUser_num());
-		
-		// 由щ럭
+		// 리뷰
 		ReviewDto tempReviewDto = searchService.getUserReview("song", song_id, loginUserBean.getUser_num());
 		if(tempReviewDto != null) {
 			userReviewDto.setReview_num(tempReviewDto.getReview_num());
@@ -195,6 +196,10 @@ public class SearchController {
 		ArtistDto artistDto = searchService.getArtist_info(artist_id);
 		ArrayList<AlbumDto> albumList = searchService.getArtist_album_info(artist_id);
 		
+		if(artistDto == null) {
+			return "/NotAccept";
+		}
+		
 		model.addAttribute("artistDto", artistDto);
 		model.addAttribute("albumList", albumList);
 		
@@ -206,7 +211,8 @@ public class SearchController {
 			userReviewDto.setUser_num(tempReviewDto.getUser_num());
 			userReviewDto.setUser_name(tempReviewDto.getUser_name());
 			userReviewDto.setFlag(tempReviewDto.getFlag());
-			userReviewDto.setReview_content(tempReviewDto.getReview_content());
+			
+			userReviewDto.setReview_content(tempReviewDto.getReview_content().replace("<br>", ""));
 			userReviewDto.setReview_date(tempReviewDto.getReview_date());
 			userReviewDto.setReview_point(tempReviewDto.getReview_point());
 			userReviewDto.setSuggestion(tempReviewDto.getSuggestion());
@@ -265,6 +271,10 @@ public class SearchController {
 		ArrayList<ArtistDto> artistList = searchService.getAlbum_Artist_info(album_id);
 		ArrayList<SearchResultDto> searchResultList = searchService.getAlbum_Song(album_id, index, endView);
 		
+		if(albumDto == null) {
+			return "/NotAccept";
+		}
+		
 		// �옄諛� �뒪�겕由쏀듃�뿉�꽌 �궗�슜�븯湲� �쐞�븳 JSON
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -300,7 +310,7 @@ public class SearchController {
 	
 	@PostMapping("/insertReview")
 	public String insertReview(@ModelAttribute("userRrviewDto") ReviewDto userReviewDto) {
-		System.out.println("POST�뱾�뼱�샂");
+		
 		searchService.insertUserReview(userReviewDto);
 		
 		switch(userReviewDto.getFlag()) {
@@ -317,6 +327,7 @@ public class SearchController {
 	
 	@PostMapping("rewriteReview")
 	public String rewriteReview(@ModelAttribute("userRrviewDto") ReviewDto userReviewDto) {
+		
 		searchService.rewriteUserReview(userReviewDto);
 		
 		switch(userReviewDto.getFlag()) {

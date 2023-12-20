@@ -9,7 +9,7 @@
 </head>
 <body>
 <div>
-	<div style="margin-top: 20px;">
+	<div>
 		<div class="text-center">
 			<div>
 				<p>현재 접속자 : ${loginAdminDto.admin_num} 번 관리자</p>

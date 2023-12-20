@@ -1,7 +1,6 @@
 package kr.co.Mua.dao;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,6 +31,14 @@ public class AdminDao {
 	
 	public SongDto getSearchSongId(int song_id) {
 		return adminMapper.getSearchSongId(song_id);
+	}
+	
+	public ArrayList<SongDto> getEmptySongNation(int index, int maxIndex){
+		return adminMapper.getEmptySongNation(index, maxIndex);
+	}
+	
+	public int getEmptySongNationMaxIndex() {
+		return adminMapper.getEmptySongNationMaxIndex();
 	}
 	
 	public void updateSong(SongDto songDto) {
@@ -69,38 +76,38 @@ public class AdminDao {
 		return adminMapper.getMaxIndex(str, type);
 	}
 	
-	public int getUserMaxIndex(String searchedValue, String table_name) {
-		return adminMapper.getUserMaxIndex(searchedValue, table_name);
-	}
-	
 	//============= 유저 =============
 	public notAcceptUserBean getBanishedUser(int user_num) {
-		return adminMapper.getBanishedUser(user_num);
-	}
-	
-	public UserBean getUserNum(int user_num) {
-		return adminMapper.getUserNum(user_num);
-	}
-	
-	public ArrayList<UserBean> searchUserName(String str, String replaceStr, int index, int endView){
-		return adminMapper.searchUserName(str, replaceStr, index, endView);
-	}
-	
-	public void insertNotAccepteUser(int user_num, int admin_num, String end_date) {
-		adminMapper.insertNotAccepteUser(user_num, admin_num, end_date);
-	}
-	
-	public void deleteNotAccepteUser(int user_num) {
-		adminMapper.deleteNotAccepteUser(user_num);
-	}
+        return adminMapper.getBanishedUser(user_num);
+    }
+
+    public UserBean getUserNum(int user_num) {
+        return adminMapper.getUserNum(user_num);
+    }
+
+    public ArrayList<UserBean> searchUserName(String str, String replaceStr, int index, int endView){
+        return adminMapper.searchUserName(str, replaceStr, index, endView);
+    }
+
+    public void insertNotAccepteUser(int user_num, int admin_num, String end_date) {
+        adminMapper.insertNotAccepteUser(user_num, admin_num, end_date);
+    }
+
+    public void deleteNotAccepteUser(int user_num) {
+        adminMapper.deleteNotAccepteUser(user_num);
+    }
+    
+    public int getUserMaxIndex(String searchedValue, String table_name) {
+        return adminMapper.getUserMaxIndex(searchedValue, table_name);
+    }
 	
 	//============== 리뷰 ===============
 	public ArrayList<ReviewDto> getReviewReport(){
 		return adminMapper.getReviewReport();
 	}
 	
-	public void deleteUserReview(String flag, int type_id, int user_num, int review_num) {
-		adminMapper.deleteUserReview(flag, type_id, user_num, review_num);
+	public void deleteUserReview(int review_num) {
+		adminMapper.deleteUserReview(review_num);
 	}
 	
 	public void deleteReport(int report_num) {

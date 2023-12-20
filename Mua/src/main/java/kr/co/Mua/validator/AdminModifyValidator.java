@@ -9,12 +9,11 @@ import kr.co.Mua.bean.AlbumDto;
 import kr.co.Mua.bean.ArtistDto;
 import kr.co.Mua.bean.SongDto;
 import kr.co.Mua.bean.UserBean;
-import kr.co.Mua.bean.notAcceptUserBean;
 
 public class AdminModifyValidator implements Validator {
 
 	private final String REGEXP_PATTERN_DATE = "^[\\d]{4}\\.(0[1-9]|1[012])\\.(0[1-9]|[12][0-9]|3[01])$|^-$";
-	private final String REGEXP_PATTERN_LYRICS = "^[a-z|A-Z|0-9|_|-]+\\.txt$ | ^-$";
+	private final String REGEXP_PATTERN_LYRICS = "^[a-z|A-Z|0-9|_|-]+\\.txt$|^-$";
 	private final String REGEXP_PATTERN_THUMBNAIL = "^[a-z|A-Z|0-9|_|-]+\\.(jpg|jpeg|png)$|^-$";
 
 	@Override
@@ -22,8 +21,7 @@ public class AdminModifyValidator implements Validator {
 		return SongDto.class.isAssignableFrom(clazz) || 
 				ArtistDto.class.isAssignableFrom(clazz) ||
 				AlbumDto.class.isAssignableFrom(clazz) ||
-				UserBean.class.isAssignableFrom(clazz) ||
-				notAcceptUserBean.class.isAssignableFrom(clazz);
+				UserBean.class.isAssignableFrom(clazz);
 	}
 
 	@Override
@@ -42,8 +40,8 @@ public class AdminModifyValidator implements Validator {
 			release_date = songDto.getRelease_date();
 			String lyrics = songDto.getLyrics();
 			String song_thumbnail = songDto.getSong_thumbnail();
+
 			
-			System.out.println("song_name : " + song_name.length());
 			// song_name
 			if (song_name == null || song_name.isEmpty()) {
 				errors.rejectValue("song_name", "sNameEmpty");

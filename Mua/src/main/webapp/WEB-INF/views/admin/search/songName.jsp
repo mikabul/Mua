@@ -112,6 +112,7 @@
 		var songList = result.songList;
 		var maxView = parseInt(result.maxView, 10);
 		var loadPage = result.loadPage;
+		var page = parseInt(result.page, 10);
 		
 		// 검색 내용
 		var searchResult = "";
@@ -120,15 +121,16 @@
 						+	'<td class="top_bottom text-center">'
 						+	songList[i].song_id
 						+	'</td>'
-						+	'<td class="top_bottom ellipsis">'
+						+	'<td class="top_bottom">'
+						+	'<div class="ellipsis" style="max-width: 350px;">'
 						+	'<a href="${root}admin/search/songInfo?song_id=' + songList[i].song_id + '">' + songList[i].song_name
-						+	'</a></td>'
+						+	'</a></div></td>'
 						+	'<td class="top_bottom">'
 						+	songList[i].release_date
 						+	'</td>'
-						+	'<td class="top_bottom ellipsis">'
+						+	'<td class="top_bottom"><div class="ellipsis" style="max-width: 350px;" >'
 						+	songList[i].album_name
-						+	'</td></tr>';
+						+	'</div></td></tr>';
 		}
 		
 		$("#searchResult").html(searchResult);
@@ -136,9 +138,15 @@
 		var pageBtn = "";
 		// 버튼
 		for(var i = 0; i < loadPage.length; i++){
-			pageBtn += '<button type="button" class="btn btn-secondry pageBtns" index="' + ((loadPage[i] - 1) * maxView + 1) + '" '
-					+	'endIndex="' + (loadPage[i] * maxView) + '" >'
-					+	loadPage[i] + '</button>';
+			if(page == loadPage[i]){
+				pageBtn += '<button type="button" class="btn btn-secondary pageBtns" index="' + ((loadPage[i] - 1) * maxView + 1) + '" '
+				+	'endIndex="' + (loadPage[i] * maxView) + '" >'
+				+	loadPage[i] + '</button>';
+			} else {
+				pageBtn += '<button type="button" class="btn btn-outline-secondary pageBtns" index="' + ((loadPage[i] - 1) * maxView + 1) + '" '
+				+	'endIndex="' + (loadPage[i] * maxView) + '" >'
+				+	loadPage[i] + '</button>';
+			}
 		}
 		$('#pageBtn').html(pageBtn);
 		

@@ -26,30 +26,30 @@
 			<h1>MyAccount</h1>
 			<!-- //유저아이디, 이름, 이메일, 집주소, 전화번호, 생일, 생성일 -->
 			<div class="input-box">
-				<form:input path = "user_id" placeholder ="User ID"/>
+				<form:input path = "user_id" placeholder ="User ID" readonly = "true"/>
 				<i class='bx bxs-user'></i>
 			</div>
 			<div class="input-box">			
-				<form:input path = "user_name" placeholder = "User Name"/>
+				<form:input path = "user_name" placeholder = "User Name"  readonly = "true"/>
 				<i class='bx bx-edit-alt'></i>
 			</div>
 			<div class="input-box">			
-				<form:input path = "user_email" placeholder = "User Email"/>
+				<form:input path = "user_email" placeholder = "User Email"  readonly = "true"/>
 				<i class='bx bx-envelope'></i>
 			</div>
 			<div class="input-box">			
-				<form:input path = "user_address" placeholder="User address"/>
+				<form:input path = "user_address" placeholder="User address"  readonly = "true"/>
 				<i class='bx bx-home'></i>
 			</div>
 			<div class="input-box">			
-				<form:input path = "user_tel" placeholder="User Tel"/>
+				<form:input path = "user_tel" placeholder="User Tel" readonly = "true"/>
 				<i class='bx bxs-phone'></i>
 			</div>
 			<div class="input-box">			
-				<form:input path = "user_birthday" placeholder="User Birthday"/>
+				<form:input path = "user_birthday" placeholder="User Birthday" readonly = "true"/>
 			</div>
 			<div class="input-box">			
-				<form:input path = "user_registdate" placeholder = "User RegistDate"/>
+				<form:input path = "user_registdate" placeholder = "User RegistDate" readonly = "true"/>
 			</div>
 			
 			<div class="row justify-content-center">
@@ -57,7 +57,6 @@
 				<form:button class="btn btn-outline-dark" type="submit" style="margin-left:20px; width:100px;">수정하기</form:button>
 			</div>
 		</form:form>
-	
 	</div>
 
 </body>

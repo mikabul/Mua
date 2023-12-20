@@ -16,5 +16,4 @@ public class MainController {
 	public String notAccept() {
 		return "/NotAccept";
 	}
-	
 }

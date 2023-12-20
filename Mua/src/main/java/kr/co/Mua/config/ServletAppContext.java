@@ -30,6 +30,7 @@ import kr.co.Mua.Mapper.AdminMapper;
 import kr.co.Mua.Mapper.ChartMapper;
 import kr.co.Mua.Mapper.InsertDBMapper;
 import kr.co.Mua.Mapper.SearchMapper;
+import kr.co.Mua.Mapper.SuggestMapper;
 import kr.co.Mua.Mapper.UserMapper;
 import kr.co.Mua.bean.AdminDto;
 import kr.co.Mua.bean.UserBean;
@@ -37,7 +38,6 @@ import kr.co.Mua.interceptor.AcceptAdminInterceptor;
 import kr.co.Mua.interceptor.ChartInterceptor;
 import kr.co.Mua.interceptor.CheckLoginInterceptor;
 import kr.co.Mua.interceptor.NewChartInterceptor;
-import kr.co.Mua.interceptor.GenreChartInterceptor;
 import kr.co.Mua.service.ChartService;
 
 @Configuration
@@ -124,10 +124,6 @@ public class ServletAppContext implements WebMvcConfigurer{
 		NewChartInterceptor newchartInterceptor = new NewChartInterceptor(chartService);
 		InterceptorRegistration reg4 = registry.addInterceptor(newchartInterceptor);
 		reg4.addPathPatterns("/chart/newchart");
-
-		GenreChartInterceptor genrechartInterceptor = new GenreChartInterceptor(chartService);
-		InterceptorRegistration reg5 = registry.addInterceptor(genrechartInterceptor);
-		reg5.addPathPatterns("/chart/genre");
 	}
 	
 	@Bean
@@ -174,6 +170,13 @@ public class ServletAppContext implements WebMvcConfigurer{
 	@Bean
 	public MapperFactoryBean<AdminMapper> getAdminMapper(SqlSessionFactory factory){
 		MapperFactoryBean<AdminMapper> factoryBean = new MapperFactoryBean<AdminMapper>(AdminMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		return factoryBean;
+	}
+	
+	@Bean
+	public MapperFactoryBean<SuggestMapper> getSuggestMapper(SqlSessionFactory factory){
+		MapperFactoryBean<SuggestMapper> factoryBean = new MapperFactoryBean<SuggestMapper>(SuggestMapper.class);
 		factoryBean.setSqlSessionFactory(factory);
 		return factoryBean;
 	}

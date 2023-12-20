@@ -23,14 +23,8 @@
 		<c:import url="/WEB-INF/views/admin/include/top.jsp" />
 	</header>
 	<section style="margin-top: 130px;">
-		<div class="form-row align-items-center search_form" style="margin: 70px 0">
-			<div class="col-auto my-1">
-			</div>
-			<input type="text" class="form-control search_bar" name="str" id="searchBar" onkeyup="getResultOnKey()">
-			<div class="col-auto my-1">
-			</div>
-		</div>
-		<div>
+		
+		<div style="margin-top: 50px;">
 			<table style="margin: 0 auto;">
 				<colgroup>
 					<col style="width: 100px"/>
@@ -41,9 +35,9 @@
 				<thead>
 					<tr class="">
 						<th class="text-center" scope="col">ID</th>
-						<th scope="col">앨범이름</th>
+						<th scope="col">노래이름</th>
 						<th scope="col">발매일</th>
-						<th scope="col">장르</th>
+						<th scope="col">앨범이름</th>
 					</tr>
 				</thead>
 				<tbody id="searchResult">
@@ -71,30 +65,10 @@
 	function getResult(){
 		str = $('#searchBar').val();
 		$.ajax({
-			url: "${root}admin/search/ajax/album",
+			url: "${root}admin/search/ajax/ajaxEmptySongNation",
 			type: 'GET',
 			dataType: 'json',
 			data:{
-				str: str,
-				index: index,
-				endIndex: endIndex
-			},
-			success: function(result){
-				inputResult(result);
-			}
-		});
-	}
-	
-	function getResultOnKey(){
-		str = $('#searchBar').val();
-		index = 1;
-		endIndex = 20;
-		$.ajax({
-			url: "${root}admin/search/ajax/album",
-			type: 'GET',
-			dataType: 'json',
-			data:{
-				str: str,
 				index: index,
 				endIndex: endIndex
 			},
@@ -107,26 +81,26 @@
 	// 화면에 출력
 	function inputResult(result){
 		
-		var albumList = result.albumList;
+		var songList = result.songList;
 		var maxView = parseInt(result.maxView, 10);
 		var loadPage = result.loadPage;
 		var page = parseInt(result.page, 10);
 		
 		// 검색 내용
 		var searchResult = "";
-		for(var i = 0; i < albumList.length; i++){
+		for(var i = 0; i < songList.length; i++){
 			searchResult += '<tr class="line">'
 						+	'<td class="top_bottom text-center">'
-						+	albumList[i].album_id
+						+	songList[i].song_id
 						+	'</td>'
 						+	'<td class="top_bottom"><div class="ellipsis" style="max-width: 350px;" >'
-						+	'<a href="${root}admin/search/albumInfo?album_id=' + albumList[i].album_id + '">' + albumList[i].album_name
+						+	'<a href="${root}admin/search/songInfo?song_id=' + songList[i].song_id + '">' + songList[i].song_name
 						+	'</a></div></td>'
 						+	'<td class="top_bottom">'
-						+	albumList[i].release_date
+						+	songList[i].release_date
 						+	'</td>'
 						+	'<td class="top_bottom"><div class="ellipsis" style="max-width: 350px;" >'
-						+	albumList[i].album_genre
+						+	songList[i].album_name
 						+	'</td></div></tr>';
 		}
 		
